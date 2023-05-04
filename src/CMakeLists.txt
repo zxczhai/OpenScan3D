@@ -9,9 +9,10 @@ find_package(OpenMVS REQUIRED)
 
 # Add executable
 add_executable(R3D test.cpp)
-
+target_include_directories(R3D PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Include)
+target_include_directories(R3D PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Engine)
 # Link libraries
 # target_link_libraries(R3D PRIVATE  Qt5::Core Qt5::Widgets)
 
-include_directories(${CMAKE_SOURCE_DIR}/Engine)
-include_directories(${CMAKE_SOURCE_DIR}/Include)
+# include_directories(${CMAKE_SOURCE_DIR}/Engine)
+# include_directories(${CMAKE_SOURCE_DIR}/Include)
