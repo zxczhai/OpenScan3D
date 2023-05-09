@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "core": "cpp",
+        "random": "cpp",
+        "cholesky": "cpp",
+        "eigenvalues": "cpp",
+        "geometry": "cpp",
+        "householder": "cpp",
+        "iterativelinearsolvers": "cpp",
+        "jacobi": "cpp",
+        "lu": "cpp",
+        "orderingmethods": "cpp",
+        "qr": "cpp",
+        "svd": "cpp",
+        "sparse": "cpp",
+        "sparsecholesky": "cpp",
+        "sparsecore": "cpp",
+        "sparselu": "cpp",
+        "sparseqr": "cpp",
+        "stdvector": "cpp",
+        "dense": "cpp"
+    },
+    "cmake.sourceDirectory": "/home/zxc/3DReconstruction/src/Engine"
+}
