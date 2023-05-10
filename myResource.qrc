@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>三维.png</file>
+        <file>自动化.png</file>
+    </qresource>
+</RCC>

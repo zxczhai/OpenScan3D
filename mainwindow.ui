@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>937</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>150</y>
+      <width>83</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>40</y>
+      <width>841</width>
+      <height>481</height>
+     </rect>
+    </property>
+   </widget>
+   <zorder>widget</zorder>
+   <zorder>pushButton</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>937</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile_F">
+    <property name="title">
+     <string>File(&amp;F)</string>
+    </property>
+    <addaction name="actionOpen_O"/>
+   </widget>
+   <widget class="QMenu" name="menuRebuild_Step_R">
+    <property name="title">
+     <string>Rebuild_Step(&amp;R)</string>
+    </property>
+    <addaction name="actionSFM_Engine"/>
+    <addaction name="actionImport_From_Other_SFM_Data"/>
+    <addaction name="actionMVS"/>
+   </widget>
+   <widget class="QMenu" name="menuAuto_Rebuild_A">
+    <property name="title">
+     <string>Auto_Rebuild(&amp;A)</string>
+    </property>
+    <addaction name="actionAuto_Properties"/>
+   </widget>
+   <addaction name="menuFile_F"/>
+   <addaction name="menuRebuild_Step_R"/>
+   <addaction name="menuAuto_Rebuild_A"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAuto_Properties">
+   <property name="text">
+    <string>Auto_Properties</string>
+   </property>
+  </action>
+  <action name="actionSFM_Engine">
+   <property name="text">
+    <string>SFM_Engine</string>
+   </property>
+  </action>
+  <action name="actionImport_From_Other_SFM_Data">
+   <property name="text">
+    <string>Import From Other SFM_Data</string>
+   </property>
+  </action>
+  <action name="actionMVS">
+   <property name="text">
+    <string>MVS</string>
+   </property>
+  </action>
+  <action name="actionOpen_O">
+   <property name="text">
+    <string>Open(&amp;O)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
