@@ -54,8 +54,8 @@ Window linuxFindWin(std::string winName)
 
 void MainWindow::on_pushButton_clicked()
 {
-//    choose_file *newFileChoose = new choose_file(this);
-//    newFileChoose->show();
+    //    choose_file *newFileChoose = new choose_file(this);
+    //    newFileChoose->show();
 
     std::string winName = "MainWindow";
     ui->widget = new viewer(linuxFindWin(winName));
@@ -68,14 +68,14 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_actionOpen_O_triggered()
 {
-//    choose_file *newChooseFile = new choose_file(this);
-//    newChooseFile->show();
+    //    choose_file *newChooseFile = new choose_file(this);
+    //    newChooseFile->show();
     QString fileName = QFileDialog::getOpenFileName(
-        this,
-        tr("open a 3D file"),
-        tr("/root/"),
-        tr("All files(*.*)")
-        );
+                this,
+                tr("open a 3D file"),
+                tr("/root/"),
+                tr("All files(*.*)")
+                );
     if (fileName.isEmpty()) {
         QMessageBox::warning(this, "Warning!", "Failed to open the model!");
     }
@@ -84,3 +84,10 @@ void MainWindow::on_actionOpen_O_triggered()
     }
 }
 
+
+void MainWindow::on_actionFeatureMatch_triggered()
+{
+    dlgfm.setWindowTitle("特征匹配配置"); // 设置窗口标题
+    dlgfm.move(geometry().center() - dlgfm.rect().center()); // 将对话框移动到MainWindow的中心
+    dlgfm.exec();
+}
