@@ -20,8 +20,13 @@ set(PROJECT_SOURCES
         mainwindow.ui
         myResource.qrc
         choose_file.h choose_file.cpp choose_file.ui
-        viewer.h viewer.cpp
-        qmywidget.h
+#        viewer.h viewer.cpp
+#        qmywidget.h
+        embedExternalApp.cpp embedExternalApp.h
+        utils.cpp utils.h
+#        viewer.h viewer.cpp
+#        qmywidget.h
+        dialog_featurematch.cpp dialog_featurematch.h dialog_featurematch.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

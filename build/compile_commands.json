@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/OpenScan3D_autogen/mocs_compilation.cpp.o -c /root/OpenScan3D/build/OpenScan3D_autogen/mocs_compilation.cpp",
+  "file": "/root/OpenScan3D/build/OpenScan3D_autogen/mocs_compilation.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/main.cpp.o -c /root/OpenScan3D/main.cpp",
+  "file": "/root/OpenScan3D/main.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/mainwindow.cpp.o -c /root/OpenScan3D/mainwindow.cpp",
+  "file": "/root/OpenScan3D/mainwindow.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/choose_file.cpp.o -c /root/OpenScan3D/choose_file.cpp",
+  "file": "/root/OpenScan3D/choose_file.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/embedExternalApp.cpp.o -c /root/OpenScan3D/embedExternalApp.cpp",
+  "file": "/root/OpenScan3D/embedExternalApp.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/utils.cpp.o -c /root/OpenScan3D/utils.cpp",
+  "file": "/root/OpenScan3D/utils.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/dialog_featurematch.cpp.o -c /root/OpenScan3D/dialog_featurematch.cpp",
+  "file": "/root/OpenScan3D/dialog_featurematch.cpp"
+},
+{
+  "directory": "/root/OpenScan3D/build",
+  "command": "/usr/bin/g++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/root/OpenScan3D/build/OpenScan3D_autogen/include -isystem /opt/Qt/5.15.2/gcc_64/include -isystem /opt/Qt/5.15.2/gcc_64/include/QtWidgets -isystem /opt/Qt/5.15.2/gcc_64/include/QtGui -isystem /opt/Qt/5.15.2/gcc_64/include/QtCore -isystem /opt/Qt/5.15.2/gcc_64/./mkspecs/linux-g++  -g   -fPIC -std=gnu++17 -o CMakeFiles/OpenScan3D.dir/OpenScan3D_autogen/EWIEGA46WW/qrc_myResource.cpp.o -c /root/OpenScan3D/build/OpenScan3D_autogen/EWIEGA46WW/qrc_myResource.cpp",
+  "file": "/root/OpenScan3D/build/OpenScan3D_autogen/EWIEGA46WW/qrc_myResource.cpp"
+}
+]

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QString>
 #include "viewer.h"
+#include "embedExternalApp.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -57,25 +58,33 @@ void MainWindow::on_pushButton_clicked()
 //    choose_file *newFileChoose = new choose_file(this);
 //    newFileChoose->show();
 
-    std::string winName = "MainWindow";
-    ui->widget = new viewer(linuxFindWin(winName));
-    ui->widget->setObjectName(QString::fromUtf8("widget"));
-    ui->widget->setGeometry(QRect(10, 70, 1361, 661));
-    ui->widget->show();
-    ui->widget->update();
+//    std::string winName = "qtcreator";
+//    ui->widget = new viewer(linuxFindWin(winName));
+//    ui->widget->setObjectName(QString::fromUtf8("widget"));
+//    ui->widget->setGeometry(QRect(10, 70, 1361, 661));
+//    ui->widget->show();
+//    ui->widget->update();
+
+    embedexternalapp embed = new embedexternalapp(this);
+//    delete this->ui->widget;
+//    ui->widget = &embed;
+//    ui->widget->setObjectName(QString::fromUtf8("widget"));
+//    ui->widget->setGeometry(QRect(50, 40, 841, 481));
+//    ui->widget->show();
+//    ui->widget->update();
 }
 
 
 void MainWindow::on_actionOpen_O_triggered()
 {
-//    choose_file *newChooseFile = new choose_file(this);
-//    newChooseFile->show();
+    //    choose_file *newChooseFile = new choose_file(this);
+    //    newChooseFile->show();
     QString fileName = QFileDialog::getOpenFileName(
-        this,
-        tr("open a 3D file"),
-        tr("/root/"),
-        tr("All files(*.*)")
-        );
+                this,
+                tr("open a 3D file"),
+                tr("/root/"),
+                tr("All files(*.*)")
+                );
     if (fileName.isEmpty()) {
         QMessageBox::warning(this, "Warning!", "Failed to open the model!");
     }
@@ -84,3 +93,10 @@ void MainWindow::on_actionOpen_O_triggered()
     }
 }
 
+
+void MainWindow::on_actionFeatureMatch_triggered()
+{
+    dlgfm.setWindowTitle("特征匹配配置"); // 设置窗口标题
+    dlgfm.move(geometry().center() - dlgfm.rect().center()); // 将对话框移动到MainWindow的中心
+    dlgfm.exec();
+}

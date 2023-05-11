@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "dialog_featurematch.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,7 +21,10 @@ private slots:
 
     void on_actionOpen_O_triggered();
 
+    void on_actionFeatureMatch_triggered();
+
 private:
     Ui::MainWindow *ui;
+    Dialog_FeatureMatch dlgfm;
 };
 #endif // MAINWINDOW_H

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "qmessagebox": "cpp",
+        "qstring": "cpp",
+        "iostream": "cpp",
+        "qfiledialog": "cpp"
+    }
+}

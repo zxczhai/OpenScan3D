@@ -14,19 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>150</y>
-      <width>83</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
@@ -36,9 +23,20 @@
       <height>481</height>
      </rect>
     </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>120</y>
+       <width>83</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
    </widget>
-   <zorder>widget</zorder>
-   <zorder>pushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -59,9 +57,27 @@
     <property name="title">
      <string>Rebuild_Step(&amp;R)</string>
     </property>
-    <addaction name="actionSFM_Engine"/>
+    <widget class="QMenu" name="menuSFM_Engine">
+     <property name="title">
+      <string>SFM_Engine</string>
+     </property>
+     <addaction name="actionFeatureMatch"/>
+     <addaction name="actionSFMAndSparseCloudGen"/>
+    </widget>
+    <widget class="QMenu" name="menuMVS">
+     <property name="title">
+      <string>MVS</string>
+     </property>
+     <addaction name="actionDenseCloudGen"/>
+     <addaction name="actionTriMeshRecon"/>
+     <addaction name="actionTextureMapping"/>
+    </widget>
+    <addaction name="separator"/>
+    <addaction name="menuSFM_Engine"/>
+    <addaction name="separator"/>
     <addaction name="actionImport_From_Other_SFM_Data"/>
-    <addaction name="actionMVS"/>
+    <addaction name="separator"/>
+    <addaction name="menuMVS"/>
    </widget>
    <widget class="QMenu" name="menuAuto_Rebuild_A">
     <property name="title">
@@ -79,19 +95,9 @@
     <string>Auto_Properties</string>
    </property>
   </action>
-  <action name="actionSFM_Engine">
-   <property name="text">
-    <string>SFM_Engine</string>
-   </property>
-  </action>
   <action name="actionImport_From_Other_SFM_Data">
    <property name="text">
     <string>Import From Other SFM_Data</string>
-   </property>
-  </action>
-  <action name="actionMVS">
-   <property name="text">
-    <string>MVS</string>
    </property>
   </action>
   <action name="actionOpen_O">
@@ -100,6 +106,31 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFeatureMatch">
+   <property name="text">
+    <string>FeatureMatch</string>
+   </property>
+  </action>
+  <action name="actionSFMAndSparseCloudGen">
+   <property name="text">
+    <string>SFMAndSparseCloudGen</string>
+   </property>
+  </action>
+  <action name="actionDenseCloudGen">
+   <property name="text">
+    <string>DenseCloudGen</string>
+   </property>
+  </action>
+  <action name="actionTriMeshRecon">
+   <property name="text">
+    <string>TriMeshRecon</string>
+   </property>
+  </action>
+  <action name="actionTextureMapping">
+   <property name="text">
+    <string>TextureMapping</string>
    </property>
   </action>
  </widget>

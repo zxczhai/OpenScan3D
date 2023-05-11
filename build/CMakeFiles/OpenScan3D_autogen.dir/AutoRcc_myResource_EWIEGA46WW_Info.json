@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "/root/OpenScan3D/build/OpenScan3D_autogen",
+	"CMAKE_BINARY_DIR" : "/root/OpenScan3D/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/root/OpenScan3D/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/root/OpenScan3D",
+	"CMAKE_SOURCE_DIR" : "/root/OpenScan3D",
+	"INCLUDE_DIR" : "/root/OpenScan3D/build/OpenScan3D_autogen/include",
+	"INPUTS" : [ "/root/OpenScan3D/三维.png", "/root/OpenScan3D/自动化.png" ],
+	"LOCK_FILE" : "/root/OpenScan3D/build/CMakeFiles/OpenScan3D_autogen.dir/AutoRcc_myResource_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "myResource" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_myResource.cpp",
+	"RCC_EXECUTABLE" : "/opt/Qt/5.15.2/gcc_64/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/root/OpenScan3D/build/CMakeFiles/OpenScan3D_autogen.dir/AutoRcc_myResource_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/root/OpenScan3D/myResource.qrc",
+	"VERBOSITY" : 0
+}
