@@ -55,8 +55,8 @@ Window linuxFindWin(std::string winName)
 
 void MainWindow::on_pushButton_clicked()
 {
-//    choose_file *newFileChoose = new choose_file(this);
-//    newFileChoose->show();
+    //    choose_file *newFileChoose = new choose_file(this);
+    //    newFileChoose->show();
 
 //    std::string winName = "qtcreator";
 //    ui->widget = new viewer(linuxFindWin(winName));

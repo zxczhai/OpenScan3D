@@ -24,8 +24,6 @@ set(PROJECT_SOURCES
 #        qmywidget.h
         embedExternalApp.cpp embedExternalApp.h
         utils.cpp utils.h
-#        viewer.h viewer.cpp
-#        qmywidget.h
         dialog_featurematch.cpp dialog_featurematch.h dialog_featurematch.ui
 )
 
