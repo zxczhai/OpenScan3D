@@ -74,3 +74,5 @@ CMakeLists.txt.user*
 
 # Build
 build/
+# vscode
+.vscode/

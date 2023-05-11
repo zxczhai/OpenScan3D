@@ -1,8 +1,0 @@
-/root/OpenScan3D/build/CMakeFiles/install/strip.dir
-/root/OpenScan3D/build/CMakeFiles/install.dir
-/root/OpenScan3D/build/CMakeFiles/list_install_components.dir
-/root/OpenScan3D/build/CMakeFiles/rebuild_cache.dir
-/root/OpenScan3D/build/CMakeFiles/edit_cache.dir
-/root/OpenScan3D/build/CMakeFiles/install/local.dir
-/root/OpenScan3D/build/CMakeFiles/OpenScan3D.dir
-/root/OpenScan3D/build/CMakeFiles/OpenScan3D_autogen.dir
