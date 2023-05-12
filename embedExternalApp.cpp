@@ -21,7 +21,7 @@ embedexternalapp::embedexternalapp(QWidget *parent)
             pidlist.push_back(pid);
         }
     }
-    QThread::currentThread()->msleep(1000);
+    QThread::currentThread()->msleep(500);
     //等待一会，虽然进程启动但如果窗口没有显示则无法通过Pid获取窗口Id
 //    QVBoxLayout *mainlayout = new QVBoxLayout(this);
 //    foreach (qint64 pid, pidlist) {
@@ -35,7 +35,7 @@ embedexternalapp::embedexternalapp(QWidget *parent)
         QWindow *window = QWindow::fromWinId(winid);
         window->setFlags(window->flags()| Qt::CustomizeWindowHint | Qt::WindowTitleHint);
         QWidget *widget = QWidget::createWindowContainer(window,this);
-        widget->setMinimumSize(800, 600);
+        widget->setMinimumSize(1000, 600);
 //        mainlayout->addWidget(widget);
 //    }
 

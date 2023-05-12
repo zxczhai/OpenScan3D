@@ -25,6 +25,10 @@ set(PROJECT_SOURCES
         embedExternalApp.cpp embedExternalApp.h
         utils.cpp utils.h
         dialog_featurematch.cpp dialog_featurematch.h dialog_featurematch.ui
+        dialog_sfm.cpp dialog_sfm.h dialog_sfm.ui
+        dialog_densifypointcloud.cpp dialog_densifypointcloud.h dialog_densifypointcloud.ui
+        dialog_trimeshrecon.cpp dialog_trimeshrecon.h dialog_trimeshrecon.ui
+        dialog_texturemesh.cpp dialog_texturemesh.h dialog_texturemesh.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

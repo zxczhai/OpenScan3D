@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include "dialog_featurematch.h"
+#include "dialog_sfm.h"
+#include "dialog_densifypointcloud.h"
+#include "dialog_trimeshrecon.h"
+#include "dialog_texturemesh.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,8 +27,20 @@ private slots:
 
     void on_actionFeatureMatch_triggered();
 
+    void on_actionSFMAndSparseCloudGen_triggered();
+
+    void on_actionDenseCloudGen_triggered();
+
+    void on_actionTriMeshRecon_triggered();
+
+    void on_actionTextureMesh_triggered();
+
 private:
     Ui::MainWindow *ui;
     Dialog_FeatureMatch dlgfm;
+    Dialog_SFM dlgsfm;
+    Dialog_DensifyPointCloud dlgdense;
+    Dialog_TriMeshRecon dlgtmr;
+    Dialog_TextureMesh dlgtm;
 };
 #endif // MAINWINDOW_H

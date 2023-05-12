@@ -70,7 +70,7 @@
      </property>
      <addaction name="actionDenseCloudGen"/>
      <addaction name="actionTriMeshRecon"/>
-     <addaction name="actionTextureMapping"/>
+     <addaction name="actionTextureMesh"/>
     </widget>
     <addaction name="separator"/>
     <addaction name="menuSFM_Engine"/>
@@ -128,9 +128,9 @@
     <string>TriMeshRecon</string>
    </property>
   </action>
-  <action name="actionTextureMapping">
+  <action name="actionTextureMesh">
    <property name="text">
-    <string>TextureMapping</string>
+    <string>TextureMesh</string>
    </property>
   </action>
  </widget>

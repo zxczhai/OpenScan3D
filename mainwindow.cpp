@@ -100,3 +100,39 @@ void MainWindow::on_actionFeatureMatch_triggered()
     dlgfm.move(geometry().center() - dlgfm.rect().center()); // 将对话框移动到MainWindow的中心
     dlgfm.exec();
 }
+
+void MainWindow::on_actionSFMAndSparseCloudGen_triggered()
+{
+    dlgsfm.setWindowTitle("三维重建配置"); // 设置窗口标题
+    int x = geometry().center().x() - dlgsfm.width() / 2;
+    int y = geometry().center().y() - dlgsfm.height() * 2 / 3; // 将对话框移动到MainWindow的正中间三分之一处
+    dlgsfm.move(x, y); // 将对话框移动到指定位置
+    dlgsfm.exec();
+}
+
+void MainWindow::on_actionDenseCloudGen_triggered()
+{
+    dlgdense.setWindowTitle("密集点云生成"); // 设置窗口标题
+    int x = geometry().center().x() - dlgdense.width() / 2;
+    int y = geometry().center().y() - dlgdense.height() * 2 / 3; // 将对话框移动到MainWindow的正中间三分之一处
+    dlgdense.move(x, y); // 将对话框移动到指定位置
+    dlgdense.exec();
+}
+
+void MainWindow::on_actionTriMeshRecon_triggered()
+{
+    dlgtmr.setWindowTitle("三角网模型重建"); // 设置窗口标题
+    int x = geometry().center().x() - dlgtmr.width() / 2;
+    int y = geometry().center().y() - dlgtmr.height() * 2 / 3; // 将对话框移动到MainWindow的正中间三分之一处
+    dlgtmr.move(x, y); // 将对话框移动到指定位置
+    dlgtmr.exec();
+}
+
+void MainWindow::on_actionTextureMesh_triggered()
+{
+    dlgtm.setWindowTitle("纹理映射"); // 设置窗口标题
+    int x = geometry().center().x() - dlgtm.width() / 2;
+    int y = geometry().center().y() - dlgtm.height() * 2 / 3; // 将对话框移动到MainWindow的正中间三分之一处
+    dlgtm.move(x, y); // 将对话框移动到指定位置
+    dlgtm.exec();
+}
