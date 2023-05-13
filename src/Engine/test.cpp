@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Engine/AutoReconstruction.hpp"
+#include "AutoReconstruction.hpp"
 int main()
 {
     std::string imageDir,outputDir;
