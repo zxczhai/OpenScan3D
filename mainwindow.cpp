@@ -6,11 +6,14 @@
 #include <QString>
 #include "viewer.h"
 #include "embedExternalApp.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timerSlot()));
     ui->pushButton->setText("new button");
 
 }
@@ -18,7 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete timer;
 }
+
 Window linuxFindWin(std::string winName)
 {
     Display* display = XOpenDisplay(nullptr);
@@ -135,4 +140,9 @@ void MainWindow::on_actionTextureMesh_triggered()
     int y = geometry().center().y() - dlgtm.height() * 2 / 3; // 将对话框移动到MainWindow的正中间三分之一处
     dlgtm.move(x, y); // 将对话框移动到指定位置
     dlgtm.exec();
+}
+
+void MainWindow::timerSlot()
+{
+
 }

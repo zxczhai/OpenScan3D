@@ -29,6 +29,7 @@ set(PROJECT_SOURCES
         dialog_densifypointcloud.cpp dialog_densifypointcloud.h dialog_densifypointcloud.ui
         dialog_trimeshrecon.cpp dialog_trimeshrecon.h dialog_trimeshrecon.ui
         dialog_texturemesh.cpp dialog_texturemesh.h dialog_texturemesh.ui
+        global.cpp global.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

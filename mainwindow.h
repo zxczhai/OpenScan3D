@@ -7,6 +7,7 @@
 #include "dialog_densifypointcloud.h"
 #include "dialog_trimeshrecon.h"
 #include "dialog_texturemesh.h"
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,6 +36,8 @@ private slots:
 
     void on_actionTextureMesh_triggered();
 
+    void timerSlot();
+
 private:
     Ui::MainWindow *ui;
     Dialog_FeatureMatch dlgfm;
@@ -42,5 +45,6 @@ private:
     Dialog_DensifyPointCloud dlgdense;
     Dialog_TriMeshRecon dlgtmr;
     Dialog_TextureMesh dlgtm;
+    QTimer* timer;
 };
 #endif // MAINWINDOW_H
