@@ -1,5 +1,6 @@
 #include "AutoReconstruction.hpp"
 #include <iostream>
+#include "message.hpp"
 
 int main()
 {
@@ -11,8 +12,18 @@ int main()
     printf("     @Basic All rights reserved    \n");
     printf("-----------------------------------\n");
 
-    // Global::processProject = 0;
-    // Global::processState = 0;
-    // Global::process = PROCESSWORKING;
-    MsgProc(CMD_MATCHFEATURES);
+    Global::processProject = 0;
+    Global::processState = 0;
+    Global::process = PROCESSWORKING;
+    congmsgbuf mymsg;
+    mymsg.mtype = 1;
+    while (1)
+    {
+        int ret = rcvMessage(mymsg);
+        if (0 == ret)
+        {
+            MsgProc(mymsg.data[0]);
+        }
+    }
+    return 0;
 }

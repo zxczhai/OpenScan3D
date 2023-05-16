@@ -51,7 +51,7 @@ int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::st
  * @brief 提取图像特征点#2
  *
  */
-int ComputeFeatures(std::string sfmDataDir, std::string outputDir, std::string describerMethod = "SIFT", std::string describerPreset = "NORMAL")
+int ComputeFeatures(std::string sfmDataDir, std::string outputDir, std::string describerMethod = "SIFT", std::string describerPreset = "NORMAL", std::string upRight = "0", std::string forceCompute = "0")
 {
     // if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     // {
@@ -79,6 +79,14 @@ int ComputeFeatures(std::string sfmDataDir, std::string outputDir, std::string d
     cmd.append("-p");
     cmd.append(" ");
     cmd.append(describerPreset);
+    cmd.append(" ");
+    cmd.append("-u");
+    cmd.append(" ");
+    cmd.append(upRight);
+    cmd.append(" ");
+    cmd.append("-f");
+    cmd.append(" ");
+    cmd.append(forceCompute);
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
@@ -756,8 +764,8 @@ void MsgProc(uint8_t msg)
     {
     case CMD_MATCHFEATURES:
     {
-        // Global::process = PROCESSWORKING;
-        // Global::saveProcess();
+        Global::process = PROCESSWORKING;
+        Global::saveProcess();
         std::string imagesInputDir;
         std::string sensorWidthDataBaseDir;
         std::string matchesOutputDir;
@@ -768,9 +776,8 @@ void MsgProc(uint8_t msg)
         std::string forceCompute;
         std::string nearest_matching_method;
         std::string geometricModel;
-        std::string sfmEngine;
         std::string distanceRatio;
-        bool forceMatch;
+        std::string forceMatch;
 
         printf("\nTask Called: MATCHFEATURES \n\n");
         ifstream cmdCache;
@@ -804,25 +811,24 @@ void MsgProc(uint8_t msg)
 
         getline(cmdCache, describerMethod);
         getline(cmdCache, featureQuality);
-        getline(cmdCache, temp);
+        getline(cmdCache, upRight);
 
-        if (temp == "0")
-            upRight = false;
-        else
-            upRight = true;
+        // if (temp == "0")
+        //     upRight = false;
+        // else
+        //     upRight = true;
 
-        getline(cmdCache, temp);
-        if (temp == "0")
-            forceCompute = false;
-        else
-            forceCompute = true;
+        getline(cmdCache, forceCompute);
+        // if (temp == "0")
+        //     forceCompute = false;
+        // else
+        //     forceCompute = true;
 
         getline(cmdCache, distanceRatio);
-        getline(cmdCache, temp);
-        if (temp == "0")
-            forceMatch = false;
-        else
-            forceMatch = true;
+        getline(cmdCache, forceMatch);
+        getline(cmdCache, nearest_matching_method);
+        getline(cmdCache, geometricModel);
+        cmdCache.close();
 
         STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
         if (STATE_RETURN == EXIT_FAILURE)
@@ -831,7 +837,7 @@ void MsgProc(uint8_t msg)
             // Global::process = PROCESSERROR;
             break;
         }
-        STATE_RETURN = ComputeFeatures(matchesOutputDir, matchesOutputDir, describerMethod, featureQuality);
+        STATE_RETURN = ComputeFeatures(matchesOutputDir, matchesOutputDir, describerMethod, featureQuality, upRight, forceCompute);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Get feature info error\n");
@@ -840,7 +846,6 @@ void MsgProc(uint8_t msg)
         }
         printf("Obtaining feature points is complete, ready to start matching feature points\n");
 
-        getline(cmdCache, nearest_matching_method);
         STATE_RETURN = ComputeMatches(matchesOutputDir, matchesOutputDir, nearest_matching_method, distanceRatio);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -848,7 +853,7 @@ void MsgProc(uint8_t msg)
             // Global::process = PROCESSERROR;
             break;
         }
-        getline(cmdCache, geometricModel);
+
         STATE_RETURN = FilterMatches(matchesOutputDir, matchesOutputDir, geometricModel);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -856,17 +861,55 @@ void MsgProc(uint8_t msg)
             // Global::process = PROCESSERROR;
             break;
         }
+
+        break;
+    }
+    case CMD_SFMANDSFP:
+    {
+        Global::process = PROCESSWORKING;
+        Global::saveProcess();
+        std::string matchesDir, sfmOutputDir;
+        std::string sfmEngine;
+        int triangulationMethod, resectionMethod;
+        printf("\nTask called: SFM&SFP \n\n");
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+		{
+			printf("Tasks Failed: Can't get more parameters\n");
+			Global::process = PROCESSERROR;
+			break;
+		}
+
+        std::string temp;
+		getline(cmdCache, temp);
+		if (temp != "sfm&sfp")
+		{
+			printf("Tasks Failed: Can't get more parameters\n");
+			Global::process = PROCESSERROR;
+			break;
+		}
+        getline(cmdCache, matchesDir);
+        getline(cmdCache, sfmOutputDir);
         getline(cmdCache, sfmEngine);
-        STATE_RETURN = IncrementalReconstruction(matchesOutputDir, matchesOutputDir, sfmEngine);
+
+
+        STATE_RETURN = IncrementalReconstruction(matchesDir, sfmOutputDir, sfmEngine);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("IncrementalReconstruction failed \n");
             // Global::process = PROCESSERROR;
             break;
         }
-        cmdCache.close();
+        break;
+    }
+    case CMD_EXPORTDENSECLOUD:
+    {
+        Global::process = PROCESSWORKING;
+		Global::saveProcess();
+        std::string densifyInputDir, densifyOutputDir, densifyWorkingDir;
 
-        // getline(cmdCache,);
+        break;
     }
     default:
         break;

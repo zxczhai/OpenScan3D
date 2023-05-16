@@ -15,7 +15,7 @@ openMVG_main_ComputeFeatures
 -m SIFT 
 -p NORMAL
 
-#3计算匹配对
+#3计算匹配对 可不需要
 openMVG_main_PairGenerator 
 -i /home/zxc/3DReconstruction/output/sfm_data.json 
 -m EXHAUSTIVE 
@@ -34,9 +34,10 @@ openMVG_main_GeometricFilter
 -i /home/zxc/3DReconstruction/output/sfm_data.json 
 -m /home/zxc/3DReconstruction/output/featurePointMatch.bin 
 -o /home/zxc/3DReconstruction/output/matches_filtered.bin 
--p /home/zxc/3DReconstruction/output/pairs.bin #对pairs.bin文件进行过滤,下方需设置-s参数保存过滤后的匹配点文件,否则后续会重建失败
--s /home/zxc/3DReconstruction/output/filtered_pairs.bin 
 -g f
+# -p /home/zxc/3DReconstruction/output/pairs.bin #对pairs.bin文件进行过滤,下方需设置-s参数保存过滤后的匹配点文件,否则后续会重建失败
+# -s /home/zxc/3DReconstruction/output/filtered_pairs.bin 
+
 
 #6增量式三维重建
 openMVG_main_SfM 

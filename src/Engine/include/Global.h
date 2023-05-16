@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
 #include <string>
- #include <unistd.h>
+#include <unistd.h>
 #include <fstream>
 #include <vector>
-// #include <io.h>
+// #include <corecrt_io.h>
 
 using namespace std;
 
@@ -42,6 +42,5 @@ public:
 	static int processProject;
 	static int processState;
 	static bool saveProcess();
-	static int getFiles(const char* path, std::vector<std::string>& arr);
+	static int getFiles(const char *path, std::vector<std::string> &arr);
 };
-
