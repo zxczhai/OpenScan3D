@@ -1,9 +1,8 @@
 #include "dialog_featurematch.h"
 #include "ui_dialog_featurematch.h"
-
-Dialog_FeatureMatch::Dialog_FeatureMatch(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Dialog_FeatureMatch)
+#include "message.hpp"
+Dialog_FeatureMatch::Dialog_FeatureMatch(QWidget *parent) : QDialog(parent),
+                                                            ui(new Ui::Dialog_FeatureMatch)
 {
     ui->setupUi(this);
 }
@@ -21,19 +20,19 @@ void Dialog_FeatureMatch::on_pushButton_browseInputDir_clicked()
 
 void Dialog_FeatureMatch::on_pushButton_browseDatabaseDir_clicked()
 {
-    Global::sensorWidthDatabaseDir = QFileDialog::getOpenFileName(this,tr("选择相机数据库文件"),QDir::homePath(),tr("All files(*.*)"));
+    Global::sensorWidthDatabaseDir = QFileDialog::getOpenFileName(this, tr("选择相机数据库文件"), QDir::homePath(), tr("All files(*.*)"));
     ui->lineEdit_databaseDir->setText(Global::sensorWidthDatabaseDir);
 }
 
 void Dialog_FeatureMatch::on_pushButton_browseOutputDir_clicked()
 {
-    Global::matchesOutputDir = QFileDialog::getExistingDirectory(this,u8"浏览输出文件夹","",NULL);
+    Global::matchesOutputDir = QFileDialog::getExistingDirectory(this, u8"浏览输出文件夹", "", NULL);
     ui->lineEdit_OutputDir->setText(Global::matchesOutputDir);
 }
 
 void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
 {
-    QString eigenMatrix,imagesInputDir,matchesOutputDir,sensorWidthDatabaseDir,describerMethod,quality,upright,forceCompute,geometricModel,distanceRatio,forceMatch,nearest_matching_method ="AUTO";
+    QString eigenMatrix, imagesInputDir, matchesOutputDir, sensorWidthDatabaseDir, describerMethod, quality, upright, forceCompute, geometricModel, distanceRatio, forceMatch, nearest_matching_method = "AUTO";
 
     if (ui->lineEdit_inputDir->text() == "")
     {
@@ -76,19 +75,23 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
 
     switch (ui->comboBox_describer->currentIndex())
     {
-    case 0: {
+    case 0:
+    {
         describerMethod = "SIFT";
         break;
     }
-    case 1: {
+    case 1:
+    {
         describerMethod = "SIFT_ANATOMY";
         break;
     }
-    case 2: {
+    case 2:
+    {
         describerMethod = "AKAZE_FLOAT";
         break;
     }
-    case 3: {
+    case 3:
+    {
         describerMethod = "AKAZE_MLDB";
         break;
     }
@@ -96,15 +99,18 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
 
     switch (ui->comboBox_quality->currentIndex())
     {
-    case 0: {
+    case 0:
+    {
         quality = "NORMAL";
         break;
     }
-    case 1: {
+    case 1:
+    {
         quality = "HIGH";
         break;
     }
-    case 2: {
+    case 2:
+    {
         quality = "ULTRA";
         break;
     }
@@ -114,28 +120,35 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
 
     forceCompute = QString::number(ui->comboBox_forcecompute->currentIndex());
 
-    switch (ui->comboBox_geometricmodel->currentIndex()) {
-    case 0: {
+    switch (ui->comboBox_geometricmodel->currentIndex())
+    {
+    case 0:
+    {
         geometricModel = "f";
         break;
     }
-    case 1: {
+    case 1:
+    {
         geometricModel = "e";
         break;
     }
-    case 2: {
+    case 2:
+    {
         geometricModel = "h";
         break;
     }
-    case 3: {
+    case 3:
+    {
         geometricModel = "a";
         break;
     }
-    case 4: {
+    case 4:
+    {
         geometricModel = "u";
         break;
     }
-    case 5: {
+    case 5:
+    {
         geometricModel = "o";
         break;
     }
@@ -145,12 +158,13 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
 
     forceMatch = QString::number(ui->comboBox_forcematch->currentIndex());
 
-    //检查是否存在tmp文件夹
-    if (!QDir("/tmp").exists()) {
-        //如果不存在就创建tmp目录
+    // 检查是否存在tmp文件夹
+    if (!QDir("/tmp").exists())
+    {
+        // 如果不存在就创建tmp目录
         QDir().mkpath("/tmp");
     }
-    //创建OpenScan3D目录
+    // 创建OpenScan3D目录
     QDir("/tmp").mkdir(".OpenScan3D");
 
     QFile cmdcache("/tmp/.OpenScan3D/cmdCache.tmp");
@@ -185,6 +199,10 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
         cmdcache.write("\n");
         cmdcache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成", QMessageBox::Yes);
+        congmsgbuf msg;
+        msg.mtype = 1;
+        msg.data[0] = CMD_MATCHFEATURES;
+        sendMessage(msg);
         this->close();
     }
     else
@@ -197,5 +215,3 @@ void Dialog_FeatureMatch::on_btn_CANCEL_clicked()
 {
     this->close();
 }
-
-
