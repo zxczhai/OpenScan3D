@@ -1,6 +1,5 @@
 #include "Global.h"
 
-
 int Global::processProject = 0;
 int Global::processState = 0;
 int Global::process = PROCESSWORKING;
@@ -23,4 +22,3 @@ bool Global::saveProcess()
 	file.close();
 	return true;
 }
-

@@ -2,8 +2,9 @@
 #include <Global.h>
 #include <string>
 #include <dirent.h>
-
+#include <sys/types.h>
 uint8_t STATE_RETURN;
+
 int checkDirExist(std::string pathToDir)
 {
     DIR *dir;
@@ -11,7 +12,17 @@ int checkDirExist(std::string pathToDir)
         return PROCESSERROR;
     return EXIT_SUCCESS;
 }
-
+bool savePid()
+{
+    int tid = getpid();
+    ofstream file;
+    file.open("/tmp/.OpenScan3D/ProgramCache.tmp", ios::out | ios::trunc);
+    if (!file.is_open())
+        return false;
+    file << std::to_string(tid) << endl;
+    file.close();
+    return true;
+}
 /**
  * @brief 分析并提取相机内参#1
  */
@@ -834,14 +845,14 @@ void MsgProc(uint8_t msg)
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
         STATE_RETURN = ComputeFeatures(matchesOutputDir, matchesOutputDir, describerMethod, featureQuality, upRight, forceCompute);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Get feature info error\n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
         printf("Obtaining feature points is complete, ready to start matching feature points\n");
@@ -850,7 +861,7 @@ void MsgProc(uint8_t msg)
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Get matched points info error\n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
 
@@ -858,7 +869,7 @@ void MsgProc(uint8_t msg)
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Filter matches failed \n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
 
@@ -875,30 +886,29 @@ void MsgProc(uint8_t msg)
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
         if (!cmdCache)
-		{
-			printf("Tasks Failed: Can't get more parameters\n");
-			Global::process = PROCESSERROR;
-			break;
-		}
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
 
         std::string temp;
-		getline(cmdCache, temp);
-		if (temp != "sfm&sfp")
-		{
-			printf("Tasks Failed: Can't get more parameters\n");
-			Global::process = PROCESSERROR;
-			break;
-		}
+        getline(cmdCache, temp);
+        if (temp != "sfm&sfp")
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
         getline(cmdCache, matchesDir);
         getline(cmdCache, sfmOutputDir);
         getline(cmdCache, sfmEngine);
-
 
         STATE_RETURN = IncrementalReconstruction(matchesDir, sfmOutputDir, sfmEngine);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("IncrementalReconstruction failed \n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
         break;
@@ -906,7 +916,7 @@ void MsgProc(uint8_t msg)
     case CMD_EXPORTDENSECLOUD:
     {
         Global::process = PROCESSWORKING;
-		Global::saveProcess();
+        Global::saveProcess();
         std::string densifyInputDir, densifyOutputDir, densifyWorkingDir;
 
         break;

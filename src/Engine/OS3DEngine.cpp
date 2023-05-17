@@ -4,6 +4,11 @@
 
 int main()
 {
+    if (!savePid())
+    {
+        std::cerr << "Can't Write Property, Please Use Root Try Again\n";
+        return -1;
+    }
     ::system("clear");
     printf("\n-----------------------------------\n");
     printf("        欢迎使用OS3DEngine         \n");

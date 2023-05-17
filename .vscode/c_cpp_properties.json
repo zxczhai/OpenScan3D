@@ -4,9 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${vcpkgRoot}/x64-linux/include",
-                "${workspaceFolder}/src/Engine/include",
-                "${workspaceFolder}/src/ViewRender/include"
+                "${vcpkgRoot}/x64-linux/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
