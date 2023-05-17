@@ -36,5 +36,13 @@ public:
     static QString imagesInputDir;
     static QString matchesOutputDir;
     static QString sensorWidthDatabaseDir;
+    static QString matchesDir;
+    static QString sfmOutputDir;
+    static QString densifyInputDir;
+    static QString densifyOutputDir;
+    static QString reconstructMeshInputDir;
+    static QString reconstructMeshOutputDir;
+    static QString textureMeshInputDir;
+    static QString textureMeshOutputDir;
 };
 

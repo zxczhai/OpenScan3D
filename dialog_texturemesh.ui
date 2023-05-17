@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>567</width>
-    <height>243</height>
+    <height>216</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>0</y>
      <width>160</width>
-     <height>151</height>
+     <height>101</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -41,13 +41,6 @@
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>纹理模型输出目录:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>纹理模型输出格式:</string>
       </property>
      </widget>
     </item>
@@ -99,31 +92,11 @@
     <string>浏览</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>120</y>
-     <width>61</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>ply</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>obj</string>
-    </property>
-   </item>
-  </widget>
   <widget class="QPushButton" name="btn_CONFIRM">
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>180</y>
+     <y>150</y>
      <width>60</width>
      <height>40</height>
     </rect>
@@ -136,7 +109,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>180</y>
+     <y>150</y>
      <width>60</width>
      <height>40</height>
     </rect>
