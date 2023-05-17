@@ -270,18 +270,19 @@ int IncrementalReconstruction(std::string sfmDataDir, std::string outputDir, std
         ::system("echo Incremental reconstruction Successfully.........");
     return EXIT_SUCCESS;
 }
+
 /**
- * @brief 将增量式的结果进行全局融合，得到更完整的三维模型#7
+ * @brief 进行全局式的三维重建#6
  */
-int GlobalReconstruction(std::string sfmDataDir, std::string outputDir)
+int GlobalReconstruction(std::string sfmDataDir, std::string outputDir, std::string sfmEngine)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo GlobalReconstruction working.........");
+    system("echo GlobalReconstruction working.........");
     std::string cmd = "";
     cmd.append("openMVG_main_SfM");
     cmd.append(" ");
@@ -290,33 +291,36 @@ int GlobalReconstruction(std::string sfmDataDir, std::string outputDir)
     cmd.append(sfmDataDir);
     cmd.append("/");
     cmd.append("sfm_data.json");
+
     cmd.append(" ");
     cmd.append("-m");
     cmd.append(" ");
     cmd.append(sfmDataDir);
+
+    cmd.append(" ");
+    cmd.append("-M");
+    cmd.append(" ");
+    cmd.append("matches_filtered.bin");
+
     cmd.append(" ");
     cmd.append("-o");
     cmd.append(" ");
     cmd.append(outputDir);
+    // cmd.append("/globalSFM ");
+
     cmd.append(" ");
     cmd.append("-s");
     cmd.append(" ");
-    cmd.append("GLOBAL");
-    cmd.append(" ");
-    cmd.append("-M");
-    cmd.append(" ");
-    cmd.append(outputDir);
-    cmd.append("/");
-    cmd.append("matches.e.bin");
+    cmd.append(sfmEngine);
+
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
     }
     else
-        ::system("echo GlobalReconstruction Successfully.........");
+        ::system("echo Incremental reconstruction Successfully.........");
     return EXIT_SUCCESS;
 }
-
 /**
  * @brief 为三维模型添加颜色信息#8
  */
@@ -325,24 +329,26 @@ int ColorizeStructure(std::string sfmDataDir, std::string outputDir)
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo ColorizeStructure working.........");
+    system("echo ColorizeStructure working.........");
     std::string cmd = "";
     cmd.append("openMVG_main_ComputeSfM_DataColor");
+
     cmd.append(" ");
     cmd.append("-i");
     cmd.append(" ");
     cmd.append(sfmDataDir);
-    cmd.append("/");
-    cmd.append("sfm_data.bin");
+    cmd.append("/sfm_data.bin");
+
     cmd.append(" ");
     cmd.append("-o");
     cmd.append(" ");
     cmd.append(outputDir);
     cmd.append("/");
     cmd.append("colorized.ply");
+
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
@@ -355,15 +361,16 @@ int ColorizeStructure(std::string sfmDataDir, std::string outputDir)
 /**
  * @brief 利用已知位姿的情况下，提取更多的三维结构信息#9
  */
-int StructureFromKnownPoses(std::string sfmDataDir, std::string outputDir)
+
+int StructureFromKnownPoses(std::string sfmDataDir, std::string feature_describeDir, std::string outputrobustDir, std::string matches_filteredDir, std::string on_off)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo StructureFromKnownPoses working.........");
+    system("echo StructureFromKnownPoses working.........");
     std::string cmd = "";
     cmd.append("openMVG_main_ComputeStructureFromKnownPoses");
     cmd.append(" ");
@@ -372,22 +379,31 @@ int StructureFromKnownPoses(std::string sfmDataDir, std::string outputDir)
     cmd.append(sfmDataDir);
     cmd.append("/");
     cmd.append("sfm_data.bin");
+
     cmd.append(" ");
     cmd.append("-m");
     cmd.append(" ");
-    cmd.append(outputDir);
-    cmd.append(" ");
-    cmd.append("-f");
-    cmd.append(" ");
-    cmd.append(outputDir);
-    cmd.append("/");
-    cmd.append("matches.f.bin");
+    cmd.append(feature_describeDir);
+
     cmd.append(" ");
     cmd.append("-o");
     cmd.append(" ");
-    cmd.append(outputDir);
+    cmd.append(outputrobustDir);
     cmd.append("/");
     cmd.append("robust.bin");
+
+    cmd.append(" ");
+    cmd.append("-f");
+    cmd.append(" ");
+    cmd.append(matches_filteredDir);
+    cmd.append("/");
+    cmd.append("matches_filtered.bin");
+
+    cmd.append(" ");
+    cmd.append("-d");
+    cmd.append(" ");
+    cmd.append(on_off);
+
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
@@ -400,29 +416,32 @@ int StructureFromKnownPoses(std::string sfmDataDir, std::string outputDir)
 /**
  * @brief 增加三维重建结果的稳健性和可靠性#10
  */
-int ColorizedRobustTriangulation(std::string sfmDataDir, std::string outputDir)
+int ColorizedRobustTriangulation(std::string robustDir, std::string colorizedDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo ColorizedRobustTriangulation working.........");
+    system("echo ColorizedRobustTriangulation working.........");
     std::string cmd = "";
     cmd.append("openMVG_main_ComputeSfM_DataColor");
+
     cmd.append(" ");
     cmd.append("-i");
     cmd.append(" ");
-    cmd.append(sfmDataDir);
+    cmd.append(robustDir);
     cmd.append("/");
     cmd.append("robust.bin");
+
     cmd.append(" ");
     cmd.append("-o");
     cmd.append(" ");
-    cmd.append(outputDir);
+    cmd.append(colorizedDir);
     cmd.append("/");
     cmd.append("robust_colorized.ply");
+
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
@@ -435,23 +454,26 @@ int ColorizedRobustTriangulation(std::string sfmDataDir, std::string outputDir)
 /**
  * @brief 进行控制点的注册，以便在不同数据集之间进行对比和匹配#11
  */
-int ControlPointsRegistration(std::string sfmDataDir, std::string outputDir)
+
+int ControlPointsRegistration(std::string sfmDataDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo ControlPointsRegistration working.........");
+    system("echo ControlPointsRegistration working.........");
     std::string cmd = "";
     cmd.append("ui_openMVG_control_points_registration");
+
     cmd.append(" ");
     cmd.append("-i");
     cmd.append(" ");
     cmd.append(sfmDataDir);
     cmd.append("/");
     cmd.append("sfm_data.bin");
+
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
@@ -464,15 +486,16 @@ int ControlPointsRegistration(std::string sfmDataDir, std::string outputDir)
 /**
  * @brief 输出为 openMVS 格式，以便进行后续的密集重建#12
  */
-int ExportToOpenMVS(std::string sfmDataDir, std::string outputDir)
+
+int ExportToOpenMVS(std::string sfmDataDir, std::string output_sceneDir, std::string output_imageDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo ExportToOpenMVS working.........");
+    system("echo ExportToOpenMVS working.........");
     std::string cmd = "";
     cmd.append("openMVG_main_openMVG2openMVS");
     cmd.append(" ");
@@ -481,18 +504,21 @@ int ExportToOpenMVS(std::string sfmDataDir, std::string outputDir)
     cmd.append(sfmDataDir);
     cmd.append("/");
     cmd.append("sfm_data.bin");
+
     cmd.append(" ");
     cmd.append("-o");
     cmd.append(" ");
-    cmd.append(outputDir);
+    cmd.append(output_sceneDir);
     cmd.append("/");
     cmd.append("scene.mvs");
+
     cmd.append(" ");
     cmd.append("-d");
     cmd.append(" ");
-    cmd.append(outputDir);
+    cmd.append(output_imageDir);
     cmd.append("/");
     cmd.append("images");
+
     if (::system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
@@ -501,154 +527,202 @@ int ExportToOpenMVS(std::string sfmDataDir, std::string outputDir)
         ::system("echo ExportToOpenMVS Successfully.........");
     return EXIT_SUCCESS;
 }
-
 /**
  * @brief 密集化点云，以得到更精细的三维模型#13
  */
-int DensifyPointCloud(std::string mvsDataDir, std::string outputDir)
+
+int DensifyPointCloud(std::string sceneDir, std::string outputDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
     ::system("echo DensifyPointCloud working.........");
     std::string cmd = "";
-    cmd.append("../Binary/OpenMVS/DensifyPointCloud");
+    cmd.append("../bin/OpenMVS/DensifyPointCloud");
     cmd.append(" ");
-    cmd.append(mvsDataDir);
+    cmd.append(sceneDir);
     cmd.append("/");
     cmd.append("scene.mvs");
+
     cmd.append(" ");
     cmd.append("--dense-config-file");
     cmd.append(" ");
     cmd.append("Densify.ini");
+
     cmd.append(" ");
     cmd.append("--resolution-level");
     cmd.append(" ");
     cmd.append("1");
+
     cmd.append(" ");
     cmd.append("--number-views");
     cmd.append(" ");
     cmd.append("-8");
+
     cmd.append(" ");
     cmd.append("-w");
     cmd.append(" ");
     cmd.append(outputDir);
-    if (::system(cmd.c_str()) != 0)
+
+    if (system(cmd.c_str()) == -1)
     {
         return EXIT_FAILURE;
     }
     else
-        ::system("echo DensifyPointCloud Successfully.........");
+        system("echo DensifyPointCloud Successfully.........");
     return EXIT_SUCCESS;
 }
-
 /**
  * @brief  基于点云重建网格模型#14
  */
-int ReconstructTheMesh(std::string mvsDataDir, std::string outputDir)
+
+int ReconstructTheMesh(std::string scene_denseDir, std::string outputDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo ReconstructMesh working.........");
+    system("echo ReconstructMesh working.........");
     std::string cmd = "";
-    cmd.append("../Binary/OpenMVS/ReconstructMesh");
+    cmd.append("../bin/OpenMVS/ReconstructMesh");
     cmd.append(" ");
-    cmd.append(mvsDataDir);
+    cmd.append(scene_denseDir);
     cmd.append("/");
     cmd.append("scene_dense.mvs");
+
     cmd.append(" ");
     cmd.append("-w");
     cmd.append(" ");
     cmd.append(outputDir);
-    if (::system(cmd.c_str()) != 0)
+
+    if (system(cmd.c_str()) != 0 )
     {
         return EXIT_FAILURE;
     }
     else
-        ::system("echo ReconstructMesh Successfully.........");
+        system("echo ReconstructMesh Successfully.........");
     return EXIT_SUCCESS;
 }
 
 /**
  * @brief   对网格模型进行细化，使其更加精细#15
  */
-int RefineTheMesh(std::string mvsDataDir, std::string outputDir)
+
+int RefineTheMesh(std::string scene_dense_meshDir, std::string outputDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo RefineTheMesh working.........");
+    system("echo RefineTheMesh working.........");
     std::string cmd = "";
-    cmd.append("../Binary/OpenMVS/RefineMesh");
+    cmd.append("../bin/OpenMVS/RefineMesh");
+
     cmd.append(" ");
-    cmd.append(mvsDataDir);
+    cmd.append(scene_dense_meshDir);
     cmd.append("/");
     cmd.append("scene_dense_mesh.mvs");
+
     cmd.append(" ");
     cmd.append("--scales");
     cmd.append(" ");
     cmd.append("1");
+
     cmd.append(" ");
     cmd.append("--gradient-step");
     cmd.append(" ");
     cmd.append("25.05");
+
     cmd.append(" ");
     cmd.append("-w");
     cmd.append(" ");
     cmd.append(outputDir);
-    if (::system(cmd.c_str()) != 0)
+
+    if (system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
     }
     else
-        ::system("echo RefineTheMesh Successfully.........");
+        system("echo RefineTheMesh Successfully.........");
     return EXIT_SUCCESS;
 }
 
 /**
  * @brief  为网格模型添加纹理信息，以提高视觉效果#16
  */
-int TextureTheMesh(std::string mvsDataDir, std::string outputDir)
+int TextureTheMesh(std::string scene_dense_mesh_refineDir, std::string outputDir)
 {
     // 判断需要的文件是否存在
     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
     //  {
-    //      ::system("echo directory not exist");
+    //      system("echo directory not exist");
     //      return PROCESSERROR;
     //  }
-    ::system("echo TextureTheMesh working.........");
+    system("echo TextureTheMesh working.........");
     std::string cmd = "";
-    cmd.append("../Binary/OpenMVS/TextureMesh");
+    cmd.append("../bin/OpenMVS/TextureMesh");
+
     cmd.append(" ");
-    cmd.append(mvsDataDir);
+    cmd.append(scene_dense_mesh_refineDir);
     cmd.append("/");
     cmd.append("scene_dense_mesh_refine.mvs");
+
     cmd.append(" ");
     cmd.append("--decimate");
     cmd.append(" ");
     cmd.append("0.5");
+
     cmd.append(" ");
     cmd.append("-w");
     cmd.append(" ");
     cmd.append(outputDir);
-    if (::system(cmd.c_str()) != 0)
+
+    if (system(cmd.c_str()) == -1)
     {
         return EXIT_FAILURE;
     }
     else
-        ::system("echo TextureTheMesh Successfully.........");
+        system("echo TextureTheMesh Successfully.........");
     return EXIT_SUCCESS;
 }
+// int TextureTheMesh(std::string mvsDataDir, std::string outputDir)
+// {
+//     // 判断需要的文件是否存在
+//     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
+//     //  {
+//     //      ::system("echo directory not exist");
+//     //      return PROCESSERROR;
+//     //  }
+//     ::system("echo TextureTheMesh working.........");
+//     std::string cmd = "";
+//     cmd.append("../Binary/OpenMVS/TextureMesh");
+//     cmd.append(" ");
+//     cmd.append(mvsDataDir);
+//     cmd.append("/");
+//     cmd.append("scene_dense_mesh_refine.mvs");
+//     cmd.append(" ");
+//     cmd.append("--decimate");
+//     cmd.append(" ");
+//     cmd.append("0.5");
+//     cmd.append(" ");
+//     cmd.append("-w");
+//     cmd.append(" ");
+//     cmd.append(outputDir);
+//     if (::system(cmd.c_str()) != 0)
+//     {
+//         return EXIT_FAILURE;
+//     }
+//     else
+//         ::system("echo TextureTheMesh Successfully.........");
+//     return EXIT_SUCCESS;
+// }
 
 /**
  * @brief   估计视差图，以便进行后续的深度图融合#17
@@ -730,31 +804,31 @@ int FuseDisparityMaps(std::string mvsDataDir, std::string outputDir)
     return EXIT_SUCCESS;
 }
 
-/**
- * @brief images2mvs Test
- */
-int AutoR3d(std::string inputImageDir, std::string outputDir)
-{
-    IntrinsicsAnalysis(inputImageDir, outputDir, "../sensor_width_camera_database.txt");
-    ComputeFeatures(outputDir, outputDir);
-    ComputePairs(outputDir, outputDir);
-    ComputeMatches(outputDir, outputDir);
-    // FilterMatches(outputDir, outputDir);
-    // IncrementalReconstruction(outputDir, outputDir);
-    GlobalReconstruction(outputDir, outputDir);
-    ColorizeStructure(outputDir, outputDir);
-    StructureFromKnownPoses(outputDir, outputDir);
-    ColorizedRobustTriangulation(outputDir, outputDir);
-    // ControlPointsRegistration(outputDir, outputDir);
-    ExportToOpenMVS(outputDir, outputDir);
-    DensifyPointCloud(outputDir, outputDir);
-    ReconstructTheMesh(outputDir, outputDir);
-    RefineTheMesh(outputDir, outputDir);
-    TextureTheMesh(outputDir, outputDir);
-    EstimateDisparityMaps(outputDir, outputDir);
-    FuseDisparityMaps(outputDir, outputDir);
-    return EXIT_SUCCESS;
-}
+// /**
+//  * @brief images2mvs Test
+//  */
+// int AutoR3d(std::string inputImageDir, std::string outputDir)
+// {
+//     IntrinsicsAnalysis(inputImageDir, outputDir, "../sensor_width_camera_database.txt");
+//     ComputeFeatures(outputDir, outputDir);
+//     ComputePairs(outputDir, outputDir);
+//     ComputeMatches(outputDir, outputDir);
+//     // FilterMatches(outputDir, outputDir);
+//     // IncrementalReconstruction(outputDir, outputDir);
+//     GlobalReconstruction(outputDir, outputDir);
+//     ColorizeStructure(outputDir, outputDir);
+//     StructureFromKnownPoses(outputDir, outputDir);
+//     ColorizedRobustTriangulation(outputDir, outputDir);
+//     // ControlPointsRegistration(outputDir, outputDir);
+//     ExportToOpenMVS(outputDir, outputDir);
+//     DensifyPointCloud(outputDir, outputDir);
+//     ReconstructTheMesh(outputDir, outputDir);
+//     RefineTheMesh(outputDir, outputDir);
+//  TextureTheMesh(scene_dense_mesh_refineDir,outputDir)
+//     EstimateDisparityMaps(outputDir, outputDir);
+//     FuseDisparityMaps(outputDir, outputDir);
+//     return EXIT_SUCCESS;
+// }
 /**
  * @brief 任务处理
  */
@@ -868,36 +942,81 @@ void MsgProc(uint8_t msg)
     {
         Global::process = PROCESSWORKING;
         Global::saveProcess();
-        std::string matchesDir, sfmOutputDir;
+        std::string inputDir;
+        std::string outputDir;
         std::string sfmEngine;
-        int triangulationMethod, resectionMethod;
+        std::string on_off;
+
+        // int triangulationMethod, resectionMethod;
+
         printf("\nTask called: SFM&SFP \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
         if (!cmdCache)
-		{
-			printf("Tasks Failed: Can't get more parameters\n");
-			Global::process = PROCESSERROR;
-			break;
-		}
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
 
         std::string temp;
-		getline(cmdCache, temp);
-		if (temp != "sfm&sfp")
-		{
-			printf("Tasks Failed: Can't get more parameters\n");
-			Global::process = PROCESSERROR;
-			break;
-		}
-        getline(cmdCache, matchesDir);
-        getline(cmdCache, sfmOutputDir);
+        getline(cmdCache, temp);
+        if (temp != "sfm&sfp")
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        getline(cmdCache, inputDir);
+        getline(cmdCache, outputDir);
         getline(cmdCache, sfmEngine);
+        getline(cmdCache, on_off);
 
+        cmdCache.close();
+        // STATE_RETURN = IncrementalReconstruction(matchesDir, sfmOutputDir, sfmEngine);
+        // if (STATE_RETURN == EXIT_FAILURE)
+        // {
+        //     printf("IncrementalReconstruction failed \n");
+        //     // Global::process = PROCESSERROR;
+        //     break;
+        // }
 
-        STATE_RETURN = IncrementalReconstruction(matchesDir, sfmOutputDir, sfmEngine);
+        STATE_RETURN = GlobalReconstruction(inputDir, outputDir, sfmEngine);
         if (STATE_RETURN == EXIT_FAILURE)
         {
-            printf("IncrementalReconstruction failed \n");
+            printf("GlobalReconstruction failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = ColorizeStructure(outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ColorizeStructure failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = StructureFromKnownPoses(outputDir, outputDir, outputDir, outputDir, on_off);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("StructureFromKnownPoses failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = ColorizedRobustTriangulation(outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ColorizedRobustTriangulation failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = ExportToOpenMVS(outputDir, outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ExportToOpenMVS failed \n");
             // Global::process = PROCESSERROR;
             break;
         }
@@ -906,10 +1025,285 @@ void MsgProc(uint8_t msg)
     case CMD_EXPORTDENSECLOUD:
     {
         Global::process = PROCESSWORKING;
-		Global::saveProcess();
-        std::string densifyInputDir, densifyOutputDir, densifyWorkingDir;
+        Global::saveProcess();
+        std::string sceneDir;
+        std::string outputDir;
+
+        printf("\nTask called DENSIFYPOINTCLOUD \n\n");
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        std::string temp;
+        getline(cmdCache, temp);
+        if (temp != "DENSIFYPOINTCLOUD")
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        getline(cmdCache, sceneDir);
+        getline(cmdCache, outputDir);
+        cmdCache.close();
+
+        STATE_RETURN = DensifyPointCloud(sceneDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("DensifyPointCloud failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
 
         break;
+    }
+    case CMD_RECONSTRUCTMESH:
+    {
+        Global::process = PROCESSWORKING;
+        Global::saveProcess();
+        std::string scene_dense_meshDir;
+        std::string outputDir;
+
+        printf("\nTask called RECONSTRUCTMESH \n\n");
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+
+        std::string temp;
+        getline(cmdCache, temp);
+        if (temp != "RECONSTRUCTMESH")
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        getline(cmdCache, scene_dense_meshDir);
+        getline(cmdCache, outputDir);
+        cmdCache.close();
+
+        STATE_RETURN = RefineTheMesh(scene_dense_meshDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("RefineTheMesh failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        break;
+    }
+
+    case CMD_TEXTUREMESH:
+    {
+        Global::process = PROCESSWORKING;
+        Global::saveProcess();
+        std::string scene_dense_mesh_refineDir;
+        std::string outputDir;
+
+        printf("\nTask called TEXTUREMESH \n\n");
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+
+        std::string temp;
+        getline(cmdCache, temp);
+        if (temp != "TEXTUREMESH")
+        {
+            printf("Tasks Failed: Can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+
+        getline(cmdCache, scene_dense_mesh_refineDir);
+        getline(cmdCache, outputDir);
+        cmdCache.close();
+
+        STATE_RETURN = TextureTheMesh(scene_dense_mesh_refineDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("TextureTheMesh failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        break;
+    }
+
+    case CMD_FULLAUTO:
+    {
+        Global::process = PROCESSWORKING;
+        Global::saveProcess();
+        std::string imagesInputDir;
+        std::string sensorWidthDataBaseDir;
+        std::string matchesOutputDir;
+        std::string EigenMatrix;     // EigenMatrixFormat"f;0;ppx;0;f;ppy;0;0;1"
+        std::string describerMethod; // #1_ComputeFeatures
+        std::string featureQuality;  // #1_ComputeFeatures
+        std::string upRight;
+        std::string forceCompute;
+        std::string nearest_matching_method;
+        std::string geometricModel;
+        std::string distanceRatio;
+        std::string forceMatch;
+
+        std::string inputDir;
+        std::string outputDir;
+        std::string sfmEngine;
+        std::string on_off;
+
+        printf("\nTask Called: CMD_FULLAUTO \n\n");
+        ifstream cmdCache; 
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Task failed,can't get more parameters,no pointed directory\n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        std::string temp;
+        getline(cmdCache, temp);
+        if (temp != "CMD_FULLAUTO")
+        {
+            printf("Task failed,can't get more parameters\n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        getline(cmdCache, imagesInputDir);
+        getline(cmdCache, sensorWidthDataBaseDir);
+        getline(cmdCache, matchesOutputDir);
+        getline(cmdCache, temp);
+
+        EigenMatrix = temp;
+        if (EigenMatrix == "NULL")
+        {
+            EigenMatrix = "";
+        }
+
+        getline(cmdCache, describerMethod);
+        getline(cmdCache, featureQuality);
+        getline(cmdCache, upRight);
+        getline(cmdCache, forceCompute);
+        getline(cmdCache, distanceRatio);
+        getline(cmdCache, forceMatch);
+        getline(cmdCache, nearest_matching_method);
+        getline(cmdCache, geometricModel);
+
+        getline(cmdCache, inputDir);
+        getline(cmdCache, outputDir);
+        getline(cmdCache, sfmEngine);
+        getline(cmdCache, on_off);
+        cmdCache.close();
+
+         STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("Load images failed\n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+        STATE_RETURN = ComputeFeatures(matchesOutputDir, matchesOutputDir, describerMethod, featureQuality, upRight, forceCompute);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("Get feature info error\n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+        printf("Obtaining feature points is complete, ready to start matching feature points\n");
+
+        STATE_RETURN = ComputeMatches(matchesOutputDir, matchesOutputDir, nearest_matching_method, distanceRatio);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("Get matched points info error\n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = FilterMatches(matchesOutputDir, matchesOutputDir, geometricModel);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("Filter matches failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = GlobalReconstruction(inputDir, outputDir, sfmEngine);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("GlobalReconstruction failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = ColorizeStructure(outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ColorizeStructure failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = StructureFromKnownPoses(outputDir, outputDir, outputDir, outputDir, on_off);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("StructureFromKnownPoses failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = ColorizedRobustTriangulation(inputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ColorizedRobustTriangulation failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = ExportToOpenMVS(outputDir, outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ExportToOpenMVS failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = DensifyPointCloud(inputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("DensifyPointCloud failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+        STATE_RETURN = RefineTheMesh(inputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("RefineTheMesh failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
+         STATE_RETURN = TextureTheMesh(inputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("TextureTheMesh failed \n");
+            // Global::process = PROCESSERROR;
+            break;
+        }
+
     }
     default:
         break;

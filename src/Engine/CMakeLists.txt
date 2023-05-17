@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(3DReconstruction)
+project(OpenScan3D)
 
 # Find packages
 # find_package(OpenMVG REQUIRED)

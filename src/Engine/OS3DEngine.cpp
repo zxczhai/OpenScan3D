@@ -17,13 +17,24 @@ int main()
     Global::process = PROCESSWORKING;
     congmsgbuf mymsg;
     mymsg.mtype = 1;
-    while (1)
-    {
-        int ret = rcvMessage(mymsg);
-        if (0 == ret)
-        {
-            MsgProc(mymsg.data[0]);
-        }
-    }
+
+    // MsgProc(CMD_SFMANDSFP);
+
+    // MsgProc(CMD_EXPORTDENSECLOUD);
+
+    // MsgProc(CMD_RECONSTRUCTMESH);
+
+    // MsgProc(CMD_TEXTUREMESH);
+
+    MsgProc(CMD_FULLAUTO);
+
+    // while (1)
+    // {
+    //     int ret = rcvMessage(mymsg);
+    //     if (0 == ret)
+    //     {
+    //         MsgProc(mymsg.data[0]);
+    //     }
+    // }
     return 0;
 }

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-#include "Global.h"
 #define MSG_KEY 1314
 
 struct congmsgbuf
@@ -47,6 +46,7 @@ int rcvMessage(congmsgbuf &msg)
     if (ret == -1)
     {
         std::cerr << "Failed to receive message!" << std::endl;
+        return -1;
     }
     return 0;
 }
