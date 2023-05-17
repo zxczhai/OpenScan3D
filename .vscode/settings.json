@@ -1,4 +1,5 @@
 {
+    "cmake.sourceDirectory": "/home/zxc/3DReconstruction/src/Engine",
     "files.associations": {
         "ostream": "cpp",
         "iostream": "cpp"
