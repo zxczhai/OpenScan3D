@@ -1,6 +1,6 @@
 #include "dialog_trimeshrecon.h"
 #include "ui_dialog_trimeshrecon.h"
-
+#include "message.hpp"
 Dialog_TriMeshRecon::Dialog_TriMeshRecon(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog_TriMeshRecon)
@@ -62,6 +62,10 @@ void Dialog_TriMeshRecon::on_btn_CONFIRM_clicked()
         cmdcache.write("\n");
         cmdcache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
+        congmsgbuf msg;
+        msg.mtype = 1;
+        msg.data[0] = CMD_RECONSTRUCTMESH;
+        sendMessage(msg);
         this->close();
     }
     else

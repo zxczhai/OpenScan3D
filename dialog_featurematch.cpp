@@ -1,6 +1,7 @@
 #include "dialog_featurematch.h"
 #include "ui_dialog_featurematch.h"
 #include "message.hpp"
+#include <QProcess>
 Dialog_FeatureMatch::Dialog_FeatureMatch(QWidget *parent) : QDialog(parent),
                                                             ui(new Ui::Dialog_FeatureMatch)
 {
@@ -204,6 +205,20 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_MATCHFEATURES;
         sendMessage(msg);
         this->close();
+        // rcvMessage(msg);
+        // QList<qint64> pidlist;
+        // QStringList programs;
+        // programs
+        //     << "/usr/local/bin/OpenMVS/Viewer " + Global::textureMeshOutputDir.toUtf8()+"/scene_dense_mesh_refine.ply";
+        // foreach (QString pro, programs)
+        // {
+        //     QProcess process;
+        //     qint64 pid;
+        //     if (process.startDetached(pro, QStringList(), "", &pid))
+        //     {
+        //         pidlist.push_back(pid);
+        //     }
+        // }
     }
     else
     {

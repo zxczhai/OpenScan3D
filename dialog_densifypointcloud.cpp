@@ -1,9 +1,8 @@
 #include "dialog_densifypointcloud.h"
 #include "ui_dialog_densifypointcloud.h"
-
-Dialog_DensifyPointCloud::Dialog_DensifyPointCloud(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Dialog_DensifyPointCloud)
+#include "message.hpp"
+Dialog_DensifyPointCloud::Dialog_DensifyPointCloud(QWidget *parent) : QDialog(parent),
+                                                                      ui(new Ui::Dialog_DensifyPointCloud)
 {
     ui->setupUi(this);
 }
@@ -61,7 +60,12 @@ void Dialog_DensifyPointCloud::on_btn_CONFIRM_clicked()
         cmdcache.write("\n");
         cmdcache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
+        congmsgbuf msg;
+        msg.mtype = 1;
+        msg.data[0] = CMD_EXPORTDENSECLOUD;
+        sendMessage(msg);
         this->close();
+        
     }
     else
     {

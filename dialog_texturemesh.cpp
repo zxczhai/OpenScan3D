@@ -1,9 +1,9 @@
 #include "dialog_texturemesh.h"
 #include "ui_dialog_texturemesh.h"
-
-Dialog_TextureMesh::Dialog_TextureMesh(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Dialog_TextureMesh)
+#include "message.hpp"
+#include <QProcess>
+Dialog_TextureMesh::Dialog_TextureMesh(QWidget *parent) : QDialog(parent),
+                                                          ui(new Ui::Dialog_TextureMesh)
 {
     ui->setupUi(this);
 }
@@ -62,14 +62,30 @@ void Dialog_TextureMesh::on_btn_CONFIRM_clicked()
         cmdcache.write("\n");
         cmdcache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
-
+        congmsgbuf msg;
+        msg.mtype = 1;
+        msg.data[0] = CMD_TEXTUREMESH;
+        sendMessage(msg);
         this->close();
+        // rcvMessage(msg);
+        // QList<qint64> pidlist;
+        // QStringList programs;
+        // programs
+        //     << "/usr/local/bin/OpenMVS/Viewer "+Global::textureMeshOutputDir.toUtf8();
+        // foreach (QString pro, programs)
+        // {
+        //     QProcess process;
+        //     qint64 pid;
+        //     if (process.startDetached(pro, QStringList(), "", &pid))
+        //     {
+        //         pidlist.push_back(pid);
+        //     }
+        // }
     }
     else
     {
         QMessageBox::information(this, u8"错误", u8"无法访问缓存文件，请检查权限，或使用管理员身份运行 ", QMessageBox::Yes);
     }
-
 }
 
 void Dialog_TextureMesh::on_btn_CANCEL_clicked()

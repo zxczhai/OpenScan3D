@@ -1,6 +1,6 @@
 #include "dialog_sfm.h"
 #include "ui_dialog_sfm.h"
-
+#include "message.hpp"
 Dialog_SFM::Dialog_SFM(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog_SFM)
@@ -106,6 +106,10 @@ void Dialog_SFM::on_btn_CONFIRM_clicked()
 
         cmdcache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Ok);
+        congmsgbuf msg;
+        msg.mtype = 1;
+        msg.data[0] = CMD_SFMANDSFP;
+        sendMessage(msg);
         this->close();
     }
     else
