@@ -1,7 +1,3 @@
-[submodule "GUI"]
-	path = /src
-	url = git@github.com:zxczhai/OpenScan3D.git
-	branch = QTViewer
 [submodule "src/GUI"]
 	path = src/GUI
 	url = git@github.com:zxczhai/OpenScan3D.git

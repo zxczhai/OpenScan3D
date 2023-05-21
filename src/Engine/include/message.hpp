@@ -1,3 +1,5 @@
+#ifndef _CMESSAGE_H
+#define _CMESSAGE_H
 #include <iostream>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -9,7 +11,7 @@ struct congmsgbuf
     int data[2]; // 消息数据
 };
 
-int sendMessage(congmsgbuf msg)
+static int sendMessage(congmsgbuf msg)
 {
     // 创建消息队列
     int msgid = msgget(MSG_KEY, IPC_CREAT | 0666);
@@ -31,7 +33,7 @@ int sendMessage(congmsgbuf msg)
     return 0;
 }
 
-int rcvMessage(congmsgbuf &msg)
+static int rcvMessage(congmsgbuf &msg)
 {
     // 连接到消息队列
     int msgid = msgget(MSG_KEY, IPC_CREAT | 0666);
@@ -50,3 +52,4 @@ int rcvMessage(congmsgbuf &msg)
     }
     return 0;
 }
+#endif

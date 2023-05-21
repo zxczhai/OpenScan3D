@@ -3,6 +3,7 @@
 #include <string>
 #include <dirent.h>
 #include <sys/types.h>
+#include "message.hpp"
 uint8_t STATE_RETURN;
 
 int checkDirExist(std::string pathToDir)
@@ -611,7 +612,7 @@ int ReconstructTheMesh(std::string scene_denseDir, std::string outputDir)
     cmd.append(" ");
     cmd.append(outputDir);
 
-    if (system(cmd.c_str()) != 0 )
+    if (system(cmd.c_str()) != 0)
     {
         return EXIT_FAILURE;
     }
@@ -703,7 +704,6 @@ int TextureTheMesh(std::string scene_dense_mesh_refineDir, std::string outputDir
         system("echo TextureTheMesh Successfully.........");
     return EXIT_SUCCESS;
 }
-
 
 /**
  * @brief   估计视差图，以便进行后续的深度图融合#17
@@ -904,7 +904,10 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        congmsgbuf mymsg;
+        mymsg.mtype = 1;
+        mymsg.data[0] = PROCESSCLOSE;
+        sendMessage(mymsg);
         break;
     }
     case CMD_SFMANDSFP:
@@ -942,20 +945,25 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, on_off);
 
         cmdCache.close();
-        // STATE_RETURN = IncrementalReconstruction(matchesDir, sfmOutputDir, sfmEngine);
-        // if (STATE_RETURN == EXIT_FAILURE)
-        // {
-        //     printf("IncrementalReconstruction failed \n");
-        //     // Global::process = PROCESSERROR;
-        //     break;
-        // }
-
-        STATE_RETURN = GlobalReconstruction(inputDir, outputDir, sfmEngine);
-        if (STATE_RETURN == EXIT_FAILURE)
+        if (sfmEngine == "GLOBAL")
         {
-            printf("GlobalReconstruction failed \n");
-            Global::process = PROCESSERROR;
-            break;
+            STATE_RETURN = GlobalReconstruction(inputDir, outputDir, sfmEngine);
+            if (STATE_RETURN == EXIT_FAILURE)
+            {
+                printf("GlobalReconstruction failed \n");
+                // Global::process = PROCESSERROR;
+                break;
+            }
+        }
+        else
+        {
+            STATE_RETURN = IncrementalReconstruction(inputDir, outputDir, sfmEngine);
+            if (STATE_RETURN == EXIT_FAILURE)
+            {
+                printf("IncrementalReconstruction failed \n");
+                // Global::process = PROCESSERROR;
+                break;
+            }
         }
 
         STATE_RETURN = ColorizeStructure(outputDir, outputDir);
@@ -1026,10 +1034,10 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-        STATE_RETURN = ReconstructTheMesh(outputDir,outputDir);
-                if (STATE_RETURN == EXIT_FAILURE)
+        STATE_RETURN = ReconstructTheMesh(outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
         {
-            printf("DensifyPointCloud failed \n");
+            printf("ReconstructTheMesh failed \n");
             Global::process = PROCESSERROR;
             break;
         }
@@ -1139,7 +1147,7 @@ void MsgProc(uint8_t msg)
         std::string on_off;
 
         printf("\nTask Called: CMD_FULLAUTO \n\n");
-        ifstream cmdCache; 
+        ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
         if (!cmdCache)
         {
@@ -1183,7 +1191,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, on_off);
         cmdCache.close();
 
-         STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
+        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
@@ -1214,13 +1222,25 @@ void MsgProc(uint8_t msg)
             // Global::process = PROCESSERROR;
             break;
         }
-
-        STATE_RETURN = GlobalReconstruction(inputDir, outputDir, sfmEngine);
-        if (STATE_RETURN == EXIT_FAILURE)
+        if (sfmEngine == "GLOBAL")
         {
-            printf("GlobalReconstruction failed \n");
-            // Global::process = PROCESSERROR;
-            break;
+            STATE_RETURN = GlobalReconstruction(inputDir, outputDir, sfmEngine);
+            if (STATE_RETURN == EXIT_FAILURE)
+            {
+                printf("GlobalReconstruction failed \n");
+                // Global::process = PROCESSERROR;
+                break;
+            }
+        }
+        else
+        {
+            STATE_RETURN = IncrementalReconstruction(inputDir, outputDir, sfmEngine);
+            if (STATE_RETURN == EXIT_FAILURE)
+            {
+                printf("IncrementalReconstruction failed \n");
+                // Global::process = PROCESSERROR;
+                break;
+            }
         }
 
         STATE_RETURN = ColorizeStructure(outputDir, outputDir);
@@ -1262,7 +1282,13 @@ void MsgProc(uint8_t msg)
             // Global::process = PROCESSERROR;
             break;
         }
-
+        STATE_RETURN = ReconstructTheMesh(outputDir, outputDir);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ReconstructTheMesh failed \n");
+            Global::process = PROCESSERROR;
+            break;
+        }
         STATE_RETURN = RefineTheMesh(inputDir, outputDir);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1271,14 +1297,13 @@ void MsgProc(uint8_t msg)
             break;
         }
 
-         STATE_RETURN = TextureTheMesh(inputDir, outputDir);
+        STATE_RETURN = TextureTheMesh(inputDir, outputDir);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("TextureTheMesh failed \n");
             // Global::process = PROCESSERROR;
             break;
         }
-
     }
     default:
         break;
