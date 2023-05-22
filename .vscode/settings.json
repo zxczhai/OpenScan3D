@@ -2,6 +2,11 @@
     "cmake.sourceDirectory": "/home/zxc/3DReconstruction",
     "files.associations": {
         "ostream": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "memory": "cpp",
+        "cstdlib": "cpp",
+        "limits": "cpp",
+        "utility": "cpp",
+        "map": "cpp"
     }
 }

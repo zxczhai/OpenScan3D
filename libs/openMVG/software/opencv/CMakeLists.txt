@@ -1,0 +1,1 @@
+add_subdirectory(accv12_demo)

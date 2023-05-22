@@ -3,7 +3,7 @@
 #include <string>
 #include <dirent.h>
 #include <sys/types.h>
-#include "message.hpp"
+#include "LinuxMessage.hpp"
 uint8_t STATE_RETURN;
 
 int checkDirExist(std::string pathToDir)
@@ -553,7 +553,7 @@ int DensifyPointCloud(std::string sceneDir, std::string outputDir)
     //  }
     ::system("echo DensifyPointCloud working.........");
     std::string cmd = "";
-    cmd.append("../bin/OpenMVS/DensifyPointCloud");
+    cmd.append("../../../bin/OpenMVS/DensifyPointCloud");
     cmd.append(" ");
     cmd.append(sceneDir);
     cmd.append("/");
@@ -601,7 +601,7 @@ int ReconstructTheMesh(std::string scene_denseDir, std::string outputDir)
     //  }
     system("echo ReconstructMesh working.........");
     std::string cmd = "";
-    cmd.append("../bin/OpenMVS/ReconstructMesh");
+    cmd.append("../../../bin/OpenMVS/ReconstructMesh");
     cmd.append(" ");
     cmd.append(scene_denseDir);
     cmd.append("/");
@@ -635,7 +635,7 @@ int RefineTheMesh(std::string scene_dense_meshDir, std::string outputDir)
     //  }
     system("echo RefineTheMesh working.........");
     std::string cmd = "";
-    cmd.append("../bin/OpenMVS/RefineMesh");
+    cmd.append("../../../bin/OpenMVS/RefineMesh");
 
     cmd.append(" ");
     cmd.append(scene_dense_meshDir);
@@ -679,7 +679,7 @@ int TextureTheMesh(std::string scene_dense_mesh_refineDir, std::string outputDir
     //  }
     system("echo TextureTheMesh working.........");
     std::string cmd = "";
-    cmd.append("../bin/OpenMVS/TextureMesh");
+    cmd.append("../../../bin/OpenMVS/TextureMesh");
 
     cmd.append(" ");
     cmd.append(scene_dense_mesh_refineDir);
@@ -757,7 +757,7 @@ int FuseDisparityMaps(std::string mvsDataDir, std::string outputDir)
     //  }
     ::system("echo FuseDisparityMaps working.........");
     std::string cmd = "";
-    cmd.append("../Binary/OpenMVS/DensifyPointCloud");
+    cmd.append("../../../bin/OpenMVS/DensifyPointCloud");
     cmd.append(" ");
     cmd.append(mvsDataDir);
     cmd.append("/");

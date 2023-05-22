@@ -1,0 +1,25 @@
+# List sources files
+FILE(GLOB LIBRARY_FILES_C "*.cpp")
+FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
+
+cxx_library_with_type(Common "Libs" "" "${cxx_default}"
+	${LIBRARY_FILES_C} ${LIBRARY_FILES_H}
+)
+
+# Manually set Common.h as the precompiled header
+IF(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16.0)
+	TARGET_PRECOMPILE_HEADERS(Common PRIVATE "Common.h")
+endif()
+
+# Link its dependencies
+TARGET_LINK_LIBRARIES(Common ${Boost_LIBRARIES} ${OpenCV_LIBS})
+
+# Install
+SET_TARGET_PROPERTIES(Common PROPERTIES
+	PUBLIC_HEADER "${LIBRARY_FILES_H}")
+INSTALL(TARGETS Common
+	EXPORT OpenMVSTargets
+	LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+	ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+	RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+	PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/Common")

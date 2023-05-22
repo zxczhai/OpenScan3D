@@ -1,4 +1,5 @@
-#pragma once102
+#ifndef _GLOBAL_H
+#define _GLOBAL_H
 #include <iostream>
 #include <string>
 #include <unistd.h>
@@ -44,3 +45,4 @@ public:
 	static bool saveProcess();
 	static int getFiles(const char *path, std::vector<std::string> &arr);
 };
+#endif
