@@ -44,5 +44,7 @@ public:
     static QString reconstructMeshOutputDir;
     static QString textureMeshInputDir;
     static QString textureMeshOutputDir;
+    static QString autoRebuildInPutDir;
+    static QString autoRebuildOutputDir;
 };
 

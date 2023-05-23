@@ -7,6 +7,7 @@
 #include "dialog_densifypointcloud.h"
 #include "dialog_trimeshrecon.h"
 #include "dialog_texturemesh.h"
+#include "dialog_autorebuild.h"
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +39,8 @@ private slots:
 
     void timerSlot();
 
+    void on_actionAuto_Properties_triggered();
+
 private:
     Ui::MainWindow *ui;
     Dialog_FeatureMatch dlgfm;
@@ -45,6 +48,7 @@ private:
     Dialog_DensifyPointCloud dlgdense;
     Dialog_TriMeshRecon dlgtmr;
     Dialog_TextureMesh dlgtm;
+    Dialog_AutoRebuild dlgar;
     QTimer* timer;
 };
 #endif // MAINWINDOW_H

@@ -11,4 +11,6 @@ QString Global::reconstructMeshInputDir = "";
 QString Global::reconstructMeshOutputDir = "";
 QString Global::textureMeshInputDir = "";
 QString Global::textureMeshOutputDir = "";
+QString Global::autoRebuildInPutDir = "";
+QString Global::autoRebuildOutputDir = "";
 

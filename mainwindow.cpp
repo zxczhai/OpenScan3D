@@ -63,20 +63,20 @@ void MainWindow::on_pushButton_clicked()
     //    choose_file *newFileChoose = new choose_file(this);
     //    newFileChoose->show();
 
-//    std::string winName = "qtcreator";
-//    ui->widget = new viewer(linuxFindWin(winName));
-//    ui->widget->setObjectName(QString::fromUtf8("widget"));
-//    ui->widget->setGeometry(QRect(10, 70, 1361, 661));
-//    ui->widget->show();
-//    ui->widget->update();
+    //    std::string winName = "qtcreator";
+    //    ui->widget = new viewer(linuxFindWin(winName));
+    //    ui->widget->setObjectName(QString::fromUtf8("widget"));
+    //    ui->widget->setGeometry(QRect(10, 70, 1361, 661));
+    //    ui->widget->show();
+    //    ui->widget->update();
 
     embedexternalapp embed = new embedexternalapp(this);
-//    delete this->ui->widget;
-//    ui->widget = &embed;
-//    ui->widget->setObjectName(QString::fromUtf8("widget"));
-//    ui->widget->setGeometry(QRect(50, 40, 841, 481));
-//    ui->widget->show();
-//    ui->widget->update();
+    //    delete this->ui->widget;
+    //    ui->widget = &embed;
+    //    ui->widget->setObjectName(QString::fromUtf8("widget"));
+    //    ui->widget->setGeometry(QRect(50, 40, 841, 481));
+    //    ui->widget->show();
+    //    ui->widget->update();
 }
 
 
@@ -145,4 +145,11 @@ void MainWindow::on_actionTextureMesh_triggered()
 void MainWindow::timerSlot()
 {
 
+}
+
+void MainWindow::on_actionAuto_Properties_triggered()
+{
+    dlgar.setWindowTitle("一键自动重建"); // 设置窗口标题
+    dlgar.move(geometry().center() - dlgar.rect().center()); // 将对话框移动到MainWindow的中心
+    dlgar.exec();
 }

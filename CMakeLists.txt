@@ -31,6 +31,7 @@ set(PROJECT_SOURCES
         dialog_texturemesh.cpp dialog_texturemesh.h dialog_texturemesh.ui
         global.cpp global.h
         message.hpp
+        dialog_autorebuild.cpp dialog_autorebuild.h dialog_autorebuild.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
