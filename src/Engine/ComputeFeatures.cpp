@@ -55,7 +55,7 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
     OPENMVG_LOG_INFO
         << " You called : "
         << "\n"
-        << "ComputeFeatures" << "\n"
+        << "ComputeFeatures Task" << "\n"
         << "--input_file " << sSfM_Data_Filename << "\n"
         << "--outdir " << sOutDir << "\n"
         << "--describerMethod " << sImage_Describer_Method << "\n"
@@ -207,7 +207,7 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
                 sView_filename = stlplus::create_filespec(sfm_data.s_root_path, view->s_Img_path),
                 sFeat = stlplus::create_filespec(sOutDir, stlplus::basename_part(sView_filename), "feat"),
                 sDesc = stlplus::create_filespec(sOutDir, stlplus::basename_part(sView_filename), "desc");
-
+                std::cout<<"Creating"<<sFeat<<"&&"<<sDesc<<std::endl;
             // If features or descriptors file are missing, compute them
             if (!preemptive_exit && (bForce || !stlplus::file_exists(sFeat) || !stlplus::file_exists(sDesc)))
             {

@@ -34,7 +34,7 @@
 // This file needs to compile as c code.
 #ifdef __cplusplus
 #include <cstddef>
-#include "ceres/internal/config.h"
+#include "config.h"
 #if defined(CERES_TR1_MEMORY_HEADER)
 #include <tr1/memory>
 #else

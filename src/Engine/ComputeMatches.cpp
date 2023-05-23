@@ -23,7 +23,6 @@
 #include "openMVG/stl/stl.hpp"
 #include "openMVG/system/timer.hpp"
 
-// #include "third_party/cmdLine/cmdLine.h"
 #include "third_party/stlplus3/filesystemSimplified/file_system.hpp"
 
 #include "ComputeMatches.hpp"
@@ -42,35 +41,34 @@ using namespace openMVG::matching_image_collection;
 /// - Compute putative local feature matches (descriptors matching)
 int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFilename, std::string sNearestMatchingMethod = "AUTO", float fDistRatio = 0.8)
 {
-  std::string  sPredefinedPairList    = "";
-  bool         bForce                 = false;
-  unsigned int ui_max_cache_size      = 0;
+  std::string sPredefinedPairList = "";
+  bool bForce = false;
+  unsigned int ui_max_cache_size = 0;
 
   // Pre-emptive matching parameters
   unsigned int ui_preemptive_feature_count = 200;
   double preemptive_matching_percentage_threshold = 0.08;
 
-
-
   OPENMVG_LOG_INFO << " You called : "
-            << "\n"
-            << "ComputeMatches" << "\n"
-            << "--input_file " << sSfM_Data_Filename << "\n"
-            << "--output_file " << sOutputMatchesFilename << "\n"
-            << "--pair_list " << sPredefinedPairList << "\n"
-            << "Optional parameters:"
-            << "\n"
-            << "--force " << bForce << "\n"
-            << "--ratio " << fDistRatio << "\n"
-            << "--nearest_matching_method " << sNearestMatchingMethod << "\n"
-            << "--cache_size " << ((ui_max_cache_size == 0) ? "unlimited" : std::to_string(ui_max_cache_size)) << "\n"
-            << "--preemptive_feature_used/count " << false << " / " << ui_preemptive_feature_count;
-//   if (cmd.used('P'))
-//   {
-//     OPENMVG_LOG_INFO << "--preemptive_feature_count " << ui_preemptive_feature_count;
-//   }
+                   << "\n"
+                   << "ComputeMatches"
+                   << "\n"
+                   << "--input_file " << sSfM_Data_Filename << "\n"
+                   << "--output_file " << sOutputMatchesFilename << "\n"
+                   << "--pair_list " << sPredefinedPairList << "\n"
+                   << "Optional parameters:"
+                   << "\n"
+                   << "--force " << bForce << "\n"
+                   << "--ratio " << fDistRatio << "\n"
+                   << "--nearest_matching_method " << sNearestMatchingMethod << "\n"
+                   << "--cache_size " << ((ui_max_cache_size == 0) ? "unlimited" : std::to_string(ui_max_cache_size)) << "\n"
+                   << "--preemptive_feature_used/count " << false << " / " << ui_preemptive_feature_count;
+  //   if (cmd.used('P'))
+  //   {
+  //     OPENMVG_LOG_INFO << "--preemptive_feature_count " << ui_preemptive_feature_count;
+  //   }
 
-  if ( sOutputMatchesFilename.empty() )
+  if (sOutputMatchesFilename.empty())
   {
     OPENMVG_LOG_ERROR << "No output file set.";
     return EXIT_FAILURE;
@@ -86,11 +84,12 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
   // Read SfM Scene (image view & intrinsics data)
   //---------------------------------------
   SfM_Data sfm_data;
-  if (!Load(sfm_data, sSfM_Data_Filename, ESfM_Data(VIEWS|INTRINSICS))) {
-    OPENMVG_LOG_ERROR << "The input SfM_Data file \""<< sSfM_Data_Filename << "\" cannot be read.";
+  if (!Load(sfm_data, sSfM_Data_Filename, ESfM_Data(VIEWS | INTRINSICS)))
+  {
+    OPENMVG_LOG_ERROR << "The input SfM_Data file \"" << sSfM_Data_Filename << "\" cannot be read.";
     return EXIT_FAILURE;
   }
-  const std::string sMatchesDirectory = stlplus::folder_part( sOutputMatchesFilename );
+  const std::string sMatchesDirectory = stlplus::folder_part(sOutputMatchesFilename);
 
   //---------------------------------------
   // Load SfM Scene regions
@@ -132,7 +131,8 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
   // Show the progress on the command line:
   system::LoggerProgress progress;
 
-  if (!regions_provider->load(sfm_data, sMatchesDirectory, regions_type, &progress)) {
+  if (!regions_provider->load(sfm_data, sMatchesDirectory, regions_type, &progress))
+  {
     OPENMVG_LOG_ERROR << "Cannot load view regions from: " << sMatchesDirectory << ".";
     return EXIT_FAILURE;
   }
@@ -141,65 +141,61 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
 
   // Build some alias from SfM_Data Views data:
   // - List views as a vector of filenames & image sizes
-  std::vector<std::string>               vec_fileNames;
+  std::vector<std::string> vec_fileNames;
   std::vector<std::pair<size_t, size_t>> vec_imagesSize;
   {
     vec_fileNames.reserve(sfm_data.GetViews().size());
     vec_imagesSize.reserve(sfm_data.GetViews().size());
     for (const auto view_it : sfm_data.GetViews())
     {
-      const View * v = view_it.second.get();
+      const View *v = view_it.second.get();
       vec_fileNames.emplace_back(stlplus::create_filespec(sfm_data.s_root_path,
-          v->s_Img_path));
+                                                          v->s_Img_path));
       vec_imagesSize.emplace_back(v->ui_width, v->ui_height);
     }
   }
 
   OPENMVG_LOG_INFO << " - PUTATIVE MATCHES - ";
   // If the matches already exists, reload them
-  if ( !bForce && ( stlplus::file_exists( sOutputMatchesFilename ) ) )
+  if (!bForce && (stlplus::file_exists(sOutputMatchesFilename)))
   {
-    if ( !( Load( map_PutativeMatches, sOutputMatchesFilename ) ) )
+    if (!(Load(map_PutativeMatches, sOutputMatchesFilename)))
     {
       OPENMVG_LOG_ERROR << "Cannot load input matches file";
       return EXIT_FAILURE;
     }
     OPENMVG_LOG_INFO
-      << "\t PREVIOUS RESULTS LOADED;"
-      << " #pair: " << map_PutativeMatches.size();
+        << "\t PREVIOUS RESULTS LOADED;"
+        << " #pair: " << map_PutativeMatches.size();
   }
   else // Compute the putative matches
   {
     // Allocate the right Matcher according the Matching requested method
     std::unique_ptr<Matcher> collectionMatcher;
-    if ( sNearestMatchingMethod == "AUTO" )
+    if (sNearestMatchingMethod == "AUTO")
     {
-      if ( regions_type->IsScalar() )
+      if (regions_type->IsScalar())
       {
         OPENMVG_LOG_INFO << "Using FAST_CASCADE_HASHING_L2 matcher";
         collectionMatcher.reset(new Cascade_Hashing_Matcher_Regions(fDistRatio));
       }
-      else
-      if (regions_type->IsBinary())
+      else if (regions_type->IsBinary())
       {
         OPENMVG_LOG_INFO << "Using HNSWHAMMING matcher";
         collectionMatcher.reset(new Matcher_Regions(fDistRatio, HNSW_HAMMING));
       }
     }
-    else
-    if (sNearestMatchingMethod == "BRUTEFORCEL2")
+    else if (sNearestMatchingMethod == "BRUTEFORCEL2")
     {
       OPENMVG_LOG_INFO << "Using BRUTE_FORCE_L2 matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, BRUTE_FORCE_L2));
     }
-    else
-    if (sNearestMatchingMethod == "BRUTEFORCEHAMMING")
+    else if (sNearestMatchingMethod == "BRUTEFORCEHAMMING")
     {
       OPENMVG_LOG_INFO << "Using BRUTE_FORCE_HAMMING matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, BRUTE_FORCE_HAMMING));
     }
-    else
-    if (sNearestMatchingMethod == "HNSWL2")
+    else if (sNearestMatchingMethod == "HNSWL2")
     {
       OPENMVG_LOG_INFO << "Using HNSWL2 matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, HNSW_L2));
@@ -209,26 +205,22 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
       OPENMVG_LOG_INFO << "Using HNSWL1 matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, HNSW_L1));
     }
-    else
-    if (sNearestMatchingMethod == "HNSWHAMMING")
+    else if (sNearestMatchingMethod == "HNSWHAMMING")
     {
       OPENMVG_LOG_INFO << "Using HNSWHAMMING matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, HNSW_HAMMING));
     }
-    else
-    if (sNearestMatchingMethod == "ANNL2")
+    else if (sNearestMatchingMethod == "ANNL2")
     {
       OPENMVG_LOG_INFO << "Using ANN_L2 matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, ANN_L2));
     }
-    else
-    if (sNearestMatchingMethod == "CASCADEHASHINGL2")
+    else if (sNearestMatchingMethod == "CASCADEHASHINGL2")
     {
       OPENMVG_LOG_INFO << "Using CASCADE_HASHING_L2 matcher";
       collectionMatcher.reset(new Matcher_Regions(fDistRatio, CASCADE_HASHING_L2));
     }
-    else
-    if (sNearestMatchingMethod == "FASTCASCADEHASHINGL2")
+    else if (sNearestMatchingMethod == "FASTCASCADEHASHINGL2")
     {
       OPENMVG_LOG_INFO << "Using FAST_CASCADE_HASHING_L2 matcher";
       collectionMatcher.reset(new Cascade_Hashing_Matcher_Regions(fDistRatio));
@@ -243,33 +235,33 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
     {
       // From matching mode compute the pair list that have to be matched:
       Pair_Set pairs;
-      if ( sPredefinedPairList.empty() )
+      if (sPredefinedPairList.empty())
       {
         OPENMVG_LOG_INFO << "No input pair file set. Use exhaustive match by default.";
         const size_t NImage = sfm_data.GetViews().size();
-        pairs = exhaustivePairs( NImage );
+        pairs = exhaustivePairs(NImage);
       }
-      else
-      if ( !loadPairs( sfm_data.GetViews().size(), sPredefinedPairList, pairs ) )
+      else if (!loadPairs(sfm_data.GetViews().size(), sPredefinedPairList, pairs))
       {
         OPENMVG_LOG_ERROR << "Failed to load pairs from file: \"" << sPredefinedPairList << "\"";
         return EXIT_FAILURE;
       }
       OPENMVG_LOG_INFO << "Running matching on #pairs: " << pairs.size();
       // Photometric matching of putative pairs
-      collectionMatcher->Match( regions_provider, pairs, map_PutativeMatches, &progress );
+      collectionMatcher->Match(regions_provider, pairs, map_PutativeMatches, &progress);
 
       if (false) // Preemptive filter
       {
         // Keep putative matches only if there is more than X matches
         PairWiseMatches map_filtered_matches;
-        for (const auto & pairwisematches_it : map_PutativeMatches)
+        for (const auto &pairwisematches_it : map_PutativeMatches)
         {
           const size_t putative_match_count = pairwisematches_it.second.size();
           const int match_count_threshold =
-            preemptive_matching_percentage_threshold * ui_preemptive_feature_count;
+              preemptive_matching_percentage_threshold * ui_preemptive_feature_count;
           // TODO: Add an option to keeping X Best pairs
-          if (putative_match_count >= match_count_threshold)  {
+          if (putative_match_count >= match_count_threshold)
+          {
             // the pair will be kept
             map_filtered_matches.insert(pairwisematches_it);
           }
@@ -281,23 +273,23 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
       //---------------------------------------
       //-- Export putative matches & pairs
       //---------------------------------------
-      if ( !Save( map_PutativeMatches, std::string( sOutputMatchesFilename ) ) )
+      if (!Save(map_PutativeMatches, std::string(sOutputMatchesFilename)))
       {
         OPENMVG_LOG_ERROR
-          << "Cannot save computed matches in: "
-          << sOutputMatchesFilename;
+            << "Cannot save computed matches in: "
+            << sOutputMatchesFilename;
         return EXIT_FAILURE;
       }
       // Save pairs
       const std::string sOutputPairFilename =
-        stlplus::create_filespec( sMatchesDirectory, "preemptive_pairs", "txt" );
+          stlplus::create_filespec(sMatchesDirectory, "preemptive_pairs", "txt");
       if (!savePairs(
-        sOutputPairFilename,
-        getPairs(map_PutativeMatches)))
+              sOutputPairFilename,
+              getPairs(map_PutativeMatches)))
       {
         OPENMVG_LOG_ERROR
-          << "Cannot save computed matches pairs in: "
-          << sOutputPairFilename;
+            << "Cannot save computed matches pairs in: "
+            << sOutputPairFilename;
         return EXIT_FAILURE;
       }
     }
@@ -310,17 +302,17 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
   graph::getGraphStatistics(sfm_data.GetViews().size(), getPairs(map_PutativeMatches));
 
   //-- export putative matches Adjacency matrix
-  PairWiseMatchingToAdjacencyMatrixSVG( vec_fileNames.size(),
-                                        map_PutativeMatches,
-                                        stlplus::create_filespec( sMatchesDirectory, "PutativeAdjacencyMatrix", "svg" ) );
+  PairWiseMatchingToAdjacencyMatrixSVG(vec_fileNames.size(),
+                                       map_PutativeMatches,
+                                       stlplus::create_filespec(sMatchesDirectory, "PutativeAdjacencyMatrix", "svg"));
   //-- export view pair graph once putative graph matches has been computed
   {
     std::set<IndexT> set_ViewIds;
-    std::transform( sfm_data.GetViews().begin(), sfm_data.GetViews().end(), std::inserter( set_ViewIds, set_ViewIds.begin() ), stl::RetrieveKey() );
-    graph::indexedGraph putativeGraph( set_ViewIds, getPairs( map_PutativeMatches ) );
+    std::transform(sfm_data.GetViews().begin(), sfm_data.GetViews().end(), std::inserter(set_ViewIds, set_ViewIds.begin()), stl::RetrieveKey());
+    graph::indexedGraph putativeGraph(set_ViewIds, getPairs(map_PutativeMatches));
     graph::exportToGraphvizData(
-        stlplus::create_filespec( sMatchesDirectory, "putative_matches" ),
-        putativeGraph );
+        stlplus::create_filespec(sMatchesDirectory, "putative_matches"),
+        putativeGraph);
   }
 
   return EXIT_SUCCESS;

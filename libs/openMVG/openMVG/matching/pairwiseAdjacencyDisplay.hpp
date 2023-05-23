@@ -5,7 +5,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+#pragma once
 #ifndef OPENMVG_PAIRWISE_ADJACENCY_DISPLAY_HPP
 #define OPENMVG_PAIRWISE_ADJACENCY_DISPLAY_HPP
 
@@ -19,7 +19,7 @@ namespace openMVG  {
 namespace matching {
 
 /// Display pair wises matches as an Adjacency matrix in svg format
-void PairWiseMatchingToAdjacencyMatrixSVG
+inline void PairWiseMatchingToAdjacencyMatrixSVG
 (
   const size_t NbImages,
   const matching::PairWiseMatches & map_Matches,

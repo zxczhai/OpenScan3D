@@ -1,2 +1,5 @@
+#ifndef _COMPUTEMATCHES_H
+#define _COMPUTEMATCHES_H
 #include <iostream>
-int ComputeMatches(std::string sfmDataDir, std::string outputDir, std::string nearest_matching_method = "AUTO", std::string radio = "0.8");
+int ComputeMatches(std::string, std::string, std::string, float);
+#endif

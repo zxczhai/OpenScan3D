@@ -123,10 +123,13 @@ std::pair<bool, Vec3> checkPriorWeightsString
 // Create the description of an input image dataset for OpenMVG toolsuite
 // - Export a SfM_Data file with View & Intrinsic data
 //
-int IntrinsicsAnalysis(std::string sImageDir, std::string sOutputDir, std::string sfileDatabase)
+int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::string cameraDBDir)
 {
 
-  std::string  sKmatrix;
+  std::string sImageDir = inputImageDir,
+    sfileDatabase = cameraDBDir,
+    sOutputDir = outputDir,
+    sKmatrix;
 
   std::string sPriorWeights = "1.0;1.0;1.0";
   std::pair<bool, Vec3> prior_w_info(false, Vec3());
@@ -138,6 +141,7 @@ int IntrinsicsAnalysis(std::string sImageDir, std::string sOutputDir, std::strin
   int i_GPS_XYZ_method = 0;
 
   double focal_pixels = -1.0;
+
 
   const bool b_Use_pose_prior = false;
   OPENMVG_LOG_INFO << " You called : " << IntrinsicsAnalysis

@@ -1,9 +1,7 @@
-#ifndef _CMESSAGE_H
-#define _CMESSAGE_H
-#include <iostream>
-
+#ifndef _LMESSAGE_H
+#define _LMESSAGE_H
 #define MSG_KEY 1314
-
+#include <iostream>
 struct congmsgbuf
 {
     long mtype;  // 消息类型
