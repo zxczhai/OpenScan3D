@@ -1,5 +1,10 @@
 #pragma once
+#include <QDir>
 #include <QString>
+#include <QStringList>
+#include <QTextStream>
+#include <QProcess>
+
 
 using namespace std;
 
@@ -46,5 +51,11 @@ public:
     static QString textureMeshOutputDir;
     static QString autoRebuildInPutDir;
     static QString autoRebuildOutputDir;
+    static int engineTid;
+    static void connectEngine();
+    //static pid_t GetProcessIdFromName(const char* name);
+    static pid_t GetProcessIdFromName(const QString& name);
+
+
 };
 

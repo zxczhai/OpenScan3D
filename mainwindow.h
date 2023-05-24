@@ -8,6 +8,7 @@
 #include "dialog_trimeshrecon.h"
 #include "dialog_texturemesh.h"
 #include "dialog_autorebuild.h"
+#include "global.h"
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE

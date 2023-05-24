@@ -6,6 +6,7 @@
 #include <QString>
 #include "viewer.h"
 #include "embedExternalApp.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(timerSlot()));
+    connect(timer, &QTimer::timeout, this, &MainWindow::timerSlot);
+    timer->start(500);
     ui->pushButton->setText("new button");
 
 }
@@ -142,14 +144,34 @@ void MainWindow::on_actionTextureMesh_triggered()
     dlgtm.exec();
 }
 
-void MainWindow::timerSlot()
-{
-
-}
-
 void MainWindow::on_actionAuto_Properties_triggered()
 {
     dlgar.setWindowTitle("一键自动重建"); // 设置窗口标题
     dlgar.move(geometry().center() - dlgar.rect().center()); // 将对话框移动到MainWindow的中心
     dlgar.exec();
+}
+
+void MainWindow::timerSlot()
+{
+    if (Global::GetProcessIdFromName("R3D") != 0)
+    {
+        Global::connectEngine();
+        if (ui->label_engine->text() != u8"成功连接到R3D ")
+        {
+            QPalette pa;
+            pa.setColor(QPalette::WindowText, Qt::green);
+            ui->label_engine->setPalette(pa);
+            ui->label_engine->setText(u8"成功连接到R3D");
+        }
+    }
+    else
+    {
+        if (ui->label_engine->text() != u8"未连接到R3D")
+        {
+            QPalette pa;
+            pa.setColor(QPalette::WindowText, Qt::red);
+            ui->label_engine->setPalette(pa);
+            ui->label_engine->setText(u8"未连接到R3D");
+        }
+    }
 }
