@@ -123,7 +123,7 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
     regions_provider = std::make_shared<Regions_Provider_Cache>(ui_max_cache_size);
   }
   // If we use pre-emptive matching, we load less regions:
-  if (ui_preemptive_feature_count > 0 && true)
+  if (ui_preemptive_feature_count > 0 && false)
   {
     regions_provider = std::make_shared<Preemptive_Regions_Provider>(ui_preemptive_feature_count);
   }

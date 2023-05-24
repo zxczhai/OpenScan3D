@@ -19,6 +19,8 @@
 #include <fstream>
 #include <string>
 
+
+
 #ifdef OPENMVG_USE_OPENMP
 #include <omp.h>
 #endif
@@ -49,12 +51,11 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
 {
 
 #ifdef OPENMVG_USE_OPENMP
-    int iNumThreads = 8;
+    int iNumThreads = 0;//default use MAX threads
 #endif
 
     OPENMVG_LOG_INFO
         << " You called : "
-        << "\n"
         << "ComputeFeatures Task" << "\n"
         << "--input_file " << sSfM_Data_Filename << "\n"
         << "--outdir " << sOutDir << "\n"

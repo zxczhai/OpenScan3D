@@ -15,6 +15,7 @@
 #include "openMVG/system/loggerprogress.hpp"
 
 #define _USE_EIGEN
+#define OPENMVG_USE_OPENMP
 #include "InterfaceMVS.h"
 
 #include "third_party/stlplus3/filesystemSimplified/file_system.hpp"
@@ -319,7 +320,7 @@ int ExportToOpenMVS(std::string sfmDataDir, std::string output_sceneDir, std::st
   std::string sSfM_Data_Filename = sfmDataDir+"/sfm_data.bin";
   std::string sOutFile = output_sceneDir+"/scene.mvs";
   std::string sOutDir = output_imageDir+"images";
-  int iNumThreads = 8;
+  // int iNumThreads = 8;
 
 
 
@@ -339,7 +340,8 @@ int ExportToOpenMVS(std::string sfmDataDir, std::string output_sceneDir, std::st
   }
 
   // Export OpenMVS data structure
-  if (!exportToOpenMVS(sfm_data, sOutFile, sOutDir, iNumThreads))
+  const unsigned int nb_max_thread = omp_get_max_threads();
+  if (!exportToOpenMVS(sfm_data, sOutFile, sOutDir, nb_max_thread))
   {
     OPENMVG_LOG_ERROR << "The output openMVS scene file cannot be written";
     return EXIT_FAILURE;

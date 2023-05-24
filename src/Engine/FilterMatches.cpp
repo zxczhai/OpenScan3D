@@ -61,7 +61,7 @@ int FilterMatches(std::string sfmDataDir, std::string outputDir, std::string geo
   // The input matches
   std::string sPutativeMatchesFilename = sfmDataDir+"/featurePointMatch.bin";
   // The output matches
-  std::string sFilteredMatchesFilename = sfmDataDir+"/matches_filtered.bin";
+  std::string sFilteredMatchesFilename = outputDir+"/matches_filtered.bin";
   // The input pairs
   std::string sInputPairsFilename;
   // The output pairs
