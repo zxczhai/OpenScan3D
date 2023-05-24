@@ -156,22 +156,22 @@ void MainWindow::timerSlot()
     if (Global::GetProcessIdFromName("R3D") != 0)
     {
         Global::connectEngine();
-        if (ui->label_engine->text() != u8"成功连接到R3D ")
+        if (ui->label_engine->text() != u8"R3D is connected! ")
         {
             QPalette pa;
             pa.setColor(QPalette::WindowText, Qt::green);
             ui->label_engine->setPalette(pa);
-            ui->label_engine->setText(u8"成功连接到R3D");
+            ui->label_engine->setText(u8"R3D is connected!");
         }
     }
     else
     {
-        if (ui->label_engine->text() != u8"未连接到R3D")
+        if (ui->label_engine->text() != u8"R3D is not connected!")
         {
             QPalette pa;
             pa.setColor(QPalette::WindowText, Qt::red);
             ui->label_engine->setPalette(pa);
-            ui->label_engine->setText(u8"未连接到R3D");
+            ui->label_engine->setText(u8"R3D is not connected!");
         }
     }
 }

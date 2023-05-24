@@ -35,6 +35,14 @@ void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
 {
     QString eigenMatrix, describerMethod, quality, upright, forceCompute, geometricModel, distanceRatio, forceMatch, nearest_matching_method = "AUTO", sfmEngine, isRobustTriangulation;
 
+    if (Global::GetProcessIdFromName("R3D") == 0)
+    {
+        QMessageBox::critical(this, u8"错误 ", u8"未找到R3D进程", QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+    else
+        Global::connectEngine();
+
     if (ui->lineEdit_inputDir->text() == "")
     {
         QMessageBox::critical(this, u8"错误 ", u8"未输入图片路径 ", QMessageBox::Ok, QMessageBox::Ok);
