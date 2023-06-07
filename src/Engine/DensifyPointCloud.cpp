@@ -148,7 +148,7 @@ bool Initialize(size_t argc, LPCTSTR* argv)
         ("roi-border", boost::program_options::value(&OPT::fBorderROI)->default_value(0), "add a border to the region-of-interest when cropping the scene (0 - disabled, >0 - percentage, <0 - absolute)")
         ("estimate-roi", boost::program_options::value(&OPT::nEstimateROI)->default_value(2), "estimate and set region-of-interest (0 - disabled, 1 - enabled, 2 - adaptive)")
         ("crop-to-roi", boost::program_options::value(&OPT::bCrop2ROI)->default_value(true), "crop scene using the region-of-interest")
-        ("remove-dmaps", boost::program_options::value(&bRemoveDmaps)->default_value(false), "remove depth-maps after fusion")
+        ("remove-dmaps", boost::program_options::value(&bRemoveDmaps)->default_value(true), "remove depth-maps after fusion")
         ;
 
 	// hidden options, allowed both on command line and

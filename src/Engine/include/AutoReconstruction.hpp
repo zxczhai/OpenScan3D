@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Global.h>
+#include "Global.h"
 #include <string>
 #include <dirent.h>
 #include <sys/types.h>
@@ -19,8 +19,26 @@
 #include "RefineMesh.hpp"
 #include "TextureTheMesh.hpp"
 #include <unistd.h>
+#include <cuda_runtime.h>
 uint8_t STATE_RETURN;
 
+void checkGPUExist()
+{
+    int deviceCount = 0;
+    cudaError_t error_id = cudaGetDeviceCount(&deviceCount);
+    if (error_id != cudaSuccess)
+    {
+        printf("cudaGetDeviceCount returned %d\n-> %s\n", (int)error_id, cudaGetErrorString(error_id));
+    }
+    else if (deviceCount == 0)
+    {
+        printf("No available CUDA device(s),will use CPU Mode\n");
+    }
+    else
+    {
+        printf("%d available CUDA device(s),will use GPU Mode\n", deviceCount);
+    }
+}
 int checkDirExist(std::string pathToDir)
 {
     DIR *dir;
@@ -1117,11 +1135,11 @@ void MsgProc(uint8_t msg)
         cmdCache.close();
 
         scene_dense_meshDir.append("/scene_dense.mvs");
-        char* cmd[5];
+        char *cmd[5];
         cmd[0] = "ReconstructMesh";
-        cmd[1] = (char*)scene_dense_meshDir.data();
+        cmd[1] = (char *)scene_dense_meshDir.data();
         cmd[2] = "-w";
-        cmd[3] = (char*)outputDir.data();
+        cmd[3] = (char *)outputDir.data();
         STATE_RETURN = ReconstructMesh(4, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1132,13 +1150,13 @@ void MsgProc(uint8_t msg)
         std::string scene_dense_mesh_dir = outputDir;
         scene_dense_mesh_dir.append("/scene_dense_mesh.mvs");
         cmd[0] = "RefineMesh";
-        cmd[1] = (char*)scene_dense_mesh_dir.data();
-        cmd[2] =  "--scales";
-        cmd[3] =  "1";
+        cmd[1] = (char *)scene_dense_mesh_dir.data();
+        cmd[2] = "--scales";
+        cmd[3] = "1";
         cmd[4] = "--gradient-step";
         cmd[5] = "25.05";
         cmd[6] = "-w";
-        cmd[7] = (char*)outputDir.data();
+        cmd[7] = (char *)outputDir.data();
         STATE_RETURN = RefineMesh(8, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1179,15 +1197,15 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, scene_dense_mesh_refineDir);
         getline(cmdCache, outputDir);
         cmdCache.close();
-        char* cmd[8];
+        char *cmd[8];
         scene_dense_mesh_refineDir.append("/scene_dense_mesh_refine.mvs");
         cmd[0] = "TextureMesh";
-        cmd[1] = (char*)scene_dense_mesh_refineDir.data();
-        cmd[2] =  "--decimate";
-        cmd[3] =  "0.5";
+        cmd[1] = (char *)scene_dense_mesh_refineDir.data();
+        cmd[2] = "--decimate";
+        cmd[3] = "0.5";
         cmd[4] = "-w";
-        cmd[5] = (char*)outputDir.data();
-        STATE_RETURN = TextureTheMesh(6,cmd);
+        cmd[5] = (char *)outputDir.data();
+        STATE_RETURN = TextureTheMesh(6, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("TextureTheMesh failed \n");

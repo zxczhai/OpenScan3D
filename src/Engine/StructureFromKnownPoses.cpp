@@ -307,7 +307,7 @@ int StructureFromKnownPoses(std::string sfmDataDir, std::string feature_describe
   Generate_SfM_Report(sfm_data,
                       stlplus::create_filespec(stlplus::folder_part(sOutFile), "SfMStructureFromKnownPoses_Report.html"));
 
-  if (false)
+  if (true)
   {
     // 用于优化相机参数、三维点云坐标和匹配关系，以最小化投影误差
     // Check that poses & intrinsic cover some measures (after outlier removal)
