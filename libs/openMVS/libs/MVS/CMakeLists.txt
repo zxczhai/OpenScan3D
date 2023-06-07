@@ -14,14 +14,18 @@ endif()
 
 set(CERES_LIBS "")
 if(OpenMVS_USE_CERES)
-	FIND_PACKAGE(Ceres)
-	if(CERES_FOUND)
-		include_directories(${CERES_INCLUDE_DIRS})
-		add_definitions(${CERES_DEFINITIONS})
-	else()
-		set(OpenMVS_USE_CERES OFF)
-		message("-- Can't find CERES. Continuing without it.")
-	endif()
+ 	# Add Ceres library
+ 	add_library(ceres SHARED IMPORTED)
+ 	set_target_properties(ceres PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/libs/openMVG/third_party/ceres-solver/lib/libopenMVG_ceres.a)
+	 set(CERES_INCLUDE_DIRS
+	 ${CMAKE_SOURCE_DIR}/libs/openMVG/third_party/ceres-solver/include
+	 ${CMAKE_SOURCE_DIR}/libs/openMVG/third_party/ceres-solver/internal/ceres/miniglog
+	 ${PROJECT_BINARY_DIR}/libs/openMVG/third_party/ceres-solver/config)
+ 	include_directories(${CERES_INCLUDE_DIRS})
+	
+ 	# Set the OpenMVS Ceres definitions
+ 	add_definitions(-DUSE_CERES -DCERES_GFLAGS_NAMESPACE=${GFLAGS_NAMESPACE})
+ 	list(APPEND CERES_LIBS ceres glog gflags)
 endif()
 
 # List sources files

@@ -14,7 +14,7 @@
 #include "openMVG/system/logger.hpp"
 #include "openMVG/system/loggerprogress.hpp"
 
-#define _USE_EIGEN
+// #define _USE_EIGEN
 #define OPENMVG_USE_OPENMP
 #include "InterfaceMVS.h"
 
@@ -319,7 +319,7 @@ int ExportToOpenMVS(std::string sfmDataDir, std::string output_sceneDir, std::st
 {
   std::string sSfM_Data_Filename = sfmDataDir+"/sfm_data.bin";
   std::string sOutFile = output_sceneDir+"/scene.mvs";
-  std::string sOutDir = output_imageDir+"images";
+  std::string sOutDir = output_imageDir+"/images";
   // int iNumThreads = 8;
 
 

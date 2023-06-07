@@ -35,11 +35,11 @@ SET(OpenMVS_PATCH_VERSION 0)
 SET(OpenMVS_VERSION ${OpenMVS_MAJOR_VERSION}.${OpenMVS_MINOR_VERSION}.${OpenMVS_PATCH_VERSION})
 
 # List configuration options
-SET(OpenMVS_BUILD_TOOLS ON CACHE BOOL "Build example applications")
+SET(OpenMVS_BUILD_TOOLS OFF CACHE BOOL "Build example applications")
 SET(OpenMVS_USE_NONFREE ON CACHE BOOL "Build non-free (patented) functionality")
 SET(OpenMVS_USE_OPENMP ON CACHE BOOL "Enable OpenMP library")
 SET(OpenMVS_USE_OPENGL ON CACHE BOOL "Enable OpenGL library")
-SET(OpenMVS_USE_BREAKPAD ON CACHE BOOL "Enable BreakPad library")
+SET(OpenMVS_USE_BREAKPAD OFF CACHE BOOL "Enable BreakPad library")
 SET(OpenMVS_USE_CERES OFF CACHE BOOL "Enable CERES optimization library")
 SET(OpenMVS_USE_CUDA ON CACHE BOOL "Enable CUDA library")
 SET(OpenMVS_USE_FAST_FLOAT2INT ON CACHE BOOL "Use an optimized code to convert real numbers to int")
@@ -47,7 +47,7 @@ SET(OpenMVS_USE_FAST_INVSQRT OFF CACHE BOOL "Use an optimized code to compute th
 SET(OpenMVS_USE_FAST_CBRT ON CACHE BOOL "Use an optimized code to compute the cubic root")
 SET(OpenMVS_USE_SSE ON CACHE BOOL "Enable SSE optimizations")
 SET(OpenMVS_MAX_CUDA_COMPATIBILITY OFF CACHE BOOL "Build for maximum CUDA device compatibility")
-SET(OpenMVS_ENABLE_TESTS ON CACHE BOOL "Enable test code")
+SET(OpenMVS_ENABLE_TESTS OFF CACHE BOOL "Enable test code")
 
 # Define helper functions and macros.
 INCLUDE(build/Utils.cmake)
@@ -102,6 +102,7 @@ endif()
 if(OpenMVS_USE_CUDA)
 	FIND_PACKAGE(CUDA)
 	if(CUDA_FOUND)
+		set(CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
 		ENABLE_LANGUAGE(CUDA)
 		# CUDA-11.x can not be compiled using C++14 standard on Windows
 		string(REGEX MATCH "^[0-9]+" CUDA_MAJOR ${CMAKE_CUDA_COMPILER_VERSION})
@@ -244,15 +245,15 @@ ADD_SUBDIRECTORY(libs)
 if(OpenMVS_BUILD_TOOLS)
 	ADD_SUBDIRECTORY(apps)
 endif()
-ADD_SUBDIRECTORY(docs)
+# ADD_SUBDIRECTORY(docs)
 
-if (OpenMVS_ENABLE_TESTS)
-	# enable testing functionality
-	ENABLE_TESTING()
-	# define tests
-	ADD_TEST(NAME UnitTests COMMAND $<TARGET_FILE:Tests> "0")
-	ADD_TEST(NAME PipelineTest COMMAND $<TARGET_FILE:Tests> "1")
-endif()
+# if (OpenMVS_ENABLE_TESTS)
+# 	# enable testing functionality
+# 	ENABLE_TESTING()
+# 	# define tests
+# 	ADD_TEST(NAME UnitTests COMMAND $<TARGET_FILE:Tests> "0")
+# 	ADD_TEST(NAME PipelineTest COMMAND $<TARGET_FILE:Tests> "1")
+# endif()
 
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
@@ -290,5 +291,5 @@ CONFIGURE_FILE(
 	"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
 	IMMEDIATE @ONLY)
 
-ADD_CUSTOM_TARGET(uninstall
+ADD_CUSTOM_TARGET(MVSuninstall
 	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)

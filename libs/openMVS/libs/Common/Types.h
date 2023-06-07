@@ -650,24 +650,12 @@ template<typename T>
 inline T LOG10(const T& a) {
 	return T(log10(a));
 }
-template<typename T>
+template <typename T>
 constexpr T powi(T base, unsigned exp) {
-	T result(1);
-	while (exp) {
-		if (exp & 1)
-			result *= base;
-		exp >>= 1;
-		base *= base;
-	}
-	return result;
+    return exp == 0 ? 1 : ((exp & 1) ? base * powi(base * base, exp >> 1) : powi(base * base, exp >> 1));
 }
 constexpr int log2i(unsigned val) {
-	int ret = -1;
-	while (val) {
-		val >>= 1;
-		++ret;
-	}
-	return ret;
+	return val > 1 ? 1 + log2i(val >> 1) : 0;
 }
 template <unsigned N> constexpr inline int log2i() { return 1+log2i<(N>>1)>(); }
 template <>   constexpr inline int log2i<0>() { return -1; }

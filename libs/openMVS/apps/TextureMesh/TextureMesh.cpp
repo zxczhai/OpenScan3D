@@ -32,7 +32,7 @@
 #include "../../libs/MVS/Common.h"
 #include "../../libs/MVS/Scene.h"
 #include <boost/program_options.hpp>
-
+#include "../../libs/Common/UtilCUDA.h"
 using namespace MVS;
 
 

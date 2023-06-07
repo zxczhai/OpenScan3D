@@ -79,7 +79,7 @@ int StructureFromKnownPoses(std::string sfmDataDir, std::string feature_describe
       << " #intrinsics: " << sfm_data.GetIntrinsics().size() << "\n"
       << " #tracks: " << sfm_data.GetLandmarks().size();
   // on_off
-    const bool bDirect_triangulation = (on_off == "on");
+    const bool bDirect_triangulation = false;
   // Load regions only if necessary
   std::shared_ptr<Regions_Provider> regions_provider;
 

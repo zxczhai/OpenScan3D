@@ -14,6 +14,10 @@
 #include "StructureFromKnownPoses.hpp"
 #include "ColorizedRobustTriangulation.hpp"
 #include "ExportToOpenMVS.hpp"
+#include "DensifyPointCloud.hpp"
+#include "ReconstructMesh.hpp"
+#include "RefineMesh.hpp"
+#include "TextureTheMesh.hpp"
 #include <unistd.h>
 uint8_t STATE_RETURN;
 
@@ -556,167 +560,164 @@ int ComputePairs(std::string sfmDataDir, std::string outputDir)
  * @brief 密集化点云，以得到更精细的三维模型#13
  */
 
-int DensifyPointCloud(std::string sceneDir, std::string outputDir)
-{
-    // 判断需要的文件是否存在
-    //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
-    //  {
-    //      system("echo directory not exist");
-    //      return PROCESSERROR;
-    //  }
-    ::system("echo DensifyPointCloud working.........");
-    std::string cmd = "";
-    cmd.append("../../../bin/OpenMVS/DensifyPointCloud");
-    cmd.append(" ");
-    cmd.append(sceneDir);
-    cmd.append("/");
-    cmd.append("scene.mvs");
+// int DensifyPointCloud(std::string sceneDir, std::string outputDir)
+// {
+//     // 判断需要的文件是否存在
+//     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
+//     //  {
+//     //      system("echo directory not exist");
+//     //      return PROCESSERROR;
+//     //  }
+//     std::string cmd = "";
+//     cmd.append(sceneDir);
+//     cmd.append("/");
+//     cmd.append("scene.mvs");
 
-    cmd.append(" ");
-    cmd.append("--dense-config-file");
-    cmd.append(" ");
-    cmd.append("Densify.ini");
+//     cmd.append(" ");
+//     cmd.append("--dense-config-file");
+//     cmd.append(" ");
+//     cmd.append("Densify.ini");
 
-    cmd.append(" ");
-    cmd.append("--resolution-level");
-    cmd.append(" ");
-    cmd.append("1");
+//     cmd.append(" ");
+//     cmd.append("--resolution-level");
+//     cmd.append(" ");
+//     cmd.append("1");
 
-    cmd.append(" ");
-    cmd.append("--number-views");
-    cmd.append(" ");
-    cmd.append("-8");
+//     cmd.append(" ");
+//     cmd.append("--number-views");
+//     cmd.append(" ");
+//     cmd.append("-8");
 
-    cmd.append(" ");
-    cmd.append("-w");
-    cmd.append(" ");
-    cmd.append(outputDir);
+//     cmd.append(" ");
+//     cmd.append("-w");
+//     cmd.append(" ");
+//     cmd.append(outputDir);
 
-    if (system(cmd.c_str()) != 0)
-    {
-        return EXIT_FAILURE;
-    }
-    else
-        system("echo DensifyPointCloud Successfully.........");
-    return EXIT_SUCCESS;
-}
+//     if (system(cmd.c_str()) != 0)
+//     {
+//         return EXIT_FAILURE;
+//     }
+//     else
+//         system("echo DensifyPointCloud Successfully.........");
+//     return EXIT_SUCCESS;
+// }
 /**
  * @brief  基于点云重建网格模型#14
  */
 
-int ReconstructTheMesh(std::string scene_denseDir, std::string outputDir)
-{
-    // 判断需要的文件是否存在
-    //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
-    //  {
-    //      system("echo directory not exist");
-    //      return PROCESSERROR;
-    //  }
-    system("echo ReconstructMesh working.........");
-    std::string cmd = "";
-    cmd.append("../../../bin/OpenMVS/ReconstructMesh");
-    cmd.append(" ");
-    cmd.append(scene_denseDir);
-    cmd.append("/");
-    cmd.append("scene_dense.mvs");
+// int ReconstructTheMesh(std::string scene_denseDir, std::string outputDir)
+// {
+//     // 判断需要的文件是否存在
+//     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
+//     //  {
+//     //      system("echo directory not exist");
+//     //      return PROCESSERROR;
+//     //  }
+//     system("echo ReconstructMesh working.........");
+//     std::string cmd = "";
+//     cmd.append("../../../bin/OpenMVS/ReconstructMesh");
+//     cmd.append(" ");
+//     cmd.append(scene_denseDir);
+//     cmd.append("/");
+//     cmd.append("scene_dense.mvs");
 
-    cmd.append(" ");
-    cmd.append("-w");
-    cmd.append(" ");
-    cmd.append(outputDir);
+//     cmd.append(" ");
+//     cmd.append("-w");
+//     cmd.append(" ");
+//     cmd.append(outputDir);
 
-    if (system(cmd.c_str()) != 0)
-    {
-        return EXIT_FAILURE;
-    }
-    else
-        system("echo ReconstructMesh Successfully.........");
-    return EXIT_SUCCESS;
-}
+//     if (system(cmd.c_str()) != 0)
+//     {
+//         return EXIT_FAILURE;
+//     }
+//     else
+//         system("echo ReconstructMesh Successfully.........");
+//     return EXIT_SUCCESS;
+// }
 
 /**
  * @brief   对网格模型进行细化，使其更加精细#15
  */
 
-int RefineTheMesh(std::string scene_dense_meshDir, std::string outputDir)
-{
-    // 判断需要的文件是否存在
-    //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
-    //  {
-    //      system("echo directory not exist");
-    //      return PROCESSERROR;
-    //  }
-    system("echo RefineTheMesh working.........");
-    std::string cmd = "";
-    cmd.append("../../../bin/OpenMVS/RefineMesh");
+// int RefineTheMesh(std::string scene_dense_meshDir, std::string outputDir)
+// {
+//     // 判断需要的文件是否存在
+//     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
+//     //  {
+//     //      system("echo directory not exist");
+//     //      return PROCESSERROR;
+//     //  }
+//     system("echo RefineTheMesh working.........");
+//     std::string cmd = "";
+//     cmd.append("../../../bin/OpenMVS/RefineMesh");
 
-    cmd.append(" ");
-    cmd.append(scene_dense_meshDir);
-    cmd.append("/");
-    cmd.append("scene_dense_mesh.mvs");
+//     cmd.append(" ");
+//     cmd.append(scene_dense_meshDir);
+//     cmd.append("/");
+//     cmd.append("scene_dense_mesh.mvs");
 
-    cmd.append(" ");
-    cmd.append("--scales");
-    cmd.append(" ");
-    cmd.append("1");
+//     cmd.append(" ");
+//     cmd.append("--scales");
+//     cmd.append(" ");
+//     cmd.append("1");
 
-    cmd.append(" ");
-    cmd.append("--gradient-step");
-    cmd.append(" ");
-    cmd.append("25.05");
+//     cmd.append(" ");
+//     cmd.append("--gradient-step");
+//     cmd.append(" ");
+//     cmd.append("25.05");
 
-    cmd.append(" ");
-    cmd.append("-w");
-    cmd.append(" ");
-    cmd.append(outputDir);
+//     cmd.append(" ");
+//     cmd.append("-w");
+//     cmd.append(" ");
+//     cmd.append(outputDir);
 
-    if (system(cmd.c_str()) != 0)
-    {
-        return EXIT_FAILURE;
-    }
-    else
-        system("echo RefineTheMesh Successfully.........");
-    return EXIT_SUCCESS;
-}
+//     if (system(cmd.c_str()) != 0)
+//     {
+//         return EXIT_FAILURE;
+//     }
+//     else
+//         system("echo RefineTheMesh Successfully.........");
+//     return EXIT_SUCCESS;
+// }
 
 /**
  * @brief  为网格模型添加纹理信息，以提高视觉效果#16
  */
-int TextureTheMesh(std::string scene_dense_mesh_refineDir, std::string outputDir)
-{
-    // 判断需要的文件是否存在
-    //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
-    //  {
-    //      system("echo directory not exist");
-    //      return PROCESSERROR;
-    //  }
-    system("echo TextureTheMesh working.........");
-    std::string cmd = "";
-    cmd.append("../../../bin/OpenMVS/TextureMesh");
+// int TextureTheMesh(std::string scene_dense_mesh_refineDir, std::string outputDir)
+// {
+//     // 判断需要的文件是否存在
+//     //  if(checkDirExist(sfmDataDir)==PROCESSERROR || checkDirExist(outputDir)==PROCESSERROR)
+//     //  {
+//     //      system("echo directory not exist");
+//     //      return PROCESSERROR;
+//     //  }
+//     system("echo TextureTheMesh working.........");
+//     std::string cmd = "";
+//     cmd.append("../../bin/OpenMVS/TextureMesh");
 
-    cmd.append(" ");
-    cmd.append(scene_dense_mesh_refineDir);
-    cmd.append("/");
-    cmd.append("scene_dense_mesh_refine.mvs");
+//     cmd.append(" ");
+//     cmd.append(scene_dense_mesh_refineDir);
+//     cmd.append("/");
+//     cmd.append("scene_dense_mesh_refine.mvs");
 
-    cmd.append(" ");
-    cmd.append("--decimate");
-    cmd.append(" ");
-    cmd.append("0.5");
+//     cmd.append(" ");
+//     cmd.append("--decimate");
+//     cmd.append(" ");
+//     cmd.append("0.5");
 
-    cmd.append(" ");
-    cmd.append("-w");
-    cmd.append(" ");
-    cmd.append(outputDir);
+//     cmd.append(" ");
+//     cmd.append("-w");
+//     cmd.append(" ");
+//     cmd.append(outputDir);
 
-    if (system(cmd.c_str()) != 0)
-    {
-        return EXIT_FAILURE;
-    }
-    else
-        system("echo TextureTheMesh Successfully.........");
-    return EXIT_SUCCESS;
-}
+//     if (system(cmd.c_str()) != 0)
+//     {
+//         return EXIT_FAILURE;
+//     }
+//     else
+//         system("echo TextureTheMesh Successfully.........");
+//     return EXIT_SUCCESS;
+// }
 
 /**
  * @brief   估计视差图，以便进行后续的深度图融合#17
@@ -1062,21 +1063,28 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, sceneDir);
         getline(cmdCache, outputDir);
         cmdCache.close();
-
-        STATE_RETURN = DensifyPointCloud(sceneDir, outputDir);
+        sceneDir.append("/scene.mvs");
+        char *cmd[10];
+        cmd[0] = "DensifyPointCloud";
+        cmd[1] = (char *)sceneDir.data();
+        cmd[2] = "--dense-config-file";
+        cmd[3] = "Densify.ini";
+        cmd[4] = "--resolution-level";
+        cmd[5] = "1";
+        cmd[6] = "--number-views";
+        cmd[7] = "-8";
+        cmd[8] = "-w";
+        cmd[9] = (char *)outputDir.data();
+        std::cout << cmd[0] << endl;
+        STATE_RETURN = DensifyPointCloud(10, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("DensifyPointCloud failed \n");
             Global::process = PROCESSERROR;
             break;
         }
-        STATE_RETURN = ReconstructTheMesh(outputDir, outputDir);
-        if (STATE_RETURN == EXIT_FAILURE)
-        {
-            printf("ReconstructTheMesh failed \n");
-            Global::process = PROCESSERROR;
-            break;
-        }
+        std::string sceneDenseDir = outputDir;
+        printf("==========Task Finished, Please Do The Next Step==========\n");
         break;
     }
     case CMD_RECONSTRUCTMESH:
@@ -1108,14 +1116,37 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, outputDir);
         cmdCache.close();
 
-        STATE_RETURN = RefineTheMesh(scene_dense_meshDir, outputDir);
+        scene_dense_meshDir.append("/scene_dense.mvs");
+        char* cmd[5];
+        cmd[0] = "ReconstructMesh";
+        cmd[1] = (char*)scene_dense_meshDir.data();
+        cmd[2] = "-w";
+        cmd[3] = (char*)outputDir.data();
+        STATE_RETURN = ReconstructMesh(4, cmd);
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("ReconstructTheMesh failed \n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        std::string scene_dense_mesh_dir = outputDir;
+        scene_dense_mesh_dir.append("/scene_dense_mesh.mvs");
+        cmd[0] = "RefineMesh";
+        cmd[1] = (char*)scene_dense_mesh_dir.data();
+        cmd[2] =  "--scales";
+        cmd[3] =  "1";
+        cmd[4] = "--gradient-step";
+        cmd[5] = "25.05";
+        cmd[6] = "-w";
+        cmd[7] = (char*)outputDir.data();
+        STATE_RETURN = RefineMesh(8, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("RefineTheMesh failed \n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
-
+        printf("==========Task Finished, Please Do The Next Step==========\n");
         break;
     }
 
@@ -1148,15 +1179,22 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, scene_dense_mesh_refineDir);
         getline(cmdCache, outputDir);
         cmdCache.close();
-
-        STATE_RETURN = TextureTheMesh(scene_dense_mesh_refineDir, outputDir);
+        char* cmd[8];
+        scene_dense_mesh_refineDir.append("/scene_dense_mesh_refine.mvs");
+        cmd[0] = "TextureMesh";
+        cmd[1] = (char*)scene_dense_mesh_refineDir.data();
+        cmd[2] =  "--decimate";
+        cmd[3] =  "0.5";
+        cmd[4] = "-w";
+        cmd[5] = (char*)outputDir.data();
+        STATE_RETURN = TextureTheMesh(6,cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("TextureTheMesh failed \n");
-            // Global::process = PROCESSERROR;
+            Global::process = PROCESSERROR;
             break;
         }
-
+        printf("==========Task Finished, You Can View The Model Now==========\n");
         break;
     }
 
@@ -1326,35 +1364,35 @@ void MsgProc(uint8_t msg)
         }
         printf("=============ExportToOpenMVS Successfully===========\n");
 
-        STATE_RETURN = DensifyPointCloud(inputDir, outputDir);
-        if (STATE_RETURN == EXIT_FAILURE)
-        {
-            printf("DensifyPointCloud failed \n");
-            Global::process = PROCESSERROR;
-            break;
-        }
-        STATE_RETURN = ReconstructTheMesh(outputDir, outputDir);
-        if (STATE_RETURN == EXIT_FAILURE)
-        {
-            printf("ReconstructTheMesh failed \n");
-            Global::process = PROCESSERROR;
-            break;
-        }
-        STATE_RETURN = RefineTheMesh(inputDir, outputDir);
-        if (STATE_RETURN == EXIT_FAILURE)
-        {
-            printf("RefineTheMesh failed \n");
-            Global::process = PROCESSERROR;
-            break;
-        }
+        // STATE_RETURN = DensifyPointCloud(inputDir, outputDir);
+        // if (STATE_RETURN == EXIT_FAILURE)
+        // {
+        //     printf("DensifyPointCloud failed \n");
+        //     Global::process = PROCESSERROR;
+        //     break;
+        // }
+        // STATE_RETURN = ReconstructMesh(outputDir, outputDir);
+        // if (STATE_RETURN == EXIT_FAILURE)
+        // {
+        //     printf("ReconstructTheMesh failed \n");
+        //     Global::process = PROCESSERROR;
+        //     break;
+        // }
+        // STATE_RETURN = RefineMesh(inputDir, outputDir);
+        // if (STATE_RETURN == EXIT_FAILURE)
+        // {
+        //     printf("RefineTheMesh failed \n");
+        //     Global::process = PROCESSERROR;
+        //     break;
+        // }
 
-        STATE_RETURN = TextureTheMesh(inputDir, outputDir);
-        if (STATE_RETURN == EXIT_FAILURE)
-        {
-            printf("TextureTheMesh failed \n");
-            Global::process = PROCESSERROR;
-            break;
-        }
+        // STATE_RETURN = TextureTheMesh(inputDir, outputDir);
+        // if (STATE_RETURN == EXIT_FAILURE)
+        // {
+        //     printf("TextureTheMesh failed \n");
+        //     Global::process = PROCESSERROR;
+        //     break;
+        // }
     }
     default:
         break;

@@ -144,7 +144,7 @@ int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::st
 
 
   const bool b_Use_pose_prior = false;
-  OPENMVG_LOG_INFO << " You called : " << IntrinsicsAnalysis
+  OPENMVG_LOG_INFO << " You called : " << "IntrinsicsAnalysis"
     << "\n--imageDirectory " << sImageDir
     << "\n--sensorWidthDatabase " << sfileDatabase
     << "\n--outputDirectory " << sOutputDir

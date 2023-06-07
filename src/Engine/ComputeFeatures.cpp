@@ -19,7 +19,7 @@
 #include <fstream>
 #include <string>
 
-
+#define OPENMVG_USE_OPENMP
 
 #ifdef OPENMVG_USE_OPENMP
 #include <omp.h>
@@ -52,6 +52,7 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
 
 #ifdef OPENMVG_USE_OPENMP
     int iNumThreads = 0;//default use MAX threads
+    const unsigned int nb_max_thread = omp_get_max_threads();
 #endif
 
     OPENMVG_LOG_INFO
@@ -64,7 +65,7 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
         << "--describerPreset " << (sFeaturePreset.empty() ? "NORMAL" : sFeaturePreset) << "\n"
         << "--force " << bForce << "\n"
 #ifdef OPENMVG_USE_OPENMP
-        << "--numThreads " << iNumThreads << "\n"
+        << "--numThreads " << nb_max_thread << "\n"
 #endif
         ;
 
@@ -186,7 +187,7 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
         // Use a boolean to track if we must stop feature extraction
         std::atomic<bool> preemptive_exit(false);
 #ifdef OPENMVG_USE_OPENMP
-        const unsigned int nb_max_thread = omp_get_max_threads();
+        
 
         if (iNumThreads > 0)
         {
@@ -208,7 +209,7 @@ int ComputeFeatures(std::string sSfM_Data_Filename, std::string sOutDir, std::st
                 sView_filename = stlplus::create_filespec(sfm_data.s_root_path, view->s_Img_path),
                 sFeat = stlplus::create_filespec(sOutDir, stlplus::basename_part(sView_filename), "feat"),
                 sDesc = stlplus::create_filespec(sOutDir, stlplus::basename_part(sView_filename), "desc");
-                std::cout<<"Creating"<<sFeat<<"&&"<<sDesc<<std::endl;
+                OPENMVG_LOG_INFO<<"Creating: "<<sFeat<<"&& "<<sDesc;
             // If features or descriptors file are missing, compute them
             if (!preemptive_exit && (bForce || !stlplus::file_exists(sFeat) || !stlplus::file_exists(sDesc)))
             {

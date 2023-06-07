@@ -7,7 +7,7 @@
 
 #ifndef  __SEACAVE_CUDA_H__
 #define  __SEACAVE_CUDA_H__
-
+#define _USE_CUDA
 #ifdef _USE_CUDA
 
 

@@ -4,7 +4,9 @@ else()
 	FILE(GLOB LIBRARY_FILES_C "*.cpp")
 endif()
 FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
-
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 cxx_executable_with_flags(TextureMesh "Apps" "${cxx_default}" "MVS;${OpenMVS_EXTRA_LIBS}" ${LIBRARY_FILES_C} ${LIBRARY_FILES_H})
 
 # Install

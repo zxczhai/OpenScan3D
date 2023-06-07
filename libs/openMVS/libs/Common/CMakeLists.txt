@@ -2,6 +2,7 @@
 FILE(GLOB LIBRARY_FILES_C "*.cpp")
 FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
 
+
 cxx_library_with_type(Common "Libs" "" "${cxx_default}"
 	${LIBRARY_FILES_C} ${LIBRARY_FILES_H}
 )
@@ -12,7 +13,13 @@ IF(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16.0)
 endif()
 
 # Link its dependencies
-TARGET_LINK_LIBRARIES(Common ${Boost_LIBRARIES} ${OpenCV_LIBS})
+find_package(CUDA)
+set(CUDA_INCLUDE_DIRS /usr/local/cuda/include)
+message(WARNING ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+target_include_directories(Common
+  PRIVATE ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES} ${CUDA_INCLUDE_DIRS}
+  )
+TARGET_LINK_LIBRARIES(Common ${Boost_LIBRARIES} ${OpenCV_LIBS} )
 
 # Install
 SET_TARGET_PROPERTIES(Common PROPERTIES
