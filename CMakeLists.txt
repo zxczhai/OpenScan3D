@@ -5,6 +5,7 @@ project(OpenScan3D)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/libs/openMVG)
 add_subdirectory(${PROJECT_SOURCE_DIR}/libs/openMVS)
+add_subdirectory(${PROJECT_SOURCE_DIR}/libs/obj2stl)
 # 添加子目录 Engine 和 ViewRender
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/Engine)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/GUI)

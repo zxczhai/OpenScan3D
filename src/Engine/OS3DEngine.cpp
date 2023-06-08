@@ -27,13 +27,13 @@ int main()
     congmsgbuf mymsg;
     mymsg.mtype = 1;
 
-    while (1)
-    {
-        int ret = rcvMessage(mymsg);
-        if (0 == ret)
-        {
-            MsgProc(mymsg.data[0]);
-        }
-    }
+    // while (1)
+    // {
+    //     int ret = rcvMessage(mymsg);
+    //     if (0 == ret)
+    //     {
+    //         MsgProc(mymsg.data[0]);
+    //     }
+    // }
     return 0;
 }
