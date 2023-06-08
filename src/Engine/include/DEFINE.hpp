@@ -4,6 +4,6 @@
 /**
  * openMVS define
 */
-#define _USE_CUDA
-#define _USE_OPENMP
+// #define _USE_CUDA
+// #define _USE_OPENMP
 #endif
