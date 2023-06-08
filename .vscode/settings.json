@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/zxc/3DReconstruction",
+    "cmake.sourceDirectory": "/home/cjy/OpenScan3D",
     "files.associations": {
         "ostream": "cpp",
         "iostream": "cpp",
@@ -77,6 +77,8 @@
         "variant": "cpp",
         "bit": "cpp",
         "core": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "dense": "cpp",
+        "sparsecore": "cpp"
     }
 }

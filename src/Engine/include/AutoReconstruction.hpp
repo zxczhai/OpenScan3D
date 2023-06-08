@@ -20,12 +20,13 @@
 #include "TextureTheMesh.hpp"
 #include "OBJ2STL.hpp"
 #include <unistd.h>
-#include <cuda_runtime.h>
+#include "UtilCUDA.h"
 uint8_t STATE_RETURN;
 
 void checkGPUExist()
 {
     int deviceCount = 0;
+    #ifdef _USE_CUDA
     cudaError_t error_id = cudaGetDeviceCount(&deviceCount);
     if (error_id != cudaSuccess)
     {
@@ -33,12 +34,15 @@ void checkGPUExist()
     }
     else if (deviceCount == 0)
     {
-        printf("No available CUDA device(s),will use CPU Mode\n");
+        printf("No available CUDA device(s),Please check&will use CPU Mode\n");
     }
     else
     {
         printf("%d available CUDA device(s),will use GPU Mode\n", deviceCount);
     }
+    #else
+        printf("No available CUDA device(s),will use CPU Mode\n");
+    #endif
 }
 int checkDirExist(std::string pathToDir)
 {

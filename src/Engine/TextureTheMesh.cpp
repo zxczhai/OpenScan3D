@@ -33,6 +33,7 @@
 #include "MVS/Scene.h"
 #include <boost/program_options.hpp>
 #include "TextureTheMesh.hpp"
+#include "UtilCUDA.h"
 using namespace MVS;
 
 
