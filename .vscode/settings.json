@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/cjy/OpenScan3D",
+    "cmake.sourceDirectory": "/home/zxc/3DReconstruction",
     "files.associations": {
         "ostream": "cpp",
         "iostream": "cpp",

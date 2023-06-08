@@ -55,7 +55,7 @@ bool savePid()
 {
     int tid = getpid();
     if (checkDirExist("/tmp/.OpenScan3D") == false)
-        mkdir("/tmp/.OpenScan3D", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        mkdir("/tmp/.OpenScan3D", S_IRWXU | S_IRWXG | S_IRWXO);
     ofstream file;
     file.open("/tmp/.OpenScan3D/ProgramCache.tmp", ios::out | ios::trunc);
     if (!file.is_open())
