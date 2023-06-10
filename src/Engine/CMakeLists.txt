@@ -71,6 +71,8 @@ FIND_PACKAGE(CUDA)
 			message("Working around windows build failure with visual studio. Visual studio 16.10 introduced a compiler bug with compilng CUDA code with C++14. Set the cuda standard to 17 as a workaround.")
 			set(CMAKE_CUDA_STANDARD 17)
 		endif()
+  else()
+    MESSAGE("-- Can't find CUDA. Continuing without it.")
   endif()
 # ==============================================================================
 set(OPENMVS_LIBRARIES IO Math MVS Common)
