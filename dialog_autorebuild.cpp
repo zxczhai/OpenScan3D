@@ -1,6 +1,6 @@
 #include "dialog_autorebuild.h"
 #include "ui_dialog_autorebuild.h"
-
+#include "message.hpp"
 Dialog_AutoRebuild::Dialog_AutoRebuild(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog_AutoRebuild)
@@ -13,18 +13,6 @@ Dialog_AutoRebuild::~Dialog_AutoRebuild()
     delete ui;
 }
 
-void Dialog_AutoRebuild::on_pushButton_browseInputDir_clicked()
-{
-    Global::autoRebuildInPutDir = QFileDialog::getExistingDirectory(this, u8"浏览源图片文件夹 ", "", NULL);
-    ui->lineEdit_inputDir->setText(Global::autoRebuildInPutDir);
-}
-
-void Dialog_AutoRebuild::on_pushButton_browseDatabaseDir_clicked()
-{
-    Global::sensorWidthDatabaseDir = QFileDialog::getOpenFileName(this, tr("选择相机数据库文件"), QDir::homePath(), tr("All files(*.*)"));
-    ui->lineEdit_databaseDir->setText(Global::sensorWidthDatabaseDir);
-}
-
 void Dialog_AutoRebuild::on_pushButton_browseOutputDir_clicked()
 {
     Global::autoRebuildOutputDir = QFileDialog::getExistingDirectory(this, u8"浏览结果输出文件夹", "", NULL);
@@ -33,7 +21,7 @@ void Dialog_AutoRebuild::on_pushButton_browseOutputDir_clicked()
 
 void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
 {
-    QString eigenMatrix, describerMethod, quality, upright, forceCompute, geometricModel, distanceRatio, forceMatch, nearest_matching_method = "AUTO", sfmEngine, isRobustTriangulation;
+    QString describerMethod, quality, upright, forceCompute, geometricModel, distanceRatio, forceMatch, nearest_matching_method = "AUTO", sfmEngine, isRobustTriangulation;
 
     if (Global::GetProcessIdFromName("R3D") == 0)
     {
@@ -43,41 +31,13 @@ void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
     else
         Global::connectEngine();
 
-    if (ui->lineEdit_inputDir->text() == "")
-    {
-        QMessageBox::critical(this, u8"错误 ", u8"未输入图片路径 ", QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
-
-    if (ui->lineEdit_databaseDir->text() == "")
-    {
-        QMessageBox::critical(this, u8"错误 ", u8"未选择相机数据库文件 ", QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
-
     if (ui->lineEdit_OutputDir->text() == "")
     {
         QMessageBox::critical(this, u8"错误 ", u8"未输入输出路径 ", QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
 
-    if (ui->lineEdit_eigenMatrix->text() == "")
-    {
-        if (QMessageBox::warning(this, u8"未输入本征矩阵 ", u8"忽略本征矩阵参数 ", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) != QMessageBox::Yes)
-        {
-            return;
-        }
-        else
-            eigenMatrix = "NULL";
-    }
-    else
-        eigenMatrix = ui->lineEdit_eigenMatrix->text();
-
-    Global::autoRebuildInPutDir = ui->lineEdit_inputDir->text();
-
     Global::autoRebuildOutputDir = ui->lineEdit_OutputDir->text();
-
-    Global::sensorWidthDatabaseDir = ui->lineEdit_databaseDir->text();
 
     switch (ui->comboBox_describer->currentIndex())
     {
@@ -211,13 +171,13 @@ void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
     {
         QString head = "CMD_FULLAUTO\n";
         cmdcache.write(head.toUtf8());
-        cmdcache.write(Global::autoRebuildInPutDir.toUtf8());
+        cmdcache.write(Global::imagesInputDir.toUtf8());
         cmdcache.write("\n");
         cmdcache.write(Global::sensorWidthDatabaseDir.toUtf8());
         cmdcache.write("\n");
         cmdcache.write(Global::autoRebuildOutputDir.toUtf8());
         cmdcache.write("\n");
-        cmdcache.write(eigenMatrix.toUtf8());
+        cmdcache.write(Global::eigenMatrix.toUtf8());
         cmdcache.write("\n");
         cmdcache.write(describerMethod.toUtf8());
         cmdcache.write("\n");
@@ -245,6 +205,11 @@ void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
         cmdcache.write("\n");
         cmdcache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成", QMessageBox::Yes);
+        congmsgbuf msg;
+        msg.mtype = 1;
+        msg.data[0] = CMD_FULLAUTO;
+        sendMessage(msg);
+        Global::autoTasking = true;
         this->close();
     }
     else

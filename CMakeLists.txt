@@ -13,6 +13,8 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(X11 REQUIRED)
 
+include_directories(${EXIV2_INCLUDE_DIRS})
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -32,6 +34,8 @@ set(PROJECT_SOURCES
         global.cpp global.h
         message.hpp
         dialog_autorebuild.cpp dialog_autorebuild.h dialog_autorebuild.ui
+        dialog_importvideoframes.cpp dialog_importvideoframes.h dialog_importvideoframes.ui
+        dialog_addpictures.cpp dialog_addpictures.h dialog_addpictures.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -59,6 +63,7 @@ endif()
 
 target_link_libraries(OpenScan3D PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(OpenScan3D PUBLIC ${X11_LIBRARIES})
+target_include_directories(OpenScan3D PRIVATE ${EXIV2_INCLUDE_DIRS})
 
 set_target_properties(OpenScan3D PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

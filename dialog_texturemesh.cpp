@@ -3,7 +3,7 @@
 #include "message.hpp"
 #include <QProcess>
 Dialog_TextureMesh::Dialog_TextureMesh(QWidget *parent) : QDialog(parent),
-                                                          ui(new Ui::Dialog_TextureMesh)
+    ui(new Ui::Dialog_TextureMesh)
 {
     ui->setupUi(this);
 }
@@ -74,6 +74,7 @@ void Dialog_TextureMesh::on_btn_CONFIRM_clicked()
         msg.mtype = 1;
         msg.data[0] = CMD_TEXTUREMESH;
         sendMessage(msg);
+        Global::tasking = true;
         this->close();
         // rcvMessage(msg);
         // QList<qint64> pidlist;

@@ -74,6 +74,7 @@ void Dialog_TriMeshRecon::on_btn_CONFIRM_clicked()
         msg.mtype = 1;
         msg.data[0] = CMD_RECONSTRUCTMESH;
         sendMessage(msg);
+        Global::tasking = true;
         this->close();
     }
     else

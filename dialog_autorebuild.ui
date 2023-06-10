@@ -7,52 +7,12 @@
     <x>0</x>
     <y>0</y>
     <width>986</width>
-    <height>445</height>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>420</x>
-     <y>0</y>
-     <width>122</width>
-     <height>141</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>源数据参数设置：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>图片文件位置：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>相机数据库文件：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>相机本征矩阵：</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="verticalLayoutWidget_3">
    <property name="geometry">
     <rect>
@@ -124,8 +84,8 @@
   <widget class="QWidget" name="verticalLayoutWidget_4">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>310</y>
+     <x>430</x>
+     <y>10</y>
      <width>137</width>
      <height>101</height>
     </rect>
@@ -325,8 +285,8 @@
   <widget class="QComboBox" name="comboBox_sfmEngine">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>350</y>
+     <x>570</x>
+     <y>50</y>
      <width>241</width>
      <height>25</height>
     </rect>
@@ -355,8 +315,8 @@
   <widget class="QComboBox" name="comboBox_isRobustTriangulation">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>380</y>
+     <x>530</x>
+     <y>80</y>
      <width>71</width>
      <height>25</height>
     </rect>
@@ -372,58 +332,11 @@
     </property>
    </item>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_5">
-   <property name="geometry">
-    <rect>
-     <x>540</x>
-     <y>30</y>
-     <width>331</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLineEdit" name="lineEdit_inputDir"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="lineEdit_databaseDir"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="lineEdit_eigenMatrix"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_browseDatabaseDir">
-   <property name="geometry">
-    <rect>
-     <x>890</x>
-     <y>80</y>
-     <width>60</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>浏览</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_browseInputDir">
-   <property name="geometry">
-    <rect>
-     <x>890</x>
-     <y>40</y>
-     <width>60</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>浏览</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btn_CANCEL">
    <property name="geometry">
     <rect>
-     <x>780</x>
-     <y>310</y>
+     <x>750</x>
+     <y>220</y>
      <width>80</width>
      <height>60</height>
     </rect>
@@ -436,7 +349,7 @@
    <property name="geometry">
     <rect>
      <x>430</x>
-     <y>190</y>
+     <y>140</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -449,7 +362,7 @@
    <property name="geometry">
     <rect>
      <x>890</x>
-     <y>200</y>
+     <y>150</y>
      <width>61</width>
      <height>25</height>
     </rect>
@@ -462,7 +375,7 @@
    <property name="geometry">
     <rect>
      <x>540</x>
-     <y>200</y>
+     <y>150</y>
      <width>321</width>
      <height>25</height>
     </rect>
@@ -471,27 +384,14 @@
   <widget class="QPushButton" name="btn_CONFIRM">
    <property name="geometry">
     <rect>
-     <x>530</x>
-     <y>310</y>
+     <x>460</x>
+     <y>220</y>
      <width>80</width>
      <height>60</height>
     </rect>
    </property>
    <property name="text">
     <string>确定</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_16">
-   <property name="geometry">
-    <rect>
-     <x>540</x>
-     <y>150</y>
-     <width>211</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>输入格式: f;0;ppx;0;f;ppy;0;0;1</string>
    </property>
   </widget>
  </widget>

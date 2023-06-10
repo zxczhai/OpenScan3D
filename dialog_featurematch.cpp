@@ -3,7 +3,7 @@
 #include "message.hpp"
 #include <QProcess>
 Dialog_FeatureMatch::Dialog_FeatureMatch(QWidget *parent) : QDialog(parent),
-                                                            ui(new Ui::Dialog_FeatureMatch)
+    ui(new Ui::Dialog_FeatureMatch)
 {
     ui->setupUi(this);
 }
@@ -11,18 +11,6 @@ Dialog_FeatureMatch::Dialog_FeatureMatch(QWidget *parent) : QDialog(parent),
 Dialog_FeatureMatch::~Dialog_FeatureMatch()
 {
     delete ui;
-}
-
-void Dialog_FeatureMatch::on_pushButton_browseInputDir_clicked()
-{
-    Global::imagesInputDir = QFileDialog::getExistingDirectory(this, u8"浏览图片文件夹 ", "", NULL);
-    ui->lineEdit_inputDir->setText(Global::imagesInputDir);
-}
-
-void Dialog_FeatureMatch::on_pushButton_browseDatabaseDir_clicked()
-{
-    Global::sensorWidthDatabaseDir = QFileDialog::getOpenFileName(this, tr("选择相机数据库文件"), QDir::homePath(), tr("All files(*.*)"));
-    ui->lineEdit_databaseDir->setText(Global::sensorWidthDatabaseDir);
 }
 
 void Dialog_FeatureMatch::on_pushButton_browseOutputDir_clicked()
@@ -33,7 +21,7 @@ void Dialog_FeatureMatch::on_pushButton_browseOutputDir_clicked()
 
 void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
 {
-    QString eigenMatrix, imagesInputDir, matchesOutputDir, sensorWidthDatabaseDir, describerMethod, quality, upright, forceCompute, geometricModel, distanceRatio, forceMatch, nearest_matching_method = "AUTO";
+    QString  describerMethod, quality, upright, forceCompute, geometricModel, distanceRatio, forceMatch, nearest_matching_method = "AUTO";
 
     if (Global::GetProcessIdFromName("R3D") == 0)
     {
@@ -43,44 +31,13 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
     else
         Global::connectEngine();
 
-    if (ui->lineEdit_inputDir->text() == "")
-    {
-        QMessageBox::critical(this, u8"错误 ", u8"未输入图片路径 ", QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
-
-    if (ui->lineEdit_databaseDir->text() == "")
-    {
-        QMessageBox::critical(this, u8"错误 ", u8"未选择相机数据库文件 ", QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
-
     if (ui->lineEdit_OutputDir->text() == "")
     {
         QMessageBox::critical(this, u8"错误 ", u8"未输入输出路径 ", QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
 
-    if (ui->lineEdit_eigenMatrix->text() == "")
-    {
-        if (QMessageBox::warning(this, u8"未输入本征矩阵 ", u8"忽略本征矩阵参数 ", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) != QMessageBox::Yes)
-        {
-            return;
-        }
-        else
-            eigenMatrix = "NULL";
-    }
-    else
-        eigenMatrix = ui->lineEdit_eigenMatrix->text();
-
-    imagesInputDir = ui->lineEdit_inputDir->text();
-    Global::imagesInputDir = imagesInputDir;
-
-    matchesOutputDir = ui->lineEdit_OutputDir->text();
-    Global::matchesOutputDir = matchesOutputDir;
-
-    sensorWidthDatabaseDir = ui->lineEdit_databaseDir->text();
-    Global::sensorWidthDatabaseDir = sensorWidthDatabaseDir;
+    Global::matchesOutputDir = ui->lineEdit_OutputDir->text();
 
     switch (ui->comboBox_describer->currentIndex())
     {
@@ -182,13 +139,13 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
     {
         QString head = "matchfeature\n";
         cmdcache.write(head.toUtf8());
-        cmdcache.write(imagesInputDir.toUtf8());
+        cmdcache.write(Global::imagesInputDir.toUtf8());
         cmdcache.write("\n");
-        cmdcache.write(sensorWidthDatabaseDir.toUtf8());
+        cmdcache.write(Global::sensorWidthDatabaseDir.toUtf8());
         cmdcache.write("\n");
-        cmdcache.write(matchesOutputDir.toUtf8());
+        cmdcache.write(Global::matchesOutputDir.toUtf8());
         cmdcache.write("\n");
-        cmdcache.write(eigenMatrix.toUtf8());
+        cmdcache.write(Global::eigenMatrix.toUtf8());
         cmdcache.write("\n");
         cmdcache.write(describerMethod.toUtf8());
         cmdcache.write("\n");
@@ -212,6 +169,7 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
         msg.mtype = 1;
         msg.data[0] = CMD_MATCHFEATURES;
         sendMessage(msg);
+        Global::tasking = true;
         this->close();
         // rcvMessage(msg);
         // QList<qint64> pidlist;

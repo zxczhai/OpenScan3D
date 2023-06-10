@@ -16,6 +16,7 @@ using namespace std;
 #define CMD_RECONSTRUCTMESH 105
 #define CMD_TEXTUREMESH 106
 #define CMD_IMPORTFROMBE 107
+#define CMD_IMPORTVIDEO 108
 #define LISTIMAGES 1
 #define COMPUTEFEATURES 2
 #define MATCHFEATURES 3
@@ -51,11 +52,26 @@ public:
     static QString textureMeshOutputDir;
     static QString autoRebuildInPutDir;
     static QString autoRebuildOutputDir;
+    static QString importVideoFramesInputDir;
+    static QString importVideoFramesOutputDir;
+    static QString videostarttime;
+    static QString videoendtime;
+    static QString eigenMatrix;
+    static QString focus;
+    static QString imagesGroup;
+    static QString sensorSize;
+    static int numberOfImages;
     static int engineTid;
     static void connectEngine();
     //static pid_t GetProcessIdFromName(const char* name);
     static pid_t GetProcessIdFromName(const QString& name);
-
+    static int process;
+    static int processProject;
+    static int processState;
+    static QString processETA;
+    //static bool getProcessMsg();
+    static bool tasking;
+    static bool autoTasking;
 
 };
 

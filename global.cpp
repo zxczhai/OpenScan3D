@@ -13,7 +13,22 @@ QString Global::textureMeshInputDir = "";
 QString Global::textureMeshOutputDir = "";
 QString Global::autoRebuildInPutDir = "";
 QString Global::autoRebuildOutputDir = "";
+QString Global::importVideoFramesInputDir = "";
+QString Global::importVideoFramesOutputDir = "";
+QString Global::videostarttime = "";
+QString Global::videoendtime = "";
+QString Global::processETA = "";
+QString Global::eigenMatrix = "";
+QString Global::focus ="vacant";
+QString Global::imagesGroup ="vacant";
+QString Global::sensorSize ="vacant";
+int Global::numberOfImages = 0;
+bool Global::tasking = false;
+bool Global::autoTasking = false;
 int Global::engineTid = 0;
+int Global::process = PROCESSWORKING;
+int Global::processProject = 0;
+int Global::processState = 0;
 
 void Global::connectEngine()
 {
@@ -91,3 +106,4 @@ pid_t Global::GetProcessIdFromName(const QString& name) {
     }
     return pid;
 }
+

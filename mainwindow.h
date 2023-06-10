@@ -8,6 +8,8 @@
 #include "dialog_trimeshrecon.h"
 #include "dialog_texturemesh.h"
 #include "dialog_autorebuild.h"
+#include "dialog_importvideoframes.h"
+#include "dialog_addpictures.h"
 #include "global.h"
 #include <QTimer>
 
@@ -42,6 +44,10 @@ private slots:
 
     void on_actionAuto_Properties_triggered();
 
+    void on_btn_addPictures_clicked();
+
+    void on_btn_importVideoFrames_clicked();
+
 private:
     Ui::MainWindow *ui;
     Dialog_FeatureMatch dlgfm;
@@ -50,6 +56,8 @@ private:
     Dialog_TriMeshRecon dlgtmr;
     Dialog_TextureMesh dlgtm;
     Dialog_AutoRebuild dlgar;
+    Dialog_ImportVideoFrames dlgivf;
+    Dialog_AddPictures dlgap;
     QTimer* timer;
 };
 #endif // MAINWINDOW_H

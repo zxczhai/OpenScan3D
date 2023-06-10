@@ -7,6 +7,8 @@
 #include "viewer.h"
 #include "embedExternalApp.h"
 #include <QDebug>
+#include <QPropertyAnimation>
+#include <QStandardItemModel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +19,42 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &MainWindow::timerSlot);
     timer->start(500);
     ui->pushButton->setText("new button");
+
+    //设置分步三维重建进度显示初始颜色
+    ui->commandLinkButton->setStyleSheet("color: #FFB300;");
+    ui->commandLinkButton_2->setStyleSheet("color: #FFB300;");
+    ui->commandLinkButton_3->setStyleSheet("color: #FFB300;");
+    ui->commandLinkButton_4->setStyleSheet("color: #FFB300;");
+    ui->commandLinkButton_5->setStyleSheet("color: #FFB300;");
+
+    //    //设置图片集显示列表
+    //    QStandardItemModel *model=new QStandardItemModel () ;
+    //    ui->tableView->setModel(model);
+    //    //设置列表行头
+    //    int width = 150;  // 标准项的宽度（像素）
+    //    model->setHorizontalHeaderItem(0,new QStandardItem("Images Group"));
+    //    ui->tableView->setColumnWidth(0, width);
+    //    model->setHorizontalHeaderItem(1, new QStandardItem ("Number Of Images"));
+    //    ui->tableView->setColumnWidth(1, width);
+    //    model->setHorizontalHeaderItem(2, new QStandardItem ("Sensor Size"));
+    //    ui->tableView->setColumnWidth(2, width);
+    //    model->setHorizontalHeaderItem(3, new QStandardItem ("Focus"));
+    //    ui->tableView->setColumnWidth(3, width);
+    //    //设置列表列头
+    //    model->setVerticalHeaderItem(0, new QStandardItem ("-")) ;
+    //    //数据：
+    //    QStandardItem* item0 = new QStandardItem(Global::imagesGroup);  // 创建标准项
+    //    item0->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    //    model->setItem(0, 0, item0);  // 设置标准项到指定位置
+    //    QStandardItem* item1 = new QStandardItem(Global::numberOfImages);  // 创建标准项
+    //    item1->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    //    model->setItem(0, 1, item1);  // 设置标准项到指定位置
+    //    QStandardItem* item2 = new QStandardItem(Global::sensorSize);  // 创建标准项
+    //    item2->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    //    model->setItem(0, 2, item2);  // 设置标准项到指定位置
+    //    QStandardItem* item3 = new QStandardItem(Global::focus);  // 创建标准项
+    //    item3->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    //    model->setItem(0, 3, item3);  // 设置标准项到指定位置
 
 }
 
@@ -151,8 +189,52 @@ void MainWindow::on_actionAuto_Properties_triggered()
     dlgar.exec();
 }
 
+void MainWindow::on_btn_addPictures_clicked()
+{
+    dlgap.setWindowTitle("导入图片集"); // 设置窗口标题
+    dlgap.move(geometry().center() - dlgap.rect().center()); // 将对话框移动到MainWindow的中心
+    dlgap.exec();
+}
+
+void MainWindow::on_btn_importVideoFrames_clicked()
+{
+    dlgivf.setWindowTitle("导入视频帧"); // 设置窗口标题
+    dlgivf.move(geometry().center() - dlgivf.rect().center()); // 将对话框移动到MainWindow的中心
+    dlgivf.exec();
+}
+
 void MainWindow::timerSlot()
 {
+    //设置图片集显示列表
+    QStandardItemModel *model=new QStandardItemModel () ;
+    ui->tableView->setModel(model);
+    //设置列表行头
+    int width = 150;  // 标准项的宽度（像素）
+    model->setHorizontalHeaderItem(0,new QStandardItem("Images Group"));
+    ui->tableView->setColumnWidth(0, width);
+    model->setHorizontalHeaderItem(1, new QStandardItem ("Number Of Images"));
+    ui->tableView->setColumnWidth(1, width);
+    model->setHorizontalHeaderItem(2, new QStandardItem ("Sensor Size"));
+    ui->tableView->setColumnWidth(2, width);
+    model->setHorizontalHeaderItem(3, new QStandardItem ("Focus"));
+    ui->tableView->setColumnWidth(3, width);
+    //设置列表列头
+    model->setVerticalHeaderItem(0, new QStandardItem ("-")) ;
+    //数据：
+    QStandardItem* item0 = new QStandardItem(Global::imagesGroup);  // 创建标准项
+    item0->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    model->setItem(0, 0, item0);  // 设置标准项到指定位置
+    QStandardItem* item1 = new QStandardItem(QString::number(Global::numberOfImages));  // 创建标准项
+    item1->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    model->setItem(0, 1, item1);  // 设置标准项到指定位置
+    QStandardItem* item2 = new QStandardItem(Global::sensorSize);  // 创建标准项
+    item2->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    model->setItem(0, 2, item2);  // 设置标准项到指定位置
+    QStandardItem* item3 = new QStandardItem(Global::focus);  // 创建标准项
+    item3->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
+    model->setItem(0, 3, item3);  // 设置标准项到指定位置
+
+    ui->NumberOfImages->setText(QString::number(Global::numberOfImages));
     if (Global::GetProcessIdFromName("R3D") != 0)
     {
         Global::connectEngine();
@@ -173,5 +255,50 @@ void MainWindow::timerSlot()
             ui->label_engine->setPalette(pa);
             ui->label_engine->setText(u8"R3D is not connected!");
         }
+    }
+
+    if (Global::tasking)
+    {
+        QFile file("/tmp/.OpenScan3D/cmdCache.tmp");  // 打开文件
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;  // 若打开文件失败则返回
+
+        QTextStream in(&file);  // 创建文本流对象
+        QString line = in.readLine();  // 读取第一行内容
+        file.close();  // 关闭文件
+
+        ui->progressBar->setMinimum(0);  // 设置进度条最小值
+        ui->progressBar->setMaximum(100);  // 设置进度条最大值
+        int value = 0;
+        if (line == "matchfeature") {
+            value=20;
+            ui->commandLinkButton->setStyleSheet("color: green;");
+        } else if (line == "sfm&sfp") {
+            value=40;
+            ui->commandLinkButton_2->setStyleSheet("color: green;");
+        } else if (line == "DENSIFYPOINTCLOUD") {
+            value=60;
+            ui->commandLinkButton_3->setStyleSheet("color: green;");
+        } else if (line == "RECONSTRUCTMESH"){
+            value=80;
+            ui->commandLinkButton_4->setStyleSheet("color: green;");
+        } else if (line == "TEXTUREMESH"){
+            value=100;
+            ui->commandLinkButton_5->setStyleSheet("color: green;");
+        }
+
+        QPropertyAnimation *animation = new QPropertyAnimation(ui->progressBar, "value");  // 访问UI界面中的进度条控件
+        animation->setDuration(500);  // 动画持续时间为500毫秒
+        animation->setStartValue(ui->progressBar->value());
+        animation->setEndValue(value);
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+        // 将进度条添加到窗口中显示
+        ui->progressBar->show();  // 访问UI界面中的进度条控件
+    }
+
+    if(Global::autoTasking)
+    {
+
     }
 }

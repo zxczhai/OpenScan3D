@@ -20,9 +20,6 @@ public:
     ~Dialog_FeatureMatch();
 
 private slots:
-    void on_pushButton_browseInputDir_clicked();
-
-    void on_pushButton_browseDatabaseDir_clicked();
 
     void on_pushButton_browseOutputDir_clicked();
 

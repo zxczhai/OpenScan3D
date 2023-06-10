@@ -87,7 +87,6 @@ void Dialog_SFM::on_btn_CONFIRM_clicked()
     }
     }
 
-
     // 检查是否存在tmp文件夹
     if (!QDir("/tmp").exists())
     {
@@ -118,6 +117,7 @@ void Dialog_SFM::on_btn_CONFIRM_clicked()
         msg.mtype = 1;
         msg.data[0] = CMD_SFMANDSFP;
         sendMessage(msg);
+        Global::tasking = true;
         this->close();
     }
     else

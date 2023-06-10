@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>954</width>
-    <height>620</height>
+    <height>692</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,17 +17,17 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>40</y>
-      <width>851</width>
-      <height>481</height>
+      <x>680</x>
+      <y>440</y>
+      <width>251</width>
+      <height>161</height>
      </rect>
     </property>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>120</y>
+       <x>90</x>
+       <y>70</y>
        <width>83</width>
        <height>24</height>
       </rect>
@@ -40,8 +40,8 @@
    <widget class="QLabel" name="label_engine">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>0</y>
+      <x>550</x>
+      <y>10</y>
       <width>381</width>
       <height>41</height>
      </rect>
@@ -58,29 +58,11 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>530</y>
-      <width>131</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>13</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Program health:</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_process">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>530</y>
+      <x>30</x>
+      <y>140</y>
       <width>211</width>
       <height>41</height>
      </rect>
@@ -97,14 +79,207 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>540</y>
+      <x>270</x>
+      <y>150</y>
       <width>471</width>
       <height>23</height>
      </rect>
     </property>
     <property name="value">
-     <number>24</number>
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>140</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MatchFeature</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton_2">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>70</y>
+      <width>140</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SFM&amp;SFP</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton_3">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>70</y>
+      <width>140</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DensifyPonitCloud</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton_4">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>70</y>
+      <width>140</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ReconstructMesh</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton_5">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>70</y>
+      <width>140</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextureMesh</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_addPictures">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>20</y>
+      <width>101</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add_Pictures</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_importVideoFrames">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>20</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Import_Video_Frames</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>230</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Images Group</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>230</y>
+      <width>131</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Number Of Images</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="ImagesGroup">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>250</y>
+      <width>140</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>230</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sensor Size</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>230</y>
+      <width>71</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>    Focus</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="NumberOfImages">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>250</y>
+      <width>140</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="SensorSize">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>250</y>
+      <width>140</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="Focus">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>250</y>
+      <width>140</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>340</y>
+      <width>615</width>
+      <height>100</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -201,6 +376,11 @@
   <action name="actionTextureMesh">
    <property name="text">
     <string>TextureMesh</string>
+   </property>
+  </action>
+  <action name="actionImport_Configuration">
+   <property name="text">
+    <string>Import_Configuration</string>
    </property>
   </action>
  </widget>
