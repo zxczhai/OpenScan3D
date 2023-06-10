@@ -1,6 +1,4 @@
 #include <iostream>
-#include <sys/ipc.h>
-#include <sys/msg.h>
 #include <vector>
 #include <string>
 #include <sys/stat.h> // For mkdir() function
@@ -9,7 +7,7 @@
 using namespace cv;
 using namespace std;
 
-void extract_keyframes(const string &video_file, const string &output_dir)
+void extract_keyframes(const string& video_file, const string& output_dir)
 {
     VideoCapture cap(video_file);
     if (!cap.isOpened())
@@ -39,10 +37,10 @@ void extract_keyframes(const string &video_file, const string &output_dir)
     cvtColor(prev_frame, prev_gray, COLOR_BGR2GRAY);
 
     int frame_count = 0, keyframe_count = 0;
-    const int max_keyframes = 100;                          // Maximum number of keyframes to extract
-    const double min_disp = 4;                              // Minimum median displacement for a keyframe
+    const int max_keyframes = 100; // Maximum number of keyframes to extract
+    const double min_disp = 4;  // Minimum median displacement for a keyframe
     const int total_frames = cap.get(CAP_PROP_FRAME_COUNT); // Total number of frames in the video
-    const int interval = total_frames / max_keyframes;      // Interval between keyframes
+    const int interval = total_frames / max_keyframes; // Interval between keyframes
 
     while (true)
     {
@@ -68,7 +66,7 @@ void extract_keyframes(const string &video_file, const string &output_dir)
         {
             double dx = next_pts[i].x - prev_pts[i].x;
             double dy = next_pts[i].y - prev_pts[i].y;
-            displacements.push_back(sqrt(dx * dx + dy * dy));
+            displacements.push_back(sqrt(dx*dx + dy*dy));
         }
         sort(displacements.begin(), displacements.end());
         double median_disp = displacements[displacements.size() / 2];
@@ -88,10 +86,3 @@ void extract_keyframes(const string &video_file, const string &output_dir)
     cap.release();
 }
 
-int main()
-{
-
-    std::cout << "1";
-
-    return 0;
-}
