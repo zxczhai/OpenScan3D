@@ -18,6 +18,7 @@ using namespace std;
 #define CMD_TEXTUREMESH 106
 #define CMD_IMPORTFROMBE 107
 #define CMD_IMPORTVIDEO 108
+#define CMD_EXPORTSTL 201
 #define LISTIMAGES 1
 #define COMPUTEFEATURES 2
 #define MATCHFEATURES 3

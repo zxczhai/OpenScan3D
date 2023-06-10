@@ -18,6 +18,7 @@
 #include "ReconstructMesh.hpp"
 #include "RefineMesh.hpp"
 #include "TextureTheMesh.hpp"
+#include "OBJ2STL.hpp"
 #include <unistd.h>
 #include "UtilCUDA.h"
 uint8_t STATE_RETURN;
@@ -54,7 +55,7 @@ bool savePid()
 {
     int tid = getpid();
     if (checkDirExist("/tmp/.OpenScan3D") == false)
-        mkdir("/tmp/.OpenScan3D", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        mkdir("/tmp/.OpenScan3D", S_IRWXU | S_IRWXG | S_IRWXO);
     ofstream file;
     file.open("/tmp/.OpenScan3D/ProgramCache.tmp", ios::out | ios::trunc);
     if (!file.is_open())
@@ -1481,6 +1482,14 @@ void MsgProc(uint8_t msg)
         // outputDir = outputDir4Dir;
         printf("=============TextureMesh Successfully===========\n");
         printf("Everything is OK");
+        break;
+    }
+    case CMD_EXPORTSTL:
+    {
+        char* cmd[8];
+        cmd[0] = "obj2stl";
+        cmd[1] = "/home/zxc/testOutput/scene_dense_mesh_refine_texture.obj";
+        obj2stl(2,cmd);
         break;
     }
     default:

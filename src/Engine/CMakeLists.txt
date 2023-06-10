@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
     ReconstructMesh.cpp
     RefineMesh.cpp
     TextureTheMesh.cpp
+    OBJ2STL.cpp
     Utils.cpp
 )
 
@@ -89,6 +90,7 @@ target_link_libraries(R3D
     Math
     MVS
     Common
+    obj2stl
 )
 
 target_include_directories(R3D PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -97,3 +99,5 @@ target_include_directories(R3D PUBLIC  ${CERES_INCLUDE_DIRS})
 target_include_directories(R3D PUBLIC ../../libs/openMVS/libs/Common)
 target_include_directories(R3D PUBLIC ../../libs/openMVS/libs)
 target_include_directories(R3D PUBLIC ${EIGEN_INCLUDE_DIR_HINTS})
+
+target_include_directories(R3D PUBLIC ../../libs/obj2stl/include/obj2stl)
