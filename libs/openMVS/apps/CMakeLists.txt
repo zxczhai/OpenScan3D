@@ -5,7 +5,7 @@
 # ADD_SUBDIRECTORY(DensifyPointCloud)
 # ADD_SUBDIRECTORY(ReconstructMesh)
 # ADD_SUBDIRECTORY(RefineMesh)
-ADD_SUBDIRECTORY(TextureMesh)
+# ADD_SUBDIRECTORY(TextureMesh)
 # ADD_SUBDIRECTORY(TransformScene)
 # ADD_SUBDIRECTORY(Viewer)
 # if(OpenMVS_ENABLE_TESTS)

@@ -27,10 +27,10 @@ make -j8
 ### RUN
 ``` shell
 #run Engine
-cd build/src/Engine
+cd build/bin
 ./R3D
 #run GUI
-cd build/src/GUI
+cd build/bin
 ./OpenScan3D
 ```
 ## TODO:

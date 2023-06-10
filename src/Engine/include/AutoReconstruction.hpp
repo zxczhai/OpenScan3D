@@ -20,6 +20,7 @@
 #include "TextureTheMesh.hpp"
 #include "OBJ2STL.hpp"
 #include <unistd.h>
+#include <MVS.h>
 #include "UtilCUDA.h"
 uint8_t STATE_RETURN;
 
@@ -34,7 +35,7 @@ void checkGPUExist()
     }
     else if (deviceCount == 0)
     {
-        printf("No available CUDA device(s),Please check&will use CPU Mode\n");
+        printf("No available CUDA device(s),Please Check&will use CPU Mode\n");
     }
     else
     {
