@@ -79,6 +79,7 @@
         "core": "cpp",
         "span": "cpp",
         "dense": "cpp",
-        "sparsecore": "cpp"
+        "sparsecore": "cpp",
+        "qstring": "cpp"
     }
 }
