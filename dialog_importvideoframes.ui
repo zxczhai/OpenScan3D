@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>537</width>
-    <height>361</height>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,7 +128,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>290</y>
+     <y>280</y>
      <width>60</width>
      <height>40</height>
     </rect>
@@ -141,7 +141,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>290</y>
+     <y>280</y>
      <width>60</width>
      <height>40</height>
     </rect>
@@ -194,19 +194,6 @@
    </property>
    <property name="text">
     <string>秒</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>240</y>
-     <width>241</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>(请选择一个空目录来存储该影像集)</string>
    </property>
   </widget>
  </widget>

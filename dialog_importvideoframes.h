@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QTimer>
+#include <QDebug>
+#include <QProgressDialog>
 #include "global.h"
 
 namespace Ui {
@@ -30,10 +32,14 @@ private slots:
 
     void on_btn_CANCEL_clicked();
 
-    bool isDirectoryEmpty(QString path);
+//    bool isDirectoryEmpty(QString path);
+
+    void extract_keyframes(const string& video_file, const string& output_dir);
+
 
 private:
     Ui::Dialog_ImportVideoFrames *ui;
+
 };
 
 #endif // DIALOG_IMPORTVIDEOFRAMES_H
