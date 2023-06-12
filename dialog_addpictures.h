@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStringList>
+#include <QDirIterator>
 #include <QString>
 #include <QDir>
 #include "global.h"
