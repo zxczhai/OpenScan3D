@@ -75,6 +75,8 @@ void Dialog_TextureMesh::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_TEXTUREMESH;
         sendMessage(msg);
         Global::tasking = true;
+        ui->lineEdit_inputDir->clear();
+        ui->lineEdit_OutputDir->clear();
         this->close();
         // rcvMessage(msg);
         // QList<qint64> pidlist;

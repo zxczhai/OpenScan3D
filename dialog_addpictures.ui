@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>286</height>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton_browseInputDir">
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>50</y>
+     <x>480</x>
+     <y>60</y>
      <width>60</width>
      <height>25</height>
     </rect>
@@ -30,7 +30,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>160</y>
+     <y>140</y>
      <width>211</width>
      <height>17</height>
     </rect>
@@ -39,47 +39,13 @@
     <string>输入格式: f;0;ppx;0;f;ppy;0;0;1</string>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_3">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>40</y>
-     <width>331</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLineEdit" name="lineEdit_inputDir"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="lineEdit_databaseDir"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="lineEdit_eigenMatrix"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_browseDatabaseDir">
-   <property name="geometry">
-    <rect>
-     <x>490</x>
-     <y>90</y>
-     <width>60</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>浏览</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
      <width>122</width>
-     <height>141</height>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -98,13 +64,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_13">
-      <property name="text">
-       <string>相机数据库文件：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>相机本征矩阵：</string>
@@ -117,7 +76,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>210</y>
+     <y>270</y>
      <width>60</width>
      <height>40</height>
     </rect>
@@ -129,14 +88,119 @@
   <widget class="QPushButton" name="btn_CANCEL">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>210</y>
+     <x>340</x>
+     <y>270</y>
      <width>60</width>
      <height>40</height>
     </rect>
    </property>
    <property name="text">
     <string>取消</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_inputDir">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>60</y>
+     <width>329</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_eigenMatrix">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>100</y>
+     <width>329</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>170</y>
+     <width>67</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>提示：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="tips">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>170</y>
+     <width>471</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OpenScan3D三维重建项目，你值得拥有！</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_CM">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>220</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>相机型号：</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_cameraModel">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>220</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_SS">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>220</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>传感器尺寸：</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_sensorSize">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>220</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_addCameraParameters">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>220</y>
+     <width>60</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>添加</string>
    </property>
   </widget>
  </widget>

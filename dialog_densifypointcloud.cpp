@@ -73,6 +73,8 @@ void Dialog_DensifyPointCloud::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_EXPORTDENSECLOUD;
         sendMessage(msg);
         Global::tasking = true;
+        ui->lineEdit_inputDir->clear();
+        ui->lineEdit_OutputDir->clear();
         this->close();
     }
     else

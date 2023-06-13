@@ -118,6 +118,8 @@ void Dialog_SFM::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_SFMANDSFP;
         sendMessage(msg);
         Global::tasking = true;
+        ui->lineEdit_inputDir->clear();
+        ui->lineEdit_OutputDir->clear();
         this->close();
     }
     else

@@ -25,11 +25,15 @@ public:
 private slots:
     void on_pushButton_browseInputDir_clicked();
 
-    void on_pushButton_browseDatabaseDir_clicked();
+//    void on_pushButton_browseDatabaseDir_clicked();
 
     void on_btn_CONFIRM_clicked();
 
     void on_btn_CANCEL_clicked();
+
+    void loadCameraDatabase(const QString& filePath);
+
+    void on_pushButton_addCameraParameters_clicked();
 
 private:
     Ui::Dialog_AddPictures *ui;

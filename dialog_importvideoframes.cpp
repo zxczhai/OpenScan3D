@@ -108,6 +108,11 @@ void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
     Global::importVideoFramesInputDir = QFileDialog::getOpenFileName(this, tr("选择输入的视频文件"), QDir::homePath(), tr("All files(*.*)"));
     ui->lineEdit_inputDir->setText(Global::importVideoFramesInputDir);
 
+    if (Global::importVideoFramesInputDir.isEmpty()) {
+        // 用户取消了文件夹选择，可以不执行后续的检查逻辑
+        return;
+    }
+
     /*获取视频时长*/
     QString filePath = ui->lineEdit_inputDir->text();
 
@@ -175,6 +180,11 @@ void Dialog_ImportVideoFrames::on_pushButton_browseOutputDir_clicked()
 {
     Global::importVideoFramesOutputDir = QFileDialog::getExistingDirectory(this, u8"浏览输出文件夹 ", "", NULL);
     ui->lineEdit_OutputDir->setText(Global::importVideoFramesOutputDir);
+
+    if (Global::importVideoFramesOutputDir.isEmpty()) {
+        // 用户取消了文件夹选择，可以不执行后续的检查逻辑
+        return;
+    }
 
     /*在输入目录下自动创建一个新目录存储视频帧*/
     QDir dir(ui->lineEdit_OutputDir->text());
@@ -292,6 +302,10 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_IMPORTVIDEO;
         sendMessage(msg);
         Global::tasking = true;
+        ui->lineEdit_inputDir->clear();
+        ui->lineEdit_OutputDir->clear();
+        ui->StartTime->clear();
+        ui->EndTime->clear();
         this->close();
     }
     else

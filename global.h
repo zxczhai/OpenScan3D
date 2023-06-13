@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QProcess>
+#include <QMap>
 
 
 using namespace std;
@@ -57,9 +58,12 @@ public:
     static QString videostarttime;
     static QString videoendtime;
     static QString eigenMatrix;
-    static QString focus;
+    static QString cameraModel;
     static QString imagesGroup;
     static QString sensorSize;
+    static QStringList  cameraModels;
+    static QMap<QString, double> cameraModelsWithSize;
+    static bool isFilled;
     static int numberOfImages;
     static int engineTid;
     static void connectEngine();

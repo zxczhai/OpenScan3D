@@ -75,6 +75,8 @@ void Dialog_TriMeshRecon::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_RECONSTRUCTMESH;
         sendMessage(msg);
         Global::tasking = true;
+        ui->lineEdit_inputDir->clear();
+        ui->lineEdit_OutputDir->clear();
         this->close();
     }
     else
