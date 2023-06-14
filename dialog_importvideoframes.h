@@ -32,15 +32,16 @@ private slots:
 
     void on_btn_CANCEL_clicked();
 
-//    bool isDirectoryEmpty(QString path);
+    //    bool isDirectoryEmpty(QString path);
 
     void extract_keyframes(const string& video_file, const string& output_dir);
 
-
     void on_pushButton_addCameraParameters_clicked();
 
-private:
-    Ui::Dialog_ImportVideoFrames *ui;
+//    void addCameraInfo(QString filePath);
+
+    private:
+        Ui::Dialog_ImportVideoFrames *ui;
 
 };
 

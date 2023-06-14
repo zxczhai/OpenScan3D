@@ -15,6 +15,8 @@ Dialog_AddPictures::Dialog_AddPictures(QWidget *parent) :
     ui->label_SS->setVisible(false);
     ui->lineEdit_cameraModel->setVisible(false);
     ui->lineEdit_sensorSize->setVisible(false);
+    ui->lineEdit_focal->setVisible(false);
+    ui->label_Focal->setVisible(false);
     ui->pushButton_addCameraParameters->setVisible(false);
 }
 
@@ -193,7 +195,7 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
 
     QString cameraModel1 = Global::cameraModel.trimmed().toLower();
 
-    if (cameraModel1.isEmpty() || cameraModel == "vacant")
+    if (cameraModel1.isEmpty())
     {
         ui->tips->setText("该文件夹图片缺少相机参数，请添加！");
         ui->label_CM->setVisible(true);
@@ -201,8 +203,11 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
         ui->lineEdit_cameraModel->setVisible(true);
         ui->lineEdit_sensorSize->setVisible(true);
         ui->pushButton_addCameraParameters->setVisible(true);
+        ui->lineEdit_focal->setVisible(true);
+        ui->label_Focal->setVisible(true);
         Global::sensorSize = "vacant";
         Global::cameraModel = "vacant";
+        Global::signPictures =true;
     }
     else if (Global::cameraModelsWithSize.contains(cameraModel1))
     {
@@ -214,6 +219,8 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
         ui->label_SS->setVisible(false);
         ui->lineEdit_cameraModel->setVisible(false);
         ui->lineEdit_sensorSize->setVisible(false);
+        ui->lineEdit_focal->setVisible(false);
+        ui->label_Focal->setVisible(false);
         Global::isFilled =true;
     }
     else
@@ -224,8 +231,12 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
         ui->lineEdit_cameraModel->setVisible(true);
         ui->lineEdit_sensorSize->setVisible(true);
         ui->pushButton_addCameraParameters->setVisible(true);
+        ui->lineEdit_focal->setVisible(true);
+        ui->label_Focal->setVisible(true);
+        ui->lineEdit_cameraModel->setText(cameraModel1);
         Global::sensorSize = "vacant";
         Global::cameraModel = "vacant";
+        Global::signPictures =true;
     }
 
 }
@@ -233,20 +244,21 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
 void Dialog_AddPictures::on_pushButton_addCameraParameters_clicked()
 {
 
-    if(ui->lineEdit_sensorSize->text().isEmpty() || ui->lineEdit_cameraModel->text().isEmpty())
+    if(ui->lineEdit_sensorSize->text().isEmpty() || ui->lineEdit_cameraModel->text().isEmpty() || ui->lineEdit_focal->text().isEmpty())
     {
         QMessageBox::critical(this, u8"错误 ", u8"填写不完整，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-    else if(!QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_sensorSize->text()))
+    else if(!QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_sensorSize->text()) || !QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_focal->text()))
     {
-        QMessageBox::critical(this, u8"错误 ", u8"传感器尺寸必须为数字，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::critical(this, u8"错误 ", u8"传感器尺寸和焦距必须为数字，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
     else
     {
         Global::sensorSize = ui->lineEdit_sensorSize->text();
         Global::cameraModel = ui->lineEdit_cameraModel->text();
+        Global::focal = ui->lineEdit_focal->text();
 
         QFile file(Global::sensorWidthDatabaseDir);
         if (file.open(QIODevice::Append | QIODevice::Text)) {
@@ -303,17 +315,52 @@ void Dialog_AddPictures::on_btn_CONFIRM_clicked()
 
     Global::imagesInputDir = ui->lineEdit_inputDir->text();
 
-    //  Global::sensorWidthDatabaseDir = ui->lineEdit_databaseDir->text();
+
+    if(Global::signPictures)
+    {
+        /*将参数写入文件*/
+        // 检查是否存在tmp文件夹
+        if (!QDir("/tmp").exists())
+        {
+            // 如果不存在就创建tmp目录
+            QDir().mkpath("/tmp");
+        }
+        // 创建OpenScan3D目录
+        QDir("/tmp").mkdir(".OpenScan3D");
+
+        QFile cameraCache("/tmp/.OpenScan3D/cameraCache.tmp");
+
+        if (cameraCache.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+        {
+            cameraCache.write(Global::cameraModel.toUtf8());
+            cameraCache.write("\n");
+            cameraCache.write(Global::sensorSize.toUtf8());
+            cameraCache.write("\n");
+            cameraCache.write(Global::focal.toUtf8());
+            cameraCache.write("\n");
+            cameraCache.close();
+            QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
+        }
+        else
+        {
+            QMessageBox::information(this, u8"错误", u8"无法访问缓存文件，请检查权限，或使用管理员身份运行 ", QMessageBox::Yes);
+        }
+    }
+
 
     ui->lineEdit_sensorSize->clear();
     ui->lineEdit_cameraModel->clear();
     ui->lineEdit_eigenMatrix->clear();
     ui->lineEdit_inputDir->clear();
+    ui->lineEdit_focal->clear();
     ui->label_CM->setVisible(false);
     ui->label_SS->setVisible(false);
     ui->lineEdit_cameraModel->setVisible(false);
     ui->lineEdit_sensorSize->setVisible(false);
+    ui->lineEdit_focal->setVisible(false);
+    ui->label_Focal->setVisible(false);
     Global::isFilled =false;
+    Global::signPictures =false;
 
     this->close();
 }

@@ -6,6 +6,8 @@
 #include <string>
 #include <sys/stat.h> // For mkdir() function
 #include <opencv2/opencv.hpp>
+#include <QFileInfo>
+#include <QImage>
 
 using namespace cv;
 using namespace std;
@@ -102,6 +104,23 @@ void Dialog_ImportVideoFrames::extract_keyframes(const string& video_file, const
 
 }
 
+// 为给定的图像添加相机信息
+//void Dialog_ImportVideoFrames::addCameraInfo(QString filePath)
+//{
+//    QImage image(filePath);
+//    QFileInfo fileInfo(filePath);
+
+//    // 添加相机型号和焦距属性
+//    image.setText("Exif.Photo.Model", Global::cameraModel);
+//    image.setText("Exif.Photo.FocalLengthIn35mmFilm", QString::number(Global::sensorSize.toDouble(), 'f', 1));
+
+//    // 保存新的属性到文件
+//    if (!image.save(fileInfo.absoluteFilePath())) {
+//        qDebug() << "Error: Failed to set camera info: " << filePath;
+//    }else {
+//        qDebug() << "Successfully modified camera info for: " << filePath;
+//    }
+//}
 
 void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
 {
@@ -214,20 +233,21 @@ void Dialog_ImportVideoFrames::on_pushButton_browseOutputDir_clicked()
 void Dialog_ImportVideoFrames::on_pushButton_addCameraParameters_clicked()
 {
 
-    if(ui->lineEdit_sensorSize->text().isEmpty() || ui->lineEdit_cameraModel->text().isEmpty())
+    if(ui->lineEdit_sensorSize->text().isEmpty() || ui->lineEdit_cameraModel->text().isEmpty() || ui->lineEdit_focal->text().isEmpty())
     {
         QMessageBox::critical(this, u8"错误 ", u8"填写不完整，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-    else if(!QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_sensorSize->text()))
+    else if(!QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_sensorSize->text()) || !QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_focal->text()))
     {
-        QMessageBox::critical(this, u8"错误 ", u8"传感器尺寸必须为数字，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::critical(this, u8"错误 ", u8"传感器尺寸和焦距必须为数字，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
     else
     {
         Global::sensorSize = ui->lineEdit_sensorSize->text();
         Global::cameraModel = ui->lineEdit_cameraModel->text();
+        Global::focal = ui->lineEdit_focal->text();
 
         QFile file(Global::sensorWidthDatabaseDir);
         if (file.open(QIODevice::Append | QIODevice::Text)) {
@@ -252,17 +272,17 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
         return;
     }
 
-    if(ui->StartTime->text() == "")
-    {
-        QMessageBox::critical(this, u8"错误 ", u8"开始时间不能为空！", QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
+    //    if(ui->StartTime->text() == "")
+    //    {
+    //        QMessageBox::critical(this, u8"错误 ", u8"开始时间不能为空！", QMessageBox::Ok, QMessageBox::Ok);
+    //        return;
+    //    }
 
-    if(ui->EndTime->text() == "")
-    {
-        QMessageBox::critical(this, u8"错误 ", u8"结束时间不能为空！ ", QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
+    //    if(ui->EndTime->text() == "")
+    //    {
+    //        QMessageBox::critical(this, u8"错误 ", u8"结束时间不能为空！ ", QMessageBox::Ok, QMessageBox::Ok);
+    //        return;
+    //    }
 
     if (ui->lineEdit_OutputDir->text() == "")
     {
@@ -283,14 +303,6 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
     //        return;
     //    }
 
-    Global::importVideoFramesInputDir = ui->lineEdit_inputDir->text();
-
-    Global::importVideoFramesOutputDir = ui->lineEdit_OutputDir->text();
-
-    Global::videostarttime = ui->StartTime->text();
-
-    Global::videoendtime = ui->EndTime->text();
-
     Global::imagesInputDir =ui->lineEdit_OutputDir->text();
     Global::eigenMatrix = "NULL";
 
@@ -303,18 +315,47 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
     std::string str1 = qstr1.toStdString();
     const std::string& constStrRef1 = str1;
 
-//    QMessageBox::information(this, "提示", "点击Ok开始提取视频帧,并等待");
-        QMessageBox msgBox(QMessageBox::Information, "提示", "正在提取视频帧，请等待", QMessageBox::NoButton, this,
-                           Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-        msgBox.setWindowModality(Qt::ApplicationModal);
-        msgBox.show();
+    //    QMessageBox::information(this, "提示", "点击Ok开始提取视频帧,并等待");
+    QMessageBox msgBox(QMessageBox::Information, "正在提取视频帧，请等待", "正在提取视频帧，请等待", QMessageBox::NoButton, this,
+                       Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    msgBox.setWindowModality(Qt::ApplicationModal);
+    msgBox.show();
 
     // 调用提取关键帧函数
     extract_keyframes(constStrRef,constStrRef1);
 
-        msgBox.setText("视频帧提取完成");
-        msgBox.exec();
-//    QMessageBox::information(this, "提示", "视频帧提取完成");
+    msgBox.setWindowTitle("完成");
+    msgBox.setText("视频帧提取完成");
+    msgBox.exec();
+    //    QMessageBox::information(this, "提示", "视频帧提取完成");
+
+    //    QDir dir(ui->lineEdit_OutputDir->text());
+    //    QStringList nameFilters; // 扩展名过滤器
+
+    //    nameFilters << "*.jpg" << "*.jpeg" << "*.png";
+
+    //    // 遍历指定文件夹内的所有图像
+    //    QStringList fileList = dir.entryList(nameFilters, QDir::Files, QDir::Name | QDir::IgnoreCase);
+
+    //    for (int i = 0; i < fileList.size(); ++i) {
+    //        QString filePath = dir.filePath(fileList[i]);
+    //        addCameraInfo(filePath); // 修改每个图像的属性
+    //    }
+
+    //获取图片文件夹名称
+    QDir path(ui->lineEdit_OutputDir->text());
+    Global::imagesGroup = path.dirName();
+
+    //计算文件夹中的图片数量
+    QString folderPath = ui->lineEdit_OutputDir->text();
+    QDir folderDir(folderPath);
+    QStringList filters;
+    filters << "*.png" << "*.jpg" << "*.jpeg";
+    folderDir.setNameFilters(filters);
+
+    QFileInfoList fileList = folderDir.entryInfoList();
+    int imageCount = fileList.count();
+    Global::numberOfImages = imageCount;
 
     /*将参数写入文件*/
     // 检查是否存在tmp文件夹
@@ -326,21 +367,17 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
     // 创建OpenScan3D目录
     QDir("/tmp").mkdir(".OpenScan3D");
 
-    QFile cmdcache("/tmp/.OpenScan3D/cmdCache.tmp");
+    QFile cameraCache("/tmp/.OpenScan3D/cameraCache.tmp");
 
-    if (cmdcache.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+    if (cameraCache.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QString head = "importvideo\n";
-        cmdcache.write(head.toUtf8());
-        cmdcache.write(Global::importVideoFramesInputDir.toUtf8());
-        cmdcache.write("\n");
-        cmdcache.write(Global::videostarttime.toUtf8());
-        cmdcache.write("\n");
-        cmdcache.write(Global::videoendtime.toUtf8());
-        cmdcache.write("\n");
-        cmdcache.write(Global::importVideoFramesOutputDir.toUtf8());
-        cmdcache.write("\n");
-        cmdcache.close();
+        cameraCache.write(Global::cameraModel.toUtf8());
+        cameraCache.write("\n");
+        cameraCache.write(Global::sensorSize.toUtf8());
+        cameraCache.write("\n");
+        cameraCache.write(Global::focal.toUtf8());
+        cameraCache.write("\n");
+        cameraCache.close();
         QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
         congmsgbuf msg;
         msg.mtype = 1;
@@ -348,25 +385,11 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
         sendMessage(msg);
         Global::tasking = true;
 
-        //获取图片文件夹名称
-        QDir path(ui->lineEdit_OutputDir->text());
-        Global::imagesGroup = path.dirName();
-
-        //计算文件夹中的图片数量
-        QString folderPath = ui->lineEdit_OutputDir->text();
-        QDir folderDir(folderPath);
-        QStringList filters;
-        filters << "*.png" << "*.jpg" << "*.jpeg";
-        folderDir.setNameFilters(filters);
-
-        QFileInfoList fileList = folderDir.entryInfoList();
-        int imageCount = fileList.count();
-        Global::numberOfImages = imageCount;
-
         ui->lineEdit_inputDir->clear();
         ui->lineEdit_OutputDir->clear();
         ui->lineEdit_sensorSize->clear();
         ui->lineEdit_cameraModel->clear();
+        ui->lineEdit_focal->clear();
         ui->StartTime->clear();
         ui->EndTime->clear();
         this->close();

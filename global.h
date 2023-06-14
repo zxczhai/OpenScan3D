@@ -61,9 +61,11 @@ public:
     static QString cameraModel;
     static QString imagesGroup;
     static QString sensorSize;
+    static QString focal;
     static QStringList  cameraModels;
     static QMap<QString, double> cameraModelsWithSize;
     static bool isFilled;
+    static bool signPictures;
     static bool isFilledVideo;
     static int numberOfImages;
     static int engineTid;
