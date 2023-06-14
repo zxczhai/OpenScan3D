@@ -1634,7 +1634,7 @@ bool Scene::DenseReconstruction(int nFusionMode, bool bCrop2ROI, float fBorderRO
 		return false;
 	if (ABS(nFusionMode) == 1)
 		return true;
-
+	printf("DenseReconstruction.....\n");
 	// fuse all depth-maps
 	pointcloud.Release();
 	if (OPTDENSE::nMinViewsFuse < 2) {
@@ -1683,6 +1683,7 @@ bool Scene::DenseReconstruction(int nFusionMode, bool bCrop2ROI, float fBorderRO
 
 	if (OPTDENSE::bRemoveDmaps) {
 		// delete all depth-map files
+		printf("delete all depth-map files\n");
 		FOREACH(i, images) {
 			const DepthData& depthData = data.depthMaps.arrDepthData[i];
 			if (!depthData.IsValid())

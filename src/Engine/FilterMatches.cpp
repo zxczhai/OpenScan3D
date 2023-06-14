@@ -68,7 +68,7 @@ int FilterMatches(std::string sfmDataDir, std::string outputDir, std::string geo
   std::string sOutputPairsFilename;
 
   std::string  sGeometricModel   = geometric_mode;
-  bool         bForce            = false;
+  bool         bForce            = true;
   bool         bGuided_matching  = false;
   int          imax_iteration    = 2048;
   unsigned int ui_max_cache_size = 0;

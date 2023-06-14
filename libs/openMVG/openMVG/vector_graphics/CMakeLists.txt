@@ -1,5 +1,5 @@
-add_executable(main_svgSample main.cpp)
-set_property(TARGET main_svgSample PROPERTY FOLDER OpenMVG/Samples)
+# add_executable(main_svgSample main.cpp)
+# set_property(TARGET main_svgSample PROPERTY FOLDER OpenMVG/Samples)
 
 add_library(openMVG_svg INTERFACE)
 set_property(TARGET openMVG_svg APPEND PROPERTY

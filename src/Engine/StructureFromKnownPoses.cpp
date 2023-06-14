@@ -57,6 +57,7 @@ int StructureFromKnownPoses(std::string sfmDataDir, std::string feature_describe
   double dMax_reprojection_error = 4.0;
   unsigned int ui_max_cache_size = 0;
   int triangulation_method = static_cast<int>(ETriangulationMethod::DEFAULT);
+  
 
 
   if (!isValid(static_cast<ETriangulationMethod>(triangulation_method)))

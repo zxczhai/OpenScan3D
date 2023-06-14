@@ -42,7 +42,7 @@ using namespace openMVG::matching_image_collection;
 int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFilename, std::string sNearestMatchingMethod = "AUTO", float fDistRatio = 0.8)
 {
   std::string sPredefinedPairList = "";
-  bool bForce = false;
+  bool bForce = true;
   unsigned int ui_max_cache_size = 0;
 
   // Pre-emptive matching parameters

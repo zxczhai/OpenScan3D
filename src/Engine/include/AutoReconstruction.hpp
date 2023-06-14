@@ -19,8 +19,9 @@
 #include "RefineMesh.hpp"
 #include "TextureTheMesh.hpp"
 #include "OBJ2STL.hpp"
+#include "Camera.hpp"
 #include <unistd.h>
-#include <MVS.h>
+#include "MVS.h"
 #include "UtilCUDA.h"
 uint8_t STATE_RETURN;
 
@@ -847,6 +848,28 @@ bool savePid()
 // //     FuseDisparityMaps(outputDir, outputDir);
 // //     return EXIT_SUCCESS;
 // // }
+
+int getCustomCamera(CustomCamera & customCamera)
+{
+    ifstream cameraCache;
+    cameraCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+    if (!cameraCache)
+    {
+        printf("Task failed,can't get more parameters,please check camera setting or use root user\n");
+        Global::process = PROCESSERROR;
+        return EXIT_FAILURE;
+    }
+    std::string model,sensorSize,focal;
+    getline(cameraCache,model);
+    getline(cameraCache,sensorSize);
+    getline(cameraCache,focal);
+    cameraCache.close();
+    customCamera.setModelName(model);
+    customCamera.setSensorSize(stod(sensorSize));
+    customCamera.setFocal(stod(focal));
+    return EXIT_SUCCESS;
+}
+
 /**
  * @brief 任务处理
  */
@@ -870,7 +893,8 @@ void MsgProc(uint8_t msg)
         std::string geometricModel;
         float distanceRatio;
         bool forceMatch;
-
+        CustomCamera customCamera;
+        getCustomCamera(customCamera);
         printf("\nTask Called: MATCHFEATURES \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
@@ -925,7 +949,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, geometricModel);
         cmdCache.close();
 
-        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
+        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir,customCamera);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
@@ -1094,13 +1118,11 @@ void MsgProc(uint8_t msg)
         cmd[2] = "--dense-config-file";
         cmd[3] = "Densify.ini";
         cmd[4] = "--resolution-level";
-        cmd[5] = "1";
-        cmd[6] = "--number-views";
-        cmd[7] = "-8";
-        cmd[8] = "-w";
-        cmd[9] = (char *)outputDir.data();
+        cmd[5] = "5";
+        cmd[6] = "-w";
+        cmd[7] = (char *)outputDir.data();
         std::cout << cmd[0] << endl;
-        STATE_RETURN = DensifyPointCloud(10, cmd);
+        STATE_RETURN = DensifyPointCloud(8, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("DensifyPointCloud failed \n");
@@ -1304,7 +1326,7 @@ void MsgProc(uint8_t msg)
 
         cmdCache.close();
 
-        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
+        // STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
@@ -1466,7 +1488,7 @@ void MsgProc(uint8_t msg)
         char *cmd4[8];
         std::string scene_dense_mesh_refineDir = outputDir;
         scene_dense_mesh_refineDir.append("/scene_dense_mesh_refine.mvs");
-        
+
         cmd4[0] = "TextureMesh";
         cmd4[1] = (char *)scene_dense_mesh_refineDir.data();
         cmd4[2] = "--decimate";
@@ -1487,10 +1509,10 @@ void MsgProc(uint8_t msg)
     }
     case CMD_EXPORTSTL:
     {
-        char* cmd[8];
+        char *cmd[8];
         cmd[0] = "obj2stl";
         cmd[1] = "/home/zxc/testOutput/scene_dense_mesh_refine_texture.obj";
-        obj2stl(2,cmd);
+        obj2stl(2, cmd);
         break;
     }
     default:

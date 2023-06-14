@@ -123,7 +123,7 @@ std::pair<bool, Vec3> checkPriorWeightsString
 // Create the description of an input image dataset for OpenMVG toolsuite
 // - Export a SfM_Data file with View & Intrinsic data
 //
-int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::string cameraDBDir)
+int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::string cameraDBDir, CustomCamera & customCamera)
 {
 
   std::string sImageDir = inputImageDir,
@@ -279,7 +279,8 @@ int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::st
       const bool bHaveValidExifMetadata =
         exifReader->doesHaveExifInfo()
         && !exifReader->getModel().empty()
-        && !exifReader->getBrand().empty();
+        && !exifReader->getBrand().empty()
+        && (exifReader->getFocal() != 0.0f);
 
       if (bHaveValidExifMetadata) // If image contains meta data
       {
@@ -310,6 +311,15 @@ int IntrinsicsAnalysis(std::string inputImageDir, std::string outputDir, std::st
               << "Please consider add your camera model and sensor width in the database." << "\n";
           }
         }
+      }
+      else
+      {
+        focal = std::max ( width, height ) * customCamera.getFocal() / customCamera.getSensorSize();
+        error_report_stream
+              << stlplus::basename_part(sImageFilename)
+              << "\" do not have meta message.Will use manually Matadata\"" << "\n"
+              << "\" SensorSize: \""<<customCamera.getSensorSize()<< "\n"
+              << "\" Focal: \""<<customCamera.getFocal()<< "\n";
       }
     }
     // Build intrinsic parameter related to the view
