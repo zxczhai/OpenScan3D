@@ -17,17 +17,17 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>680</x>
-      <y>440</y>
-      <width>251</width>
-      <height>161</height>
+      <x>40</x>
+      <y>370</y>
+      <width>891</width>
+      <height>231</height>
      </rect>
     </property>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>70</y>
+       <x>310</x>
+       <y>80</y>
        <width>83</width>
        <height>24</height>
       </rect>
@@ -62,8 +62,8 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>140</y>
-      <width>211</width>
+      <y>150</y>
+      <width>241</width>
       <height>41</height>
      </rect>
     </property>
@@ -79,9 +79,9 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>150</y>
-      <width>471</width>
+      <x>280</x>
+      <y>160</y>
+      <width>511</width>
       <height>23</height>
      </rect>
     </property>
@@ -93,7 +93,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>70</y>
+      <y>80</y>
       <width>140</width>
       <height>35</height>
      </rect>
@@ -105,8 +105,8 @@
    <widget class="QCommandLinkButton" name="commandLinkButton_2">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>70</y>
+      <x>160</x>
+      <y>80</y>
       <width>140</width>
       <height>35</height>
      </rect>
@@ -118,8 +118,8 @@
    <widget class="QCommandLinkButton" name="commandLinkButton_3">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>70</y>
+      <x>270</x>
+      <y>80</y>
       <width>140</width>
       <height>35</height>
      </rect>
@@ -131,8 +131,8 @@
    <widget class="QCommandLinkButton" name="commandLinkButton_4">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>70</y>
+      <x>440</x>
+      <y>80</y>
       <width>140</width>
       <height>35</height>
      </rect>
@@ -144,8 +144,8 @@
    <widget class="QCommandLinkButton" name="commandLinkButton_5">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>70</y>
+      <x>610</x>
+      <y>80</y>
       <width>140</width>
       <height>35</height>
      </rect>
@@ -180,104 +180,12 @@
      <string>Import_Video_Frames</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>230</y>
-      <width>101</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Images Group</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>230</y>
-      <width>131</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Number Of Images</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="ImagesGroup">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>250</y>
-      <width>140</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>230</y>
-      <width>81</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Sensor Size</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>230</y>
-      <width>71</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>    Focus</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="NumberOfImages">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>250</y>
-      <width>140</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="SensorSize">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>250</y>
-      <width>140</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="Focus">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>250</y>
-      <width>140</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>340</y>
-      <width>615</width>
+      <y>220</y>
+      <width>775</width>
       <height>100</height>
      </rect>
     </property>

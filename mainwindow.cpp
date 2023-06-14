@@ -209,7 +209,7 @@ void MainWindow::timerSlot()
     QStandardItemModel *model=new QStandardItemModel () ;
     ui->tableView->setModel(model);
     //设置列表行头
-    int width = 150;  // 标准项的宽度（像素）
+    int width = 190;  // 标准项的宽度（像素）
     model->setHorizontalHeaderItem(0,new QStandardItem("Images Group"));
     ui->tableView->setColumnWidth(0, width);
     model->setHorizontalHeaderItem(1, new QStandardItem ("Number Of Images"));
@@ -234,7 +234,6 @@ void MainWindow::timerSlot()
     item3->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
     model->setItem(0, 3, item3);  // 设置标准项到指定位置
 
-    ui->NumberOfImages->setText(QString::number(Global::numberOfImages));
     if (Global::GetProcessIdFromName("R3D") != 0)
     {
         Global::connectEngine();

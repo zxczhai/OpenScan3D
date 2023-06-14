@@ -174,6 +174,10 @@ void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
     QString newDirPath = dir.absoluteFilePath(newDirName);
     ui->lineEdit_OutputDir->setText(newDirPath);
 
+    QString sensorWidthDatabasePath = QCoreApplication::applicationDirPath() + "/sensor_width_camera_database.txt";
+    Global::sensorWidthDatabaseDir = sensorWidthDatabasePath;
+    qDebug() << sensorWidthDatabasePath;
+
 }
 
 void Dialog_ImportVideoFrames::on_pushButton_browseOutputDir_clicked()
@@ -207,6 +211,38 @@ void Dialog_ImportVideoFrames::on_pushButton_browseOutputDir_clicked()
     ui->lineEdit_OutputDir->setText(newDirPath);
 }
 
+void Dialog_ImportVideoFrames::on_pushButton_addCameraParameters_clicked()
+{
+
+    if(ui->lineEdit_sensorSize->text().isEmpty() || ui->lineEdit_cameraModel->text().isEmpty())
+    {
+        QMessageBox::critical(this, u8"错误 ", u8"填写不完整，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+    else if(!QRegExp("^-?[0-9]+([.][0-9]*)?$").exactMatch(ui->lineEdit_sensorSize->text()))
+    {
+        QMessageBox::critical(this, u8"错误 ", u8"传感器尺寸必须为数字，添加失败！ ", QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+    else
+    {
+        Global::sensorSize = ui->lineEdit_sensorSize->text();
+        Global::cameraModel = ui->lineEdit_cameraModel->text();
+
+        QFile file(Global::sensorWidthDatabaseDir);
+        if (file.open(QIODevice::Append | QIODevice::Text)) {
+            QTextStream out(&file);
+            // 将 Global::cameraModel 和 Global::sensorSize 变量写入文件
+            out << Global::cameraModel << ";" << Global::sensorSize << endl;
+            file.close();
+        }
+
+        Global::isFilledVideo = true;
+        QMessageBox::information(this, u8"完成", u8"添加成功！", QMessageBox::Yes);
+        return;
+    }
+}
+
 void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
 {
 
@@ -234,6 +270,12 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
         return;
     }
 
+    if(!Global::isFilledVideo)
+    {
+        QMessageBox::critical(this, u8"错误 ", u8"请先添加相机参数！！ ", QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+
     //    if(!isDirectoryEmpty(ui->lineEdit_OutputDir->text()))
     //    {
     //        QMessageBox::critical(this, u8"错误 ", u8"该文件夹不为空，请重新选择！", QMessageBox::Ok, QMessageBox::Ok);
@@ -248,6 +290,9 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
     Global::videostarttime = ui->StartTime->text();
 
     Global::videoendtime = ui->EndTime->text();
+
+    Global::imagesInputDir =ui->lineEdit_OutputDir->text();
+    Global::eigenMatrix = "NULL";
 
     /*提取视频帧*/
     QString qstr = ui->lineEdit_inputDir->text();
@@ -302,8 +347,26 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_IMPORTVIDEO;
         sendMessage(msg);
         Global::tasking = true;
+
+        //获取图片文件夹名称
+        QDir path(ui->lineEdit_OutputDir->text());
+        Global::imagesGroup = path.dirName();
+
+        //计算文件夹中的图片数量
+        QString folderPath = ui->lineEdit_OutputDir->text();
+        QDir folderDir(folderPath);
+        QStringList filters;
+        filters << "*.png" << "*.jpg" << "*.jpeg";
+        folderDir.setNameFilters(filters);
+
+        QFileInfoList fileList = folderDir.entryInfoList();
+        int imageCount = fileList.count();
+        Global::numberOfImages = imageCount;
+
         ui->lineEdit_inputDir->clear();
         ui->lineEdit_OutputDir->clear();
+        ui->lineEdit_sensorSize->clear();
+        ui->lineEdit_cameraModel->clear();
         ui->StartTime->clear();
         ui->EndTime->clear();
         this->close();
@@ -319,3 +382,4 @@ void Dialog_ImportVideoFrames::on_btn_CANCEL_clicked()
 {
     this->close();
 }
+

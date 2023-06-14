@@ -28,6 +28,7 @@ int Global::numberOfImages = 0;
 bool Global::tasking = false;
 bool Global::autoTasking = false;
 bool Global::isFilled = false;
+bool Global::isFilledVideo = false;
 int Global::engineTid = 0;
 int Global::process = PROCESSWORKING;
 int Global::processProject = 0;

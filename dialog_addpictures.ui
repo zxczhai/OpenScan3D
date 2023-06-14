@@ -107,6 +107,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_eigenMatrix">
    <property name="geometry">

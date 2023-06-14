@@ -37,6 +37,8 @@ private slots:
     void extract_keyframes(const string& video_file, const string& output_dir);
 
 
+    void on_pushButton_addCameraParameters_clicked();
+
 private:
     Ui::Dialog_ImportVideoFrames *ui;
 

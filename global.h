@@ -64,6 +64,7 @@ public:
     static QStringList  cameraModels;
     static QMap<QString, double> cameraModelsWithSize;
     static bool isFilled;
+    static bool isFilledVideo;
     static int numberOfImages;
     static int engineTid;
     static void connectEngine();
