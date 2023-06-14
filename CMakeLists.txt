@@ -12,18 +12,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(X11 REQUIRED)
+find_package(OpenCV REQUIRED)
 
 include_directories(${EXIV2_INCLUDE_DIRS})
 
 set(PROJECT_SOURCES
+        # test.cpp
         main.cpp
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
         myResource.qrc
         choose_file.h choose_file.cpp choose_file.ui
-#        viewer.h viewer.cpp
-#        qmywidget.h
         embedExternalApp.cpp embedExternalApp.h
         utils.cpp utils.h
         dialog_featurematch.cpp dialog_featurematch.h dialog_featurematch.ui
@@ -64,6 +64,8 @@ endif()
 target_link_libraries(OpenScan3D PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(OpenScan3D PUBLIC ${X11_LIBRARIES})
 target_include_directories(OpenScan3D PRIVATE ${EXIV2_INCLUDE_DIRS})
+target_link_libraries(OpenScan3D PRIVATE ${OpenCV_LIBS})
+
 
 set_target_properties(OpenScan3D PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
