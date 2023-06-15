@@ -26,6 +26,19 @@
 
 uint8_t STATE_RETURN;
 
+
+
+void write_to_file(const std::string& content) {
+    std::ofstream file("/tmp/.OpenScan3D/progress_bar_ctrl.tmp", std::ios::trunc);
+    if (file.is_open()) {
+    file << content;
+    file.close();
+    std::cout << "Successfully written to file." << std::endl;
+  } else {
+    std::cout << "Failed to create file!" << std::endl;
+  }
+}
+
 void checkGPUExist()
 {
     int deviceCount = 0;
@@ -882,16 +895,22 @@ void MsgProc(uint8_t msg)
     {
     case CMD_MATCHFEATURES:
     {
+
+        write_to_file("MFS");
+        
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string imagesInputDir;
         std::string sensorWidthDataBaseDir;
         std::string matchesOutputDir;
         std::string EigenMatrix;     // EigenMatrixFormat"f;0;ppx;0;f;ppy;0;0;1"
+
+        write_to_file("3");
         std::string describerMethod; // #1_ComputeFeatures
         std::string featureQuality;  // #1_ComputeFeatures
         bool upRight;
         bool forceCompute;
+        write_to_file("5");
         std::string nearest_matching_method;
         std::string geometricModel;
         float distanceRatio;
@@ -899,6 +918,8 @@ void MsgProc(uint8_t msg)
         CustomCamera customCamera;
         if (getCustomCamera(customCamera) == EXIT_FAILURE)
             break;
+
+        write_to_file("8");
 
         printf("\nTask Called: MATCHFEATURES \n\n");
         ifstream cmdCache;
@@ -910,6 +931,8 @@ void MsgProc(uint8_t msg)
             break;
         }
 
+        write_to_file("10");
+
         std::string temp;
         getline(cmdCache, temp);
         if (temp != "matchfeature")
@@ -918,12 +941,13 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        write_to_file("13");
         getline(cmdCache, imagesInputDir);
         getline(cmdCache, sensorWidthDataBaseDir);
         getline(cmdCache, matchesOutputDir);
         getline(cmdCache, temp);
 
+        write_to_file("15");
         EigenMatrix = temp;
         if (EigenMatrix == "NULL")
         {
@@ -933,6 +957,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, describerMethod);
         getline(cmdCache, featureQuality);
         getline(cmdCache, temp);
+        write_to_file("18");
         if (temp == "0")
             upRight = false;
         else
@@ -953,7 +978,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, nearest_matching_method);
         getline(cmdCache, geometricModel);
         cmdCache.close();
-
+        write_to_file("20");
         STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir, customCamera);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -961,7 +986,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        write_to_file("23");
         STATE_RETURN = ComputeFeatures(matchesOutputDir + "/sfm_data.json", matchesOutputDir, describerMethod, featureQuality, upRight, forceCompute);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -969,6 +994,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("25");
         printf("Obtaining feature points is complete, ready to start matching feature points\n");
         sleep(2);
         STATE_RETURN = ComputeMatches(matchesOutputDir + "/sfm_data.json", matchesOutputDir + "/featurePointMatch.bin", nearest_matching_method, distanceRatio);
@@ -978,7 +1004,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        write_to_file("28");
         STATE_RETURN = FilterMatches(matchesOutputDir, matchesOutputDir, geometricModel);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -990,11 +1016,20 @@ void MsgProc(uint8_t msg)
         mymsg.mtype = 1;
         mymsg.data[0] = PROCESSCLOSE;
         sendMessage(mymsg);
+
+        write_to_file("MFE");
+        write_to_file("30");
         printf("==========Task Finished, Please Do The Next Step==========\n");
+
+
         break;
     }
     case CMD_SFMANDSFP:
     {
+        write_to_file("SFMS");
+
+        write_to_file("32");
+
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string inputDir;
@@ -1007,6 +1042,7 @@ void MsgProc(uint8_t msg)
         printf("\nTask called: SFM&SFP \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        write_to_file("35");
         if (!cmdCache)
         {
             printf("Tasks Failed: Can't get more parameters\n");
@@ -1016,6 +1052,7 @@ void MsgProc(uint8_t msg)
 
         std::string temp;
         getline(cmdCache, temp);
+        write_to_file("38");
         if (temp != "sfm&sfp")
         {
             printf("Tasks Failed: Can't get more parameters\n");
@@ -1026,7 +1063,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, outputDir);
         getline(cmdCache, sfmEngine);
         getline(cmdCache, on_off);
-
+        write_to_file("41");
         cmdCache.close();
         printf("=============Reconstruction Starting===========\n");
         if (sfmEngine == "GLOBAL")
@@ -1049,6 +1086,7 @@ void MsgProc(uint8_t msg)
                 break;
             }
         }
+        write_to_file("44");
         printf("=============Reconstruction Successfully===========\n");
         printf("=============ColorizeStructure Starting===========\n");
         STATE_RETURN = ColorizeStructure(outputDir, outputDir);
@@ -1058,6 +1096,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("47");
         printf("=============ColorizeStructure Successfully===========\n");
         printf("=============StructureFromKnownPoses Starting===========\n");
         STATE_RETURN = StructureFromKnownPoses(outputDir, outputDir, outputDir, outputDir, on_off);
@@ -1067,6 +1106,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("50");
         printf("=============StructureFromKnownPoses Successfully===========\n");
         printf("=============ColorizedRobustTriangulation Starting===========\n");
         STATE_RETURN = ColorizedRobustTriangulation(outputDir, outputDir);
@@ -1076,6 +1116,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("54");
         printf("=============ColorizedRobustTriangulation Successfully===========\n");
         printf("=============ExportToOpenMVS Starting===========\n");
         STATE_RETURN = ExportToOpenMVS(outputDir, outputDir, outputDir);
@@ -1085,17 +1126,29 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("56");
         printf("=============ExportToOpenMVS Successfully===========\n");
+
+        write_to_file("SFME");
+
+        write_to_file("58");
         printf("==========Task Finished, Please Do The Next Step==========\n");
+
+        
+
         break;
     }
     case CMD_EXPORTDENSECLOUD:
     {
+
+        write_to_file("DPS");
+        write_to_file("59");
+
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string sceneDir;
         std::string outputDir;
-
+        write_to_file("61");
         printf("\nTask called DENSIFYPOINTCLOUD \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
@@ -1107,6 +1160,7 @@ void MsgProc(uint8_t msg)
         }
         std::string temp;
         getline(cmdCache, temp);
+        write_to_file("64");
         if (temp != "DENSIFYPOINTCLOUD")
         {
             printf("Tasks Failed: Can't get more parameters\n");
@@ -1117,6 +1171,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, outputDir);
         cmdCache.close();
         sceneDir.append("/scene.mvs");
+        write_to_file("68");
         char *cmd[10];
         cmd[0] = "DensifyPointCloud";
         cmd[1] = (char *)sceneDir.data();
@@ -1124,8 +1179,11 @@ void MsgProc(uint8_t msg)
         cmd[3] = "Densify.ini";
         cmd[4] = "--resolution-level";
         cmd[5] = "1";
-        cmd[6] = "-w";
-        cmd[7] = (char *)outputDir.data();
+        cmd[6] = "--number-views";
+        cmd[7] = "-8";
+        cmd[8] = "-w";
+        cmd[9] = (char *)outputDir.data();
+        write_to_file("70");
         std::cout << cmd[0] << endl;
         STATE_RETURN = DensifyPointCloud(8, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
@@ -1135,11 +1193,26 @@ void MsgProc(uint8_t msg)
             break;
         }
         std::string sceneDenseDir = outputDir;
+
+
+
+        write_to_file("DPE");
+
+        write_to_file("72");
+
         printf("==========Task Finished, Please Do The Next Step==========\n");
+
+
+
         break;
     }
     case CMD_RECONSTRUCTMESH:
     {
+
+        write_to_file("TRS");
+
+        write_to_file("73");
+
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string scene_dense_meshDir;
@@ -1147,6 +1220,7 @@ void MsgProc(uint8_t msg)
 
         printf("\nTask called RECONSTRUCTMESH \n\n");
         ifstream cmdCache;
+        write_to_file("75");
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
         if (!cmdCache)
         {
@@ -1157,6 +1231,7 @@ void MsgProc(uint8_t msg)
 
         std::string temp;
         getline(cmdCache, temp);
+        write_to_file("78");
         if (temp != "RECONSTRUCTMESH")
         {
             printf("Tasks Failed: Can't get more parameters\n");
@@ -1166,7 +1241,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, scene_dense_meshDir);
         getline(cmdCache, outputDir);
         cmdCache.close();
-
+        write_to_file("80");
         scene_dense_meshDir.append("/scene_dense.mvs");
         char *cmd[8];
         cmd[0] = "ReconstructMesh";
@@ -1174,6 +1249,7 @@ void MsgProc(uint8_t msg)
         cmd[2] = "-w";
         cmd[3] = (char *)outputDir.data();
         STATE_RETURN = ReconstructMesh(4, cmd);
+        write_to_file("83");
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("ReconstructTheMesh failed \n");
@@ -1182,6 +1258,7 @@ void MsgProc(uint8_t msg)
         }
         std::string scene_dense_mesh_dir = outputDir;
         scene_dense_mesh_dir.append("/scene_dense_mesh.mvs");
+        write_to_file("86");
         cmd[0] = "RefineMesh";
         cmd[1] = (char *)scene_dense_mesh_dir.data();
         cmd[2] = "--scales";
@@ -1197,12 +1274,28 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+
+
+
+        write_to_file("TRE");
+        write_to_file("90");
+
+
         printf("==========Task Finished, Please Do The Next Step==========\n");
+
+
+
+
+
+
         break;
     }
 
     case CMD_TEXTUREMESH:
     {
+
+        write_to_file("TMS");
+        write_to_file("91");
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string scene_dense_mesh_refineDir;
@@ -1211,6 +1304,7 @@ void MsgProc(uint8_t msg)
         printf("\nTask called TEXTUREMESH \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        write_to_file("93");
         if (!cmdCache)
         {
             printf("Tasks Failed: Can't get more parameters\n");
@@ -1226,12 +1320,13 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        write_to_file("95");
         getline(cmdCache, scene_dense_mesh_refineDir);
         getline(cmdCache, outputDir);
         cmdCache.close();
         char *cmd[8];
         scene_dense_mesh_refineDir.append("/scene_dense_mesh_refine.mvs");
+        write_to_file("97");
         cmd[0] = "TextureMesh";
         cmd[1] = (char *)scene_dense_mesh_refineDir.data();
         cmd[2] = "--decimate";
@@ -1245,12 +1340,22 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+
+
+        write_to_file("TME");
+        write_to_file("100");
         printf("==========Task Finished, You Can View The Model Now==========\n");
+
+
+
         break;
     }
 
     case CMD_FULLAUTO:
     {
+
+        write_to_file("MFS");
+        write_to_file("2");
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string imagesInputDir;
@@ -1265,7 +1370,7 @@ void MsgProc(uint8_t msg)
         std::string geometricModel;
         float distanceRatio;
         bool forceMatch;
-
+        write_to_file("4");
         std::string inputDir;
         std::string outputDir;
         std::string sfmEngine;
@@ -1282,7 +1387,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        write_to_file("7");
         std::string temp;
         getline(cmdCache, temp);
         if (temp != "CMD_FULLAUTO")
@@ -1296,7 +1401,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, sensorWidthDataBaseDir);
         getline(cmdCache, matchesOutputDir);
         getline(cmdCache, temp);
-
+        write_to_file("9");
         EigenMatrix = temp;
         if (EigenMatrix == "NULL")
         {
@@ -1316,6 +1421,7 @@ void MsgProc(uint8_t msg)
             forceCompute = false;
         else
             forceCompute = true;
+        write_to_file("11");
         getline(cmdCache, temp);            // 10
         distanceRatio = atof(temp.c_str()); // 10距离比率
         getline(cmdCache, temp);            // 11
@@ -1325,14 +1431,14 @@ void MsgProc(uint8_t msg)
             forceMatch = true;
         getline(cmdCache, nearest_matching_method); // 12
         getline(cmdCache, geometricModel);          // 13
-
+        write_to_file("13");
         getline(cmdCache, inputDir);  // 14
         getline(cmdCache, outputDir); // 15
         getline(cmdCache, sfmEngine); // 16
         getline(cmdCache, on_off);    // 17
 
         cmdCache.close();
-
+        write_to_file("17");
         STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir,customCamera);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1340,6 +1446,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("20");
         STATE_RETURN = ComputeFeatures(matchesOutputDir + "/sfm_data.json", matchesOutputDir, describerMethod, featureQuality, upRight, forceCompute);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1348,7 +1455,7 @@ void MsgProc(uint8_t msg)
             break;
         }
         printf("Obtaining feature points is complete, ready to start matching feature points\n");
-
+        write_to_file("23");
         STATE_RETURN = ComputeMatches(matchesOutputDir + "/sfm_data.json", matchesOutputDir + "/featurePointMatch.bin", nearest_matching_method, distanceRatio);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1356,7 +1463,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-
+        write_to_file("27");
         STATE_RETURN = FilterMatches(matchesOutputDir, matchesOutputDir, geometricModel);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1369,7 +1476,17 @@ void MsgProc(uint8_t msg)
         mymsg.data[0] = PROCESSCLOSE;
         sendMessage(mymsg);
 
+       
+        write_to_file("MFE");
+        sleep(1);
+        write_to_file("SFMS");
+
+
+        write_to_file("30");
+
+
         printf("=============Reconstruction Starting===========\n");
+        write_to_file("31");
         if (sfmEngine == "GLOBAL")
         {
             STATE_RETURN = Reconstruction(inputDir, outputDir, sfmEngine);
@@ -1390,8 +1507,10 @@ void MsgProc(uint8_t msg)
                 break;
             }
         }
+        write_to_file("33");
         printf("=============Reconstruction Successfully===========\n");
         printf("=============ColorizeStructure Starting===========\n");
+        write_to_file("35");
         STATE_RETURN = ColorizeStructure(outputDir, outputDir);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1399,8 +1518,10 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("38");
         printf("=============ColorizeStructure Successfully===========\n");
         printf("=============StructureFromKnownPoses Starting===========\n");
+        write_to_file("41");
         STATE_RETURN = StructureFromKnownPoses(outputDir, outputDir, outputDir, outputDir, on_off);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1408,18 +1529,22 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("44");
         printf("=============StructureFromKnownPoses Successfully===========\n");
         printf("=============ColorizedRobustTriangulation Starting===========\n");
         STATE_RETURN = ColorizedRobustTriangulation(outputDir, outputDir);
+        write_to_file("47");
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("ColorizedRobustTriangulation failed \n");
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("52");
         printf("=============ColorizedRobustTriangulation Successfully===========\n");
         printf("=============ExportToOpenMVS Starting===========\n");
         STATE_RETURN = ExportToOpenMVS(outputDir, outputDir, outputDir);
+        write_to_file("55");
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("ExportToOpenMVS failed \n");
@@ -1427,11 +1552,23 @@ void MsgProc(uint8_t msg)
             break;
         }
         printf("=============ExportToOpenMVS Successfully===========\n");
+
+
+        write_to_file("SFME");
+        sleep(1);
+        write_to_file("DPS");
+
+        write_to_file("58");
+
+
         printf("=============DensifyPointCloud starting===========\n");
+        write_to_file("60");
         std::string sceneDir = outputDir;
+        write_to_file("63");
         // printf(outputDir);
         sceneDir.append("/scene.mvs");
         char *cmd1[10];
+        write_to_file("67");
         cmd1[0] = "DensifyPointCloud";
         cmd1[1] = (char *)sceneDir.data();
         cmd1[2] = "--dense-config-file";
@@ -1442,6 +1579,7 @@ void MsgProc(uint8_t msg)
         cmd1[7] = "-8";
         cmd1[8] = "-w";
         cmd1[9] = (char *)outputDir.data();
+        write_to_file("70");
         std::cout << cmd1[0] << endl;
         STATE_RETURN = DensifyPointCloud(10, cmd1);
         if (STATE_RETURN == EXIT_FAILURE)
@@ -1451,16 +1589,27 @@ void MsgProc(uint8_t msg)
             break;
         }
         // outputDir = outputDir1Dir;
+        write_to_file("72");
         printf("=============DensifyPointCloud Successfully===========\n");
-        printf("=============ReconstructMesh starting===========\n");
 
+
+
+        write_to_file("DPE");
+        sleep(1);
+        write_to_file("TRS");
+
+        write_to_file("73");
+        printf("=============ReconstructMesh starting===========\n");
         std::string scene_denseDir = outputDir;
+        write_to_file("75");
         scene_denseDir.append("/scene_dense.mvs");
+        write_to_file("77");
         char *cmd2[5];
         cmd2[0] = "ReconstructMesh";
         cmd2[1] = (char *)scene_denseDir.data();
         cmd2[2] = "-w";
         cmd2[3] = (char *)outputDir.data();
+        write_to_file("80");
         STATE_RETURN = ReconstructMesh(4, cmd2);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1468,10 +1617,12 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
+        write_to_file("83");
         // outputDir = outputDir2Dir;
         printf("=============ReconstructMesh Successfully===========\n");
         printf("=============RefineMesh starting===========\n");
         std::string scene_dense_meshDir = outputDir;
+        write_to_file("85");
         scene_dense_meshDir.append("/scene_dense_mesh.mvs");
         char *cmd3[8];
         cmd3[0] = "RefineMesh";
@@ -1482,6 +1633,7 @@ void MsgProc(uint8_t msg)
         cmd3[5] = "25.05";
         cmd3[6] = "-w";
         cmd3[7] = (char *)outputDir.data();
+        write_to_file("87");
         STATE_RETURN = RefineMesh(8, cmd3);
         if (STATE_RETURN == EXIT_FAILURE)
         {
@@ -1490,12 +1642,23 @@ void MsgProc(uint8_t msg)
             break;
         }
         // outputDir = outputDir3Dir;
+        write_to_file("90");
         printf("=============RefineMesh Successfully===========\n");
+
+
+
+        write_to_file("TRE");
+        sleep(1);
+        write_to_file("TMS");
+
+
+        write_to_file("92");
+
         printf("=============TextureMesh starting===========\n");
         char *cmd4[8];
         std::string scene_dense_mesh_refineDir = outputDir;
         scene_dense_mesh_refineDir.append("/scene_dense_mesh_refine.mvs");
-
+        write_to_file("95");
         cmd4[0] = "TextureMesh";
         cmd4[1] = (char *)scene_dense_mesh_refineDir.data();
         cmd4[2] = "--decimate";
@@ -1503,15 +1666,21 @@ void MsgProc(uint8_t msg)
         cmd4[4] = "-w";
         cmd4[5] = (char *)outputDir.data();
         STATE_RETURN = TextureTheMesh(6, cmd4);
+        write_to_file("97");
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("TextureTheMesh failed \n");
             Global::process = PROCESSERROR;
             break;
         }
-        // outputDir = outputDir4Dir;
+        
+        write_to_file("TME");
+
         printf("=============TextureMesh Successfully===========\n");
+        write_to_file("100");
         printf("Everything is OK");
+
+        
         break;
     }
     case CMD_EXPORTSTL:
