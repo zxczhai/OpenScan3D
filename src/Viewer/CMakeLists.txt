@@ -1,11 +1,34 @@
-if((NOT OpenMVS_USE_OPENGL) OR (NOT _USE_OPENGL))
-	RETURN()
-endif()
+cmake_minimum_required(VERSION 3.16.3)
 
-if(NOT VIEWER_NAME)
-	set(VIEWER_NAME "OpenViewer")
-endif()
+project(Viewer)
 
+# ==============================================================================
+# Focus C++11 support
+# ==============================================================================
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(OPENMVS_LIBRARIES IO Math MVS Common)
+set(VIEWER_NAME "OpenViewer")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+# Find OpenGL library and header files
+find_package(OpenGL REQUIRED)
+
+if(OPENGL_FOUND)
+    message("Found OpenGL library: ${OPENGL_LIBRARIES}")
+    message("Found OpenGL headers: ${OPENGL_INCLUDE_DIR}")
+else()
+    message(FATAL_ERROR "OpenGL library not found")
+endif()
+# Find OpenMVS library and header files
+find_package(OpenMVS)
+if(OpenMVS_FOUND)
+	include_directories(${OpenMVS_INCLUDE_DIRS})
+	add_definitions(${OpenMVS_DEFINITIONS})
+endif()
+# Find X11 library
+find_package(X11 REQUIRED)
 # Find required packages
 FIND_PACKAGE(GLEW QUIET)
 if(GLEW_FOUND)
@@ -34,8 +57,13 @@ else()
 endif()
 FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
 
-cxx_executable_with_flags(${VIEWER_NAME} "Apps" "${cxx_default}" "MVS;${OPENGL_LIBRARIES};${GLEW_LIBRARY};${GLFW_STATIC_LIBRARIES};GLEW::GLEW;${glfw3_LIBRARY};${GLFW3_LIBRARY};glfw;${OpenMVS_EXTRA_LIBS}" ${LIBRARY_FILES_C} ${LIBRARY_FILES_H})
-add_executable(${VIEWER_NAME} )
+add_executable(${VIEWER_NAME} ${LIBRARY_FILES_C} ${LIBRARY_FILES_H})
+
+target_link_libraries(${VIEWER_NAME} PRIVATE MVS ${OPENGL_LIBRARIES} GLEW::GLEW glfw  ${OPENMVS_LIBRARIES} X11)
+target_include_directories(${VIEWER_NAME} PRIVATE ../../libs/openMVS/libs/Common)
+target_include_directories(${VIEWER_NAME} PRIVATE ../../libs/openMVS/libs)
+target_include_directories(${VIEWER_NAME} PRIVATE ${EIGEN_INCLUDE_DIR_HINTS})
+target_include_directories(${VIEWER_NAME} PRIVATE ${OPENGL_INCLUDE_DIR})
 
 # Manually set Common.h as the precompiled header
 IF(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16.0)

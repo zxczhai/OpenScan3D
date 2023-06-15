@@ -100,6 +100,7 @@ public:
 	void CastRay(const Ray3&, int);
 protected:
 	static void* ThreadWorker(void*);
+	static void window_close_callback(GLFWwindow* window);
 };
 /*----------------------------------------------------------------*/
 

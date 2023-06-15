@@ -33,14 +33,13 @@
 #include <boost/program_options.hpp>
 
 #include "Scene.h"
-
+#include <X11/Xlib.h>
 using namespace VIEWER;
 
 
 // D E F I N E S ///////////////////////////////////////////////////
 
-#define APPNAME _T("Viewer")
-
+#define APPNAME _T("OpenViewer")
 
 // S T R U C T S ///////////////////////////////////////////////////
 
@@ -139,8 +138,8 @@ bool Initialize(size_t argc, LPCTSTR* argv)
 	#endif
 
 	// print application details: version and command line
-	Util::LogBuild();
-	LOG(_T("Command line: ") APPNAME _T("%s"), Util::CommandLineToString(argc, argv).c_str());
+	// Util::LogBuild();
+	// LOG(_T("Command line: ") APPNAME _T("%s"), Util::CommandLineToString(argc, argv).c_str());
 
 	// validate input
 	Util::ensureValidPath(OPT::strInputFileName);
@@ -199,7 +198,7 @@ void Finalize()
 {
 	#if TD_VERBOSE != TD_VERBOSE_OFF
 	// print memory statistics
-	Util::LogMemoryInfo();
+	// Util::LogMemoryInfo();
 	#endif
 
 	if (OPT::bLogFile)
@@ -219,10 +218,13 @@ int main(int argc, LPCTSTR* argv)
 
 	if (!Initialize(argc, argv))
 		return EXIT_FAILURE;
-
+	Display* dpy = XOpenDisplay(nullptr);
+    Screen* scrn = DefaultScreenOfDisplay(dpy);
+    int width = WidthOfScreen(scrn)> 1920 ? 1920:WidthOfScreen(scrn);
+    int height = HeightOfScreen(scrn)> 1080 ? 1080:HeightOfScreen(scrn);
 	// create viewer
 	Scene viewer;
-	if (!viewer.Init(cv::Size(1280, 720), APPNAME,
+	if (!viewer.Init(cv::Size(width, height), APPNAME,
 			OPT::strInputFileName.IsEmpty() ? NULL : MAKE_PATH_SAFE(OPT::strInputFileName).c_str(),
 			OPT::strMeshFileName.IsEmpty() ? NULL : MAKE_PATH_SAFE(OPT::strMeshFileName).c_str()))
 		return EXIT_FAILURE;
@@ -234,6 +236,6 @@ int main(int argc, LPCTSTR* argv)
 	viewer.Loop();
 
 	Finalize();
-	return EXIT_SUCCESS;
+	return 0;
 }
 /*----------------------------------------------------------------*/

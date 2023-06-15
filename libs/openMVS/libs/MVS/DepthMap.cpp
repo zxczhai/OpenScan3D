@@ -43,7 +43,8 @@
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/property_map.h>
 #include <CGAL/pca_estimate_normals.h>
-
+#include <cerrno>
+#include <cstdio>
 using namespace MVS;
 
 
@@ -2015,9 +2016,10 @@ bool MVS::ImportDepthDataRaw(const String& fileName, String& imageFileName,
 	Depth& dMin, Depth& dMax,
 	DepthMap& depthMap, NormalMap& normalMap, ConfidenceMap& confMap, ViewsMap& viewsMap, unsigned flags)
 {
-	FILE* f = fopen(fileName, "rb");
+	std::FILE* f = fopen(fileName, "rb");
 	if (f == NULL) {
 		DEBUG("error: opening file '%s' for reading depth-data", fileName.c_str());
+		DEBUG(strerror(errno));
 		return false;
 	}
 

@@ -20,9 +20,10 @@
 #include "TextureTheMesh.hpp"
 #include "OBJ2STL.hpp"
 #include "Camera.hpp"
-#include <unistd.h>
 #include "MVS.h"
 #include "UtilCUDA.h"
+#include <unistd.h>
+
 uint8_t STATE_RETURN;
 
 void checkGPUExist()
@@ -46,6 +47,7 @@ void checkGPUExist()
     printf("No available CUDA device(s),will use CPU Mode\n");
 #endif
 }
+
 bool checkDirExist(std::string pathToDir)
 {
     DIR *dir;
@@ -849,24 +851,25 @@ bool savePid()
 // //     return EXIT_SUCCESS;
 // // }
 
-int getCustomCamera(CustomCamera & customCamera)
+int getCustomCamera(CustomCamera &customCamera)
 {
     ifstream cameraCache;
-    cameraCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+    cameraCache.open(("/tmp/.OpenScan3D/cameraCache.tmp"), ios::in);
     if (!cameraCache)
     {
         printf("Task failed,can't get more parameters,please check camera setting or use root user\n");
         Global::process = PROCESSERROR;
         return EXIT_FAILURE;
     }
-    std::string model,sensorSize,focal;
-    getline(cameraCache,model);
-    getline(cameraCache,sensorSize);
-    getline(cameraCache,focal);
+    std::string model, sensorSize, focal;
+    getline(cameraCache, model);
+    getline(cameraCache, sensorSize);
+    getline(cameraCache, focal);
     cameraCache.close();
+    std::cout<<model <<"\n"<<sensorSize<<"\n"<<focal<<std::endl;
     customCamera.setModelName(model);
-    customCamera.setSensorSize(stod(sensorSize));
-    customCamera.setFocal(stod(focal));
+    customCamera.setSensorSize(std::stod(sensorSize));
+    customCamera.setFocal(std::stod(focal));
     return EXIT_SUCCESS;
 }
 
@@ -894,7 +897,9 @@ void MsgProc(uint8_t msg)
         float distanceRatio;
         bool forceMatch;
         CustomCamera customCamera;
-        getCustomCamera(customCamera);
+        if (getCustomCamera(customCamera) == EXIT_FAILURE)
+            break;
+
         printf("\nTask Called: MATCHFEATURES \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
@@ -949,7 +954,7 @@ void MsgProc(uint8_t msg)
         getline(cmdCache, geometricModel);
         cmdCache.close();
 
-        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir,customCamera);
+        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir, customCamera);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
@@ -1118,7 +1123,7 @@ void MsgProc(uint8_t msg)
         cmd[2] = "--dense-config-file";
         cmd[3] = "Densify.ini";
         cmd[4] = "--resolution-level";
-        cmd[5] = "5";
+        cmd[5] = "1";
         cmd[6] = "-w";
         cmd[7] = (char *)outputDir.data();
         std::cout << cmd[0] << endl;
@@ -1265,7 +1270,9 @@ void MsgProc(uint8_t msg)
         std::string outputDir;
         std::string sfmEngine;
         std::string on_off;
-
+        CustomCamera customCamera;
+        if (getCustomCamera(customCamera) == EXIT_FAILURE)
+            break;
         printf("\nTask Called: CMD_FULLAUTO \n\n");
         ifstream cmdCache;
         cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
@@ -1326,7 +1333,7 @@ void MsgProc(uint8_t msg)
 
         cmdCache.close();
 
-        // STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir);
+        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir,customCamera);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
@@ -1369,7 +1376,7 @@ void MsgProc(uint8_t msg)
             if (STATE_RETURN == EXIT_FAILURE)
             {
                 printf("GlobalReconstruction failed \n");
-                // Global::process = PROCESSERROR;
+                Global::process = PROCESSERROR;
                 break;
             }
         }
@@ -1379,7 +1386,7 @@ void MsgProc(uint8_t msg)
             if (STATE_RETURN == EXIT_FAILURE)
             {
                 printf("IncrementalReconstruction failed \n");
-                // Global::process = PROCESSERROR;
+                Global::process = PROCESSERROR;
                 break;
             }
         }

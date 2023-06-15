@@ -662,14 +662,23 @@ void Scene::Draw()
 	glfwSwapBuffers(window.GetWindow());
 }
 
+void Scene::window_close_callback(GLFWwindow* window) {
+    glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
 void Scene::Loop()
 {
+	glfwMakeContextCurrent(window.GetWindow());
+	glfwSetWindowCloseCallback(window.GetWindow(), window_close_callback);
 	while (!glfwWindowShouldClose(window.GetWindow())) {
+		glClearColor(1.0f, 0.75f, 0.8f, 1.0f); //set bg pink
+		glClear(GL_COLOR_BUFFER_BIT);
 		window.UpdateView(images, scene.images);
 		Draw();
 		glfwWaitEvents();
 	}
 }
+
 
 
 void Scene::Center()
