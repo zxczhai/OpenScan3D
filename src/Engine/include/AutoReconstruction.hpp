@@ -1660,10 +1660,32 @@ void MsgProc(uint8_t msg)
     }
     case CMD_EXPORTSTL:
     {
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Task failed,can't get more parameters,no pointed directory\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        std::string tmp, sourceFile, definiteDir;
+        getline(cmdCache, tmp);
+        if (tmp != "CMD_EXPORTSTL")
+        {
+            printf("Task failed,can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        getline(cmdCache,sourceFile);
+        getline(cmdCache,definiteDir);
+        definiteDir.append("/ExportSTL.stl");
         char *cmd[8];
         cmd[0] = "obj2stl";
-        cmd[1] = "/home/zxc/testOutput/scene_dense_mesh_refine_texture.obj";
-        obj2stl(2, cmd);
+        cmd[1] = (char*)sourceFile.data();
+        cmd[2] = "-o";
+        cmd[3] = (char*)definiteDir.data();
+        obj2stl(4, cmd);
+        printf("EXPORT SUCCESSFULLY\n");
         break;
     }
     case CMD_EXPORTPLY:
