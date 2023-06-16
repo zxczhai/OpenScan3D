@@ -95,6 +95,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_OutputDir">
    <property name="geometry">
@@ -104,6 +107,9 @@
      <width>271</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_browseInputDir">

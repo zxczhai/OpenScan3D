@@ -57,10 +57,18 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QLineEdit" name="lineEdit_inputDir"/>
+     <widget class="QLineEdit" name="lineEdit_inputDir">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_OutputDir"/>
+     <widget class="QLineEdit" name="lineEdit_OutputDir">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

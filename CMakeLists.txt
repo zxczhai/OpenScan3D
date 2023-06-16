@@ -8,13 +8,17 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(CMAKE_PREFIX_PATH /home/cjy/QT/QT5.14.2/5.14.2/gcc_64)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(X11 REQUIRED)
 find_package(OpenCV REQUIRED)
+## 查找Exiv2库
+# find_package(Exiv2 REQUIRED)
 
-include_directories(${EXIV2_INCLUDE_DIRS})
+# include_directories(${EXIV2_INCLUDE_DIRS})
+
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/cmake-3.16/Modules")
 
 set(PROJECT_SOURCES
         # test.cpp
@@ -65,7 +69,8 @@ target_link_libraries(OpenScan3D PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(OpenScan3D PUBLIC ${X11_LIBRARIES})
 target_include_directories(OpenScan3D PRIVATE ${EXIV2_INCLUDE_DIRS})
 target_link_libraries(OpenScan3D PRIVATE ${OpenCV_LIBS})
-
+target_link_libraries(OpenScan3D PRIVATE libopenMVG_easyexif.a)
+target_link_libraries(OpenScan3D PRIVATE libexiv2.so)
 
 set_target_properties(OpenScan3D PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

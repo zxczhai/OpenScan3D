@@ -210,6 +210,7 @@ void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_FULLAUTO;
         sendMessage(msg);
         Global::autoTasking = true;
+        ui->lineEdit_OutputDir->clear();
         this->close();
     }
     else

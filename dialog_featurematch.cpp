@@ -170,6 +170,7 @@ void Dialog_FeatureMatch::on_btn_CONFIRM_clicked()
         msg.data[0] = CMD_MATCHFEATURES;
         sendMessage(msg);
         Global::tasking = true;
+        ui->lineEdit_OutputDir->clear();
         this->close();
         // rcvMessage(msg);
         // QList<qint64> pidlist;

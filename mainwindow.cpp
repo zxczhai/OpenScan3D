@@ -209,14 +209,14 @@ void MainWindow::timerSlot()
     QStandardItemModel *model=new QStandardItemModel () ;
     ui->tableView->setModel(model);
     //设置列表行头
-    int width = 150;  // 标准项的宽度（像素）
+    int width = 190;  // 标准项的宽度（像素）
     model->setHorizontalHeaderItem(0,new QStandardItem("Images Group"));
     ui->tableView->setColumnWidth(0, width);
     model->setHorizontalHeaderItem(1, new QStandardItem ("Number Of Images"));
     ui->tableView->setColumnWidth(1, width);
-    model->setHorizontalHeaderItem(2, new QStandardItem ("Sensor Size"));
+    model->setHorizontalHeaderItem(2, new QStandardItem ("cameraModel"));
     ui->tableView->setColumnWidth(2, width);
-    model->setHorizontalHeaderItem(3, new QStandardItem ("Focus"));
+    model->setHorizontalHeaderItem(3, new QStandardItem ("Sensor Size"));
     ui->tableView->setColumnWidth(3, width);
     //设置列表列头
     model->setVerticalHeaderItem(0, new QStandardItem ("-")) ;
@@ -227,14 +227,13 @@ void MainWindow::timerSlot()
     QStandardItem* item1 = new QStandardItem(QString::number(Global::numberOfImages));  // 创建标准项
     item1->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
     model->setItem(0, 1, item1);  // 设置标准项到指定位置
-    QStandardItem* item2 = new QStandardItem(Global::sensorSize);  // 创建标准项
+    QStandardItem* item2 = new QStandardItem(Global::cameraModel);  // 创建标准项
     item2->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
     model->setItem(0, 2, item2);  // 设置标准项到指定位置
-    QStandardItem* item3 = new QStandardItem(Global::focus);  // 创建标准项
+    QStandardItem* item3 = new QStandardItem(Global::sensorSize);  // 创建标准项
     item3->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
     model->setItem(0, 3, item3);  // 设置标准项到指定位置
 
-    ui->NumberOfImages->setText(QString::number(Global::numberOfImages));
     if (Global::GetProcessIdFromName("R3D") != 0)
     {
         Global::connectEngine();
