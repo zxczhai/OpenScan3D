@@ -36,8 +36,8 @@
 // I N C L U D E S /////////////////////////////////////////////////
 
 #include <GL/glew.h>
-#include "../../libs/MVS/Common.h"
-#include "../../libs/MVS/Scene.h"
+#include "MVS/Common.h"
+#include "MVS/Scene.h"
 
 #if defined(_MSC_VER)
 #include <gl/GLU.h>

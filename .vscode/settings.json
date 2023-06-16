@@ -80,6 +80,8 @@
         "span": "cpp",
         "dense": "cpp",
         "sparsecore": "cpp",
-        "qstring": "cpp"
+        "qstring": "cpp",
+        "matrixfunctions": "cpp",
+        "ios": "cpp"
     }
 }

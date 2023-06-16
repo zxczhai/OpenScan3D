@@ -19,7 +19,6 @@
 #include <fstream>
 #include <string>
 
-#define OPENMVG_USE_OPENMP
 
 #ifdef OPENMVG_USE_OPENMP
 #include <omp.h>

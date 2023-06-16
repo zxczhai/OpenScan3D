@@ -57,6 +57,7 @@ void Scene::Release()
 	images.Release();
 	pointcloud.Release();
 	mesh.Release();
+	return ;
 }
 
 bool Scene::IsEmpty() const

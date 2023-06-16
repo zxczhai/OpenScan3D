@@ -26,17 +26,19 @@
 
 uint8_t STATE_RETURN;
 
-
-
-void write_to_file(const std::string& content) {
+void write_to_file(const std::string &content)
+{
     std::ofstream file("/tmp/.OpenScan3D/progress_bar_ctrl.tmp", std::ios::trunc);
-    if (file.is_open()) {
-    file << content;
-    file.close();
-    std::cout << "Successfully written to file." << std::endl;
-  } else {
-    std::cout << "Failed to create file!" << std::endl;
-  }
+    if (file.is_open())
+    {
+        file << content;
+        file.close();
+        std::cout << "Successfully written to file." << std::endl;
+    }
+    else
+    {
+        std::cout << "Failed to create file!" << std::endl;
+    }
 }
 
 void checkGPUExist()
@@ -879,7 +881,9 @@ int getCustomCamera(CustomCamera &customCamera)
     getline(cameraCache, sensorSize);
     getline(cameraCache, focal);
     cameraCache.close();
-    std::cout<<model <<"\n"<<sensorSize<<"\n"<<focal<<std::endl;
+    std::cout << model << "\n"
+              << sensorSize << "\n"
+              << focal << std::endl;
     customCamera.setModelName(model);
     customCamera.setSensorSize(std::stod(sensorSize));
     customCamera.setFocal(std::stod(focal));
@@ -897,13 +901,13 @@ void MsgProc(uint8_t msg)
     {
 
         write_to_file("MFS");
-        
+
         Global::process = PROCESSWORKING;
         Global::saveProcess();
         std::string imagesInputDir;
         std::string sensorWidthDataBaseDir;
         std::string matchesOutputDir;
-        std::string EigenMatrix;     // EigenMatrixFormat"f;0;ppx;0;f;ppy;0;0;1"
+        std::string EigenMatrix; // EigenMatrixFormat"f;0;ppx;0;f;ppy;0;0;1"
 
         write_to_file("3");
         std::string describerMethod; // #1_ComputeFeatures
@@ -1021,7 +1025,6 @@ void MsgProc(uint8_t msg)
         write_to_file("30");
         printf("==========Task Finished, Please Do The Next Step==========\n");
 
-
         break;
     }
     case CMD_SFMANDSFP:
@@ -1134,8 +1137,6 @@ void MsgProc(uint8_t msg)
         write_to_file("58");
         printf("==========Task Finished, Please Do The Next Step==========\n");
 
-        
-
         break;
     }
     case CMD_EXPORTDENSECLOUD:
@@ -1185,7 +1186,7 @@ void MsgProc(uint8_t msg)
         cmd[9] = (char *)outputDir.data();
         write_to_file("70");
         std::cout << cmd[0] << endl;
-        STATE_RETURN = DensifyPointCloud(8, cmd);
+        STATE_RETURN = DensifyPointCloud(10, cmd);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("DensifyPointCloud failed \n");
@@ -1194,15 +1195,11 @@ void MsgProc(uint8_t msg)
         }
         std::string sceneDenseDir = outputDir;
 
-
-
         write_to_file("DPE");
 
         write_to_file("72");
 
         printf("==========Task Finished, Please Do The Next Step==========\n");
-
-
 
         break;
     }
@@ -1262,7 +1259,7 @@ void MsgProc(uint8_t msg)
         cmd[0] = "RefineMesh";
         cmd[1] = (char *)scene_dense_mesh_dir.data();
         cmd[2] = "--scales";
-        cmd[3] = "1";
+        cmd[3] = "3";
         cmd[4] = "--gradient-step";
         cmd[5] = "25.05";
         cmd[6] = "-w";
@@ -1275,18 +1272,10 @@ void MsgProc(uint8_t msg)
             break;
         }
 
-
-
         write_to_file("TRE");
         write_to_file("90");
 
-
         printf("==========Task Finished, Please Do The Next Step==========\n");
-
-
-
-
-
 
         break;
     }
@@ -1341,12 +1330,9 @@ void MsgProc(uint8_t msg)
             break;
         }
 
-
         write_to_file("TME");
         write_to_file("100");
         printf("==========Task Finished, You Can View The Model Now==========\n");
-
-
 
         break;
     }
@@ -1439,7 +1425,7 @@ void MsgProc(uint8_t msg)
 
         cmdCache.close();
         write_to_file("17");
-        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir,customCamera);
+        STATE_RETURN = IntrinsicsAnalysis(imagesInputDir, matchesOutputDir, sensorWidthDataBaseDir, customCamera);
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Load images failed\n");
@@ -1476,14 +1462,11 @@ void MsgProc(uint8_t msg)
         mymsg.data[0] = PROCESSCLOSE;
         sendMessage(mymsg);
 
-       
         write_to_file("MFE");
         sleep(1);
         write_to_file("SFMS");
 
-
         write_to_file("30");
-
 
         printf("=============Reconstruction Starting===========\n");
         write_to_file("31");
@@ -1553,13 +1536,11 @@ void MsgProc(uint8_t msg)
         }
         printf("=============ExportToOpenMVS Successfully===========\n");
 
-
         write_to_file("SFME");
         sleep(1);
         write_to_file("DPS");
 
         write_to_file("58");
-
 
         printf("=============DensifyPointCloud starting===========\n");
         write_to_file("60");
@@ -1591,8 +1572,6 @@ void MsgProc(uint8_t msg)
         // outputDir = outputDir1Dir;
         write_to_file("72");
         printf("=============DensifyPointCloud Successfully===========\n");
-
-
 
         write_to_file("DPE");
         sleep(1);
@@ -1645,12 +1624,9 @@ void MsgProc(uint8_t msg)
         write_to_file("90");
         printf("=============RefineMesh Successfully===========\n");
 
-
-
         write_to_file("TRE");
         sleep(1);
         write_to_file("TMS");
-
 
         write_to_file("92");
 
@@ -1673,14 +1649,13 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-        
+
         write_to_file("TME");
 
         printf("=============TextureMesh Successfully===========\n");
         write_to_file("100");
         printf("Everything is OK");
 
-        
         break;
     }
     case CMD_EXPORTSTL:
@@ -1691,6 +1666,69 @@ void MsgProc(uint8_t msg)
         obj2stl(2, cmd);
         break;
     }
+    case CMD_EXPORTPLY:
+    {
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Task failed,can't get more parameters,no pointed directory\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        std::string tmp, sourceFile, definiteDir;
+        getline(cmdCache, tmp);
+        if (tmp != "CMD_EXPORTPLY")
+        {
+            printf("Task failed,can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        getline(cmdCache, sourceFile);
+        getline(cmdCache, definiteDir);
+        definiteDir.append("/ExportPlY");//fileName
+        auto tmpScene = new MVS::Scene();
+        if (!tmpScene->Load(sourceFile))
+        {
+            printf("no source\n");
+            break;
+        }
+        tmpScene->mesh.Save(definiteDir + ".ply");
+        printf("EXPORT SUCCESSFULLY\n");
+        break;
+    }
+    case CMD_EXPORTOBJ:
+    {
+        ifstream cmdCache;
+        cmdCache.open(("/tmp/.OpenScan3D/cmdCache.tmp"), ios::in);
+        if (!cmdCache)
+        {
+            printf("Task failed,can't get more parameters,no pointed directory\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        std::string tmp, sourceFile, definiteDir;
+        getline(cmdCache, tmp);
+        if (tmp != "CMD_EXPORTOBJ")
+        {
+            printf("Task failed,can't get more parameters\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
+        getline(cmdCache, sourceFile);
+        getline(cmdCache, definiteDir);
+        definiteDir.append("/ExportOBJ");//filename
+        auto tmpScene = new MVS::Scene();
+        if (!tmpScene->Load(sourceFile))
+        {
+            printf("no source\n");
+            break;
+        }
+        tmpScene->mesh.Save(definiteDir + ".obj");
+        printf("EXPORT SUCCESSFULLY\n");
+        break;
+    }
+
     default:
         break;
     }

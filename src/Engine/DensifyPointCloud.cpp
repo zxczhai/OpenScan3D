@@ -32,7 +32,7 @@
 #include "MVS/Common.h"
 #include "MVS/Scene.h"
 #include <boost/program_options.hpp>
-#include "UtilCUDA.h"
+// #include "UtilCUDA.h"
 #include "DensifyPointCloud.hpp"
 using namespace MVS;
 
