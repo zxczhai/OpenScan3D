@@ -9,52 +9,34 @@
 #include <QDebug>
 #include <QPropertyAnimation>
 #include <QStandardItemModel>
+#include "message.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    process = new QProcess(this); // 创建QProcess对象
+    setWindowTitle("OpenScan3D");
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::timerSlot);
     timer->start(500);
-    ui->pushButton->setText("new button");
 
     //设置分步三维重建进度显示初始颜色
-    ui->commandLinkButton->setStyleSheet("color: #FFB300;");
-    ui->commandLinkButton_2->setStyleSheet("color: #FFB300;");
-    ui->commandLinkButton_3->setStyleSheet("color: #FFB300;");
-    ui->commandLinkButton_4->setStyleSheet("color: #FFB300;");
-    ui->commandLinkButton_5->setStyleSheet("color: #FFB300;");
-
-    //    //设置图片集显示列表
-    //    QStandardItemModel *model=new QStandardItemModel () ;
-    //    ui->tableView->setModel(model);
-    //    //设置列表行头
-    //    int width = 150;  // 标准项的宽度（像素）
-    //    model->setHorizontalHeaderItem(0,new QStandardItem("Images Group"));
-    //    ui->tableView->setColumnWidth(0, width);
-    //    model->setHorizontalHeaderItem(1, new QStandardItem ("Number Of Images"));
-    //    ui->tableView->setColumnWidth(1, width);
-    //    model->setHorizontalHeaderItem(2, new QStandardItem ("Sensor Size"));
-    //    ui->tableView->setColumnWidth(2, width);
-    //    model->setHorizontalHeaderItem(3, new QStandardItem ("Focus"));
-    //    ui->tableView->setColumnWidth(3, width);
-    //    //设置列表列头
-    //    model->setVerticalHeaderItem(0, new QStandardItem ("-")) ;
-    //    //数据：
-    //    QStandardItem* item0 = new QStandardItem(Global::imagesGroup);  // 创建标准项
-    //    item0->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
-    //    model->setItem(0, 0, item0);  // 设置标准项到指定位置
-    //    QStandardItem* item1 = new QStandardItem(Global::numberOfImages);  // 创建标准项
-    //    item1->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
-    //    model->setItem(0, 1, item1);  // 设置标准项到指定位置
-    //    QStandardItem* item2 = new QStandardItem(Global::sensorSize);  // 创建标准项
-    //    item2->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
-    //    model->setItem(0, 2, item2);  // 设置标准项到指定位置
-    //    QStandardItem* item3 = new QStandardItem(Global::focus);  // 创建标准项
-    //    item3->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
-    //    model->setItem(0, 3, item3);  // 设置标准项到指定位置
+    ui->commandLinkButton->setStyleSheet("color: #6F6F6F;");
+    ui->commandLinkButton_2->setStyleSheet("color: #6F6F6F;");
+    ui->commandLinkButton_3->setStyleSheet("color: #6F6F6F;");
+    ui->commandLinkButton_4->setStyleSheet("color: #6F6F6F;");
+    ui->commandLinkButton_5->setStyleSheet("color: #6F6F6F;");
+    ui->tips_exportModel->setVisible(false);
+    ui->tips_viewer->setVisible(false);
+    ui->label_path->setVisible(false);
+    ui->label_model->setVisible(false);
+    ui->lineEdit_exportPath->setVisible(false);
+    ui->comboBox_exportModel->setVisible(false);
+    ui->pushButton_browse->setVisible(false);
+    ui->pushButton_export->setVisible(false);
+    ui->pushButton_viewer->setVisible(false);
 
 }
 
@@ -97,28 +79,6 @@ Window linuxFindWin(std::string winName)
     }
     return found;
 }
-
-void MainWindow::on_pushButton_clicked()
-{
-    //    choose_file *newFileChoose = new choose_file(this);
-    //    newFileChoose->show();
-
-    //    std::string winName = "qtcreator";
-    //    ui->widget = new viewer(linuxFindWin(winName));
-    //    ui->widget->setObjectName(QString::fromUtf8("widget"));
-    //    ui->widget->setGeometry(QRect(10, 70, 1361, 661));
-    //    ui->widget->show();
-    //    ui->widget->update();
-
-    embedexternalapp embed = new embedexternalapp(this);
-    //    delete this->ui->widget;
-    //    ui->widget = &embed;
-    //    ui->widget->setObjectName(QString::fromUtf8("widget"));
-    //    ui->widget->setGeometry(QRect(50, 40, 841, 481));
-    //    ui->widget->show();
-    //    ui->widget->update();
-}
-
 
 void MainWindow::on_actionOpen_O_triggered()
 {
@@ -256,48 +216,190 @@ void MainWindow::timerSlot()
         }
     }
 
-    if (Global::tasking)
+    if (Global::tasking || Global::autoTasking)
     {
-        QFile file("/tmp/.OpenScan3D/cmdCache.tmp");  // 打开文件
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        QFile progress_bar_ctrl("/tmp/.OpenScan3D/progress_bar_ctrl.tmp");  // 打开文件
+        if (!progress_bar_ctrl.open(QIODevice::ReadOnly | QIODevice::Text))
             return;  // 若打开文件失败则返回
 
-        QTextStream in(&file);  // 创建文本流对象
+        QTextStream in(&progress_bar_ctrl);  // 创建文本流对象
         QString line = in.readLine();  // 读取第一行内容
-        file.close();  // 关闭文件
+        progress_bar_ctrl.close();  // 关闭文件
 
-        ui->progressBar->setMinimum(0);  // 设置进度条最小值
-        ui->progressBar->setMaximum(100);  // 设置进度条最大值
-        int value = 0;
-        if (line == "matchfeature") {
-            value=20;
+        int value =0;
+        if (line == "MFS") {
+            value = 11;
+            ui->commandLinkButton->setStyleSheet("color: #1083DE;");
+            ui->label_process->setText("matchfeature is executing!");
+        } else if (line == "MFE") {
+            value = 32;
             ui->commandLinkButton->setStyleSheet("color: green;");
-        } else if (line == "sfm&sfp") {
-            value=40;
+            ui->label_process->setText("matchfeature is finished!");
+        } else if (line == "SFMS") {
+            value = 39;
+            ui->commandLinkButton_2->setStyleSheet("color: #1083DE;");
+            ui->label_process->setText("sfm is executing!");
+        } else if (line == "SFME"){
+            value = 56;
             ui->commandLinkButton_2->setStyleSheet("color: green;");
-        } else if (line == "DENSIFYPOINTCLOUD") {
-            value=60;
+            ui->label_process->setText("sfm is finished!");
+        } else if (line == "DPS"){
+            value = 61;
+            ui->commandLinkButton_3->setStyleSheet("color: #1083DE;");
+            ui->label_process->setText("densifypointcloud is executing!");
+        }else if(line == "DPE"){
+            value = 73;
             ui->commandLinkButton_3->setStyleSheet("color: green;");
-        } else if (line == "RECONSTRUCTMESH"){
-            value=80;
+            ui->label_process->setText("densifypointcloud is finished!");
+        }else if (line == "TRS"){
+            value = 78;
+            ui->commandLinkButton_4->setStyleSheet("color: #1083DE;");
+            ui->label_process->setText("trimeshrecon is executing!");
+        }else if (line == "TRE"){
+            value = 87;
             ui->commandLinkButton_4->setStyleSheet("color: green;");
-        } else if (line == "TEXTUREMESH"){
-            value=100;
+            ui->label_process->setText("trimeshrecon is finished!");
+        }else if (line == "TMS"){
+            value = 94;
+            ui->commandLinkButton_5->setStyleSheet("color: #1083DE;");
+            ui->label_process->setText("texturemesh is executing!");
+        }else if (line == "TME"){
+            value = 100;
+            Global::finalVision = true;
             ui->commandLinkButton_5->setStyleSheet("color: green;");
+            ui->label_process->setText("texturemesh is finished!");
         }
-
         QPropertyAnimation *animation = new QPropertyAnimation(ui->progressBar, "value");  // 访问UI界面中的进度条控件
         animation->setDuration(500);  // 动画持续时间为500毫秒
         animation->setStartValue(ui->progressBar->value());
         animation->setEndValue(value);
         animation->start(QAbstractAnimation::DeleteWhenStopped);
 
-        // 将进度条添加到窗口中显示
+        //将进度条添加到窗口中显示
         ui->progressBar->show();  // 访问UI界面中的进度条控件
+
+        if(Global::finalVision)
+        {
+            ui->tips_exportModel->setVisible(true);
+            ui->tips_viewer->setVisible(true);
+            ui->label_path->setVisible(true);
+            ui->label_model->setVisible(true);
+            ui->lineEdit_exportPath->setVisible(true);
+            ui->comboBox_exportModel->setVisible(true);
+            ui->pushButton_browse->setVisible(true);
+            ui->pushButton_export->setVisible(true);
+            ui->pushButton_viewer->setVisible(true);
+        }
     }
 
-    if(Global::autoTasking)
+}
+
+void MainWindow::on_pushButton_browse_clicked()
+{
+    Global::exportPath = QFileDialog::getExistingDirectory(this, u8"浏览模型导出路径", "", NULL);
+    ui->lineEdit_exportPath->setText(Global::exportPath);
+}
+
+void MainWindow::on_pushButton_export_clicked()
+{
+    if (ui->lineEdit_exportPath->text() == "")
     {
-
+        QMessageBox::critical(this, u8"错误 ", u8"未输入模型导出路径 ", QMessageBox::Ok, QMessageBox::Ok);
+        return;
     }
+
+    switch (ui->comboBox_exportModel->currentIndex())
+    {
+    case 0:
+    {
+        Global::exportModel = "STL";
+        Global::exportModelTags = "CMD_EXPORTSTL";
+        break;
+    }
+    case 1:
+    {
+        Global::exportModel = "OBJ";
+        Global::exportModelTags = "CMD_EXPORTOBJ";
+        break;
+    }
+    case 2:
+    {
+        Global::exportModel = "PLY";
+        Global::exportModelTags = "CMD_EXPORTPLY";
+        break;
+    }
+    }
+
+    // 检查是否存在tmp文件夹
+    if (!QDir("/tmp").exists())
+    {
+        // 如果不存在就创建tmp目录
+        QDir().mkpath("/tmp");
+    }
+    // 创建OpenScan3D目录
+    QDir("/tmp").mkdir(".OpenScan3D");
+
+    QString originalPath0 = "";
+
+    if(Global::exportModel == "STL")
+    {
+        QString originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.obj";
+    }
+    else
+    {
+       QString originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.mvs";
+    }
+
+    QString exportPath0 = Global::exportPath + "/scene_dense_mesh_refine_texture";
+
+    QFile cmdcache("/tmp/.OpenScan3D/cmdCache.tmp");
+
+    if (cmdcache.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+    {
+        cmdcache.write(Global::exportModelTags.toUtf8());
+        cmdcache.write("\n");
+        cmdcache.write(originalPath0.toUtf8());
+        cmdcache.write("\n");
+        cmdcache.write(exportPath0.toUtf8());
+        cmdcache.write("\n");
+        cmdcache.close();
+        QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
+        congmsgbuf msg;
+        msg.mtype = 1;
+        if(Global::exportModel == "STL")
+        {
+            msg.data[0] = CMD_EXPORTSTL;
+        }
+        else if(Global::exportModel == "OBJ")
+        {
+            msg.data[0] = CMD_EXPORTOBJ;
+        }
+        else if(Global::exportModel == "PLY")
+        {
+            msg.data[0] = CMD_EXPORTPLY;
+        }
+        sendMessage(msg);
+        Global::finalVision = false;
+        ui->label_path->clear();
+        ui->tips_exportModel->setVisible(false);
+        ui->tips_viewer->setVisible(false);
+        ui->label_path->setVisible(false);
+        ui->label_model->setVisible(false);
+        ui->lineEdit_exportPath->setVisible(false);
+        ui->comboBox_exportModel->setVisible(false);
+        ui->pushButton_browse->setVisible(false);
+        ui->pushButton_export->setVisible(false);
+        ui->pushButton_viewer->setVisible(false);
+    }
+    else
+    {
+        QMessageBox::information(this, u8"错误", u8"无法访问缓存文件，请检查权限，或使用管理员身份运行 ", QMessageBox::Yes);
+    }
+}
+
+void MainWindow::on_pushButton_viewer_clicked()
+{
+     QString command = "./Openviewer " + Global::textureMeshOutputDir + "/scene_dense_mesh_refine_texture.mvs";
+
+    process->start(command); // 启动进程执行命令
 }

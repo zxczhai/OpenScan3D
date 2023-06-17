@@ -346,6 +346,41 @@ void Dialog_AddPictures::on_btn_CONFIRM_clicked()
             QMessageBox::information(this, u8"错误", u8"无法访问缓存文件，请检查权限，或使用管理员身份运行 ", QMessageBox::Yes);
         }
     }
+    else
+    {
+        QString cameraModel0,sensorSize0,focal0;
+        cameraModel0 ="default";
+        sensorSize0 = "0";
+        focal0 = "0";
+
+        /*将参数写入文件*/
+        // 检查是否存在tmp文件夹
+        if (!QDir("/tmp").exists())
+        {
+            // 如果不存在就创建tmp目录
+            QDir().mkpath("/tmp");
+        }
+        // 创建OpenScan3D目录
+        QDir("/tmp").mkdir(".OpenScan3D");
+
+        QFile cameraCache("/tmp/.OpenScan3D/cameraCache.tmp");
+
+        if (cameraCache.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+        {
+            cameraCache.write(cameraModel0.toUtf8());
+            cameraCache.write("\n");
+            cameraCache.write(sensorSize0.toUtf8());
+            cameraCache.write("\n");
+            cameraCache.write(focal0.toUtf8());
+            cameraCache.write("\n");
+            cameraCache.close();
+            QMessageBox::information(this, u8"完成", u8"配置完成 ", QMessageBox::Yes);
+        }
+        else
+        {
+            QMessageBox::information(this, u8"错误", u8"无法访问缓存文件，请检查权限，或使用管理员身份运行 ", QMessageBox::Yes);
+        }
+    }
 
 
     ui->lineEdit_sensorSize->clear();

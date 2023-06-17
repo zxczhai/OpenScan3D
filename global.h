@@ -18,6 +18,9 @@ using namespace std;
 #define CMD_TEXTUREMESH 106
 #define CMD_IMPORTFROMBE 107
 #define CMD_IMPORTVIDEO 108
+#define CMD_EXPORTSTL 201
+#define CMD_EXPORTOBJ 202
+#define CMD_EXPORTPLY 203
 #define LISTIMAGES 1
 #define COMPUTEFEATURES 2
 #define MATCHFEATURES 3
@@ -63,10 +66,15 @@ public:
     static QString sensorSize;
     static QString focal;
     static QStringList  cameraModels;
+    static QString originalPath;
+    static QString exportPath;
+    static QString exportModel;
+    static QString exportModelTags;
     static QMap<QString, double> cameraModelsWithSize;
     static bool isFilled;
     static bool signPictures;
     static bool isFilledVideo;
+    static bool finalVision;
     static int numberOfImages;
     static int engineTid;
     static void connectEngine();

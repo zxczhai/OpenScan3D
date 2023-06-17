@@ -7,36 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>954</width>
-    <height>692</height>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>370</y>
-      <width>891</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>310</x>
-       <y>80</y>
-       <width>83</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLabel" name="label_engine">
     <property name="geometry">
      <rect>
@@ -74,6 +51,9 @@
     </property>
     <property name="text">
      <string>Wait for the task</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar">
@@ -188,6 +168,145 @@
       <width>775</width>
       <height>100</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tips_viewer">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>346</y>
+      <width>231</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>click viewer to view the model：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_exportModel">
+    <property name="geometry">
+     <rect>
+      <x>119</x>
+      <y>450</y>
+      <width>221</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>STL</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>OBJ</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>PLY</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="pushButton_viewer">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>390</y>
+      <width>201</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Viewer</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_export">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>450</y>
+      <width>70</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>export</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tips_exportModel">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>350</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>select the exported model and export path:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_exportPath">
+    <property name="geometry">
+     <rect>
+      <x>119</x>
+      <y>400</y>
+      <width>221</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_browse">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>400</y>
+      <width>70</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>browse</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_path">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>400</y>
+      <width>81</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>select path:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_model">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>450</y>
+      <width>101</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>select model:</string>
     </property>
    </widget>
   </widget>
