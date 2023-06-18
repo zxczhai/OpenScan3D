@@ -352,7 +352,7 @@ void MainWindow::on_pushButton_export_clicked()
     }
     qDebug() << "::::::" <<originalPath0;
 
-    QString exportPath0 = Global::exportPath + "/scene_dense_mesh_refine_texture";
+    QString exportPath0 = Global::exportPath;
 
     QFile cmdcache("/tmp/.OpenScan3D/cmdCache.tmp");
 
