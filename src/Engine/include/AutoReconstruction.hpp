@@ -1433,6 +1433,7 @@ void MsgProc(uint8_t msg)
             break;
         }
         printf("Obtaining feature points is complete, ready to start matching feature points\n");
+        
         STATE_RETURN = ComputePairs(matchesOutputDir, matchesOutputDir); // if use video mode switch "CONTIGUOUS"
         if (STATE_RETURN == EXIT_FAILURE)
         {
