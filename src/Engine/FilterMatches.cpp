@@ -63,9 +63,9 @@ int FilterMatches(std::string sfmDataDir, std::string outputDir, std::string geo
   // The output matches
   std::string sFilteredMatchesFilename = outputDir+"/matches_filtered.bin";
   // The input pairs
-  std::string sInputPairsFilename;
+  std::string sInputPairsFilename = sfmDataDir + "/pairs.bin";
   // The output pairs
-  std::string sOutputPairsFilename;
+  std::string sOutputPairsFilename = outputDir + "/filtered_pairs.bin";
 
   std::string  sGeometricModel   = geometric_mode;
   bool         bForce            = true;

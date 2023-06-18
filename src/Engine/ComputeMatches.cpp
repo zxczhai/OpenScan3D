@@ -39,9 +39,11 @@ using namespace openMVG::matching_image_collection;
 /// Compute corresponding features between a series of views:
 /// - Load view images description (regions: features & descriptors)
 /// - Compute putative local feature matches (descriptors matching)
-int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFilename, std::string sNearestMatchingMethod = "AUTO", float fDistRatio = 0.8)
+int ComputeMatches(std::string sfmDataDir, std::string outputDir, std::string sNearestMatchingMethod = "AUTO", float fDistRatio = 0.8)
 {
-  std::string sPredefinedPairList = "";
+  std::string sSfM_Data_Filename = sfmDataDir + "/sfm_data.json";
+   std::string sOutputMatchesFilename = outputDir + "/featurePointMatch.bin";
+  std::string sPredefinedPairList = sfmDataDir + "/pairs.bin";
   bool bForce = true;
   unsigned int ui_max_cache_size = 0;
 
@@ -246,6 +248,11 @@ int ComputeMatches(std::string sSfM_Data_Filename, std::string sOutputMatchesFil
         OPENMVG_LOG_ERROR << "Failed to load pairs from file: \"" << sPredefinedPairList << "\"";
         return EXIT_FAILURE;
       }
+      else 
+      {
+        OPENMVG_LOG_INFO << "Use Prefine pair file set.";
+      }
+
       OPENMVG_LOG_INFO << "Running matching on #pairs: " << pairs.size();
       // Photometric matching of putative pairs
       collectionMatcher->Match(regions_provider, pairs, map_PutativeMatches, &progress);

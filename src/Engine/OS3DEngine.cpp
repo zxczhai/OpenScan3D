@@ -2,7 +2,6 @@
 #include <iostream>
 #include "LinuxMessage.hpp"
 
-
 int main()
 {
 
@@ -34,7 +33,14 @@ int main()
         int ret = rcvMessage(mymsg);
         if (0 == ret)
         {
-            MsgProc(mymsg.data[0]);
+            try
+            {
+                MsgProc(mymsg.data[0]);
+            }
+            catch (...)
+            {
+                printf("程序出现异常,建议重启程序或调整重建参数.....\n");
+            }
         }
     }
     return 0;

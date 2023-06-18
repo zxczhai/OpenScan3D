@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.16.3)
 
 project(Viewer)
+set(VIEWER_NAME "Viewer")
+
+# List sources files
+if(MSVC)
+	FILE(GLOB LIBRARY_FILES_C "*.cpp" "*.rc")
+else()
+	FILE(GLOB LIBRARY_FILES_C "*.cpp")
+endif()
+
+FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
+add_library(${VIEWER_NAME} ${LIBRARY_FILES_C} ${LIBRARY_FILES_H})
 
 # ==============================================================================
 # Focus C++11 support
@@ -10,7 +21,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(OPENMVS_LIBRARIES IO Math MVS Common)
-set(VIEWER_NAME "Viewer")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 
 # Find OpenGL library and header files
@@ -57,21 +68,15 @@ else()
 	RETURN()
 endif()
 
-# List sources files
-if(MSVC)
-	FILE(GLOB LIBRARY_FILES_C "*.cpp" "*.rc")
-else()
-	FILE(GLOB LIBRARY_FILES_C "*.cpp")
-endif()
+set(EIGEN_INCLUDE_DIR_HINTS ../openMVG/third_party/eigen)
+find_package(Eigen3 REQUIRED)
 
-FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
+message(STATUS "Viewer EIGEN: " ${EIGEN_VERSION} " (internal)")
 
-add_library(${VIEWER_NAME} ${LIBRARY_FILES_C} ${LIBRARY_FILES_H})
-
-target_link_libraries(${VIEWER_NAME} PRIVATE  ${OPENGL_LIBRARIES} GLEW::GLEW glfw ${OPENMVS_LIBRARIES} X11)
+target_link_libraries(${VIEWER_NAME} PRIVATE ${OPENGL_LIBRARIES} GLEW::GLEW glfw ${OPENMVS_LIBRARIES} X11)
 target_include_directories(${VIEWER_NAME} PRIVATE ../openMVS/libs)
 target_include_directories(${VIEWER_NAME} PRIVATE ../openMVS/libs/Common)
-target_include_directories(${VIEWER_NAME} PRIVATE ${EIGEN_INCLUDE_DIR_HINTS})
+
 target_include_directories(${VIEWER_NAME} PRIVATE ${OPENGL_INCLUDE_DIR})
 
 # Manually set Common.h as the precompiled header

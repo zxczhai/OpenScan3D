@@ -15,6 +15,7 @@ set(PROJECT_SOURCES
   OS3DEngine.cpp
   ComputeFeatures.cpp
   IntrinsicsAnalysis.cpp
+  PairGenerator.cpp
   ComputeMatches.cpp
   FilterMatches.cpp
   SFM.cpp
