@@ -184,12 +184,12 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
     std::string cameraModel = exifData["Exif.Image.Model"].toString();
 
     // 将结果输出到控制台
-    qDebug() << "Camera model: " << QString::fromStdString(cameraModel);
+   // qDebug() << "Camera model: " << QString::fromStdString(cameraModel);
     Global::cameraModel = QString::fromStdString(cameraModel);
 
     QString sensorWidthDatabasePath = QCoreApplication::applicationDirPath() + "/sensor_width_camera_database.txt";
     Global::sensorWidthDatabaseDir = sensorWidthDatabasePath;
-    qDebug() << sensorWidthDatabasePath;
+   // qDebug() << sensorWidthDatabasePath;
 
     loadCameraDatabase(sensorWidthDatabasePath);
 
@@ -212,7 +212,7 @@ void Dialog_AddPictures::on_pushButton_browseInputDir_clicked()
     else if (Global::cameraModelsWithSize.contains(cameraModel1))
     {
         double sensorSize = Global::cameraModelsWithSize[cameraModel1];
-        qDebug() << "Sensor size: " << sensorSize;
+        //qDebug() << "Sensor size: " << sensorSize;
         Global::sensorSize.setNum(sensorSize);
         ui->tips->setText("该文件夹图片相机参数在数据库内！");
         ui->label_CM->setVisible(false);

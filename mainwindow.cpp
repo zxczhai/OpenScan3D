@@ -340,7 +340,6 @@ void MainWindow::on_pushButton_export_clicked()
     QDir("/tmp").mkdir(".OpenScan3D");
 
     QString originalPath0 = "";
-    qDebug() <<":::::"<<Global::exportModel;
 
     if(Global::exportModel == "STL")
     {
@@ -400,7 +399,11 @@ void MainWindow::on_pushButton_export_clicked()
 
 void MainWindow::on_pushButton_viewer_clicked()
 {
-     QString command = "./Openviewer " + Global::textureMeshOutputDir + "/scene_dense_mesh_refine_texture.mvs";
+    QString workingPath = QCoreApplication::applicationDirPath();
+
+    QString command = "./OpenViewer " + Global::originalPath + "/scene_dense_mesh_refine_texture.mvs";
+
+    process->setWorkingDirectory(workingPath);
 
     process->start(command); // 启动进程执行命令
 }
