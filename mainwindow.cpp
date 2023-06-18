@@ -340,15 +340,17 @@ void MainWindow::on_pushButton_export_clicked()
     QDir("/tmp").mkdir(".OpenScan3D");
 
     QString originalPath0 = "";
+    qDebug() <<":::::"<<Global::exportModel;
 
     if(Global::exportModel == "STL")
     {
-        QString originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.obj";
+        originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.obj";
     }
     else
     {
-       QString originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.mvs";
+        originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.mvs";
     }
+    qDebug() << "::::::" <<originalPath0;
 
     QString exportPath0 = Global::exportPath + "/scene_dense_mesh_refine_texture";
 

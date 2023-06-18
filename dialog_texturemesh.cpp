@@ -48,7 +48,7 @@ void Dialog_TextureMesh::on_btn_CONFIRM_clicked()
 
     Global::textureMeshInputDir = ui->lineEdit_inputDir->text();
     Global::textureMeshOutputDir = ui->lineEdit_OutputDir->text();
-    Global::originalPath = ui->lineEdit_OutputDir->text();
+    Global::originalPath = Global::textureMeshOutputDir;
     // 检查是否存在tmp文件夹
     if (!QDir("/tmp").exists())
     {
