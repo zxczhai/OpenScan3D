@@ -38,6 +38,7 @@ void Dialog_AutoRebuild::on_btn_CONFIRM_clicked()
     }
 
     Global::autoRebuildOutputDir = ui->lineEdit_OutputDir->text();
+    Global::originalPath =  ui->lineEdit_OutputDir->text();
 
     switch (ui->comboBox_describer->currentIndex())
     {

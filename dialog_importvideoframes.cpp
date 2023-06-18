@@ -383,7 +383,7 @@ void Dialog_ImportVideoFrames::on_btn_CONFIRM_clicked()
         msg.mtype = 1;
         msg.data[0] = CMD_IMPORTVIDEO;
         sendMessage(msg);
-        Global::tasking = true;
+//        Global::tasking = true;
 
         ui->lineEdit_inputDir->clear();
         ui->lineEdit_OutputDir->clear();

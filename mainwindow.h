@@ -11,6 +11,8 @@
 #include "dialog_importvideoframes.h"
 #include "dialog_addpictures.h"
 #include "global.h"
+#include <QMessageBox>
+#include <QProcess>
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE
@@ -26,7 +28,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
 
     void on_actionOpen_O_triggered();
 
@@ -48,8 +49,15 @@ private slots:
 
     void on_btn_importVideoFrames_clicked();
 
+    void on_pushButton_browse_clicked();
+
+    void on_pushButton_export_clicked();
+
+    void on_pushButton_viewer_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QProcess *process; // 声明QProcess指针
     Dialog_FeatureMatch dlgfm;
     Dialog_SFM dlgsfm;
     Dialog_DensifyPointCloud dlgdense;
