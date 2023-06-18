@@ -350,7 +350,6 @@ void MainWindow::on_pushButton_export_clicked()
     {
         originalPath0 = Global::originalPath + "/scene_dense_mesh_refine_texture.mvs";
     }
-    qDebug() << "::::::" <<originalPath0;
 
     QString exportPath0 = Global::exportPath;
 
