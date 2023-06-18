@@ -21,14 +21,13 @@ find_package(OpenCV REQUIRED)
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/cmake-3.16/Modules")
 
 set(PROJECT_SOURCES
+        # test.cpp
         main.cpp
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
         myResource.qrc
         choose_file.h choose_file.cpp choose_file.ui
-#        viewer.h viewer.cpp
-#        qmywidget.h
         embedExternalApp.cpp embedExternalApp.h
         utils.cpp utils.h
         dialog_featurematch.cpp dialog_featurematch.h dialog_featurematch.ui

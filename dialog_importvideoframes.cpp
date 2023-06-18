@@ -139,7 +139,7 @@ void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
     std::string path = filePath.toStdString();
 
     // 使用C-style字符串作为参数创建VideoCapture对象
-    VideoCapture cap(path.c_str());
+    VideoCapture cap(path);
 
     // 检查是否成功打开了视频文件
     if (!cap.isOpened()) {
