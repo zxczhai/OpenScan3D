@@ -993,7 +993,7 @@ void MsgProc(uint8_t msg)
             Global::process = PROCESSERROR;
             break;
         }
-        STATE_RETURN = ComputePairs(matchesOutputDir, matchesOutputDir);//if use video mode switch "CONTIGUOUS"
+        STATE_RETURN = ComputePairs(matchesOutputDir, matchesOutputDir); // if use video mode switch "CONTIGUOUS"
         if (STATE_RETURN == EXIT_FAILURE)
         {
             printf("Compute Pairs error\n");
@@ -1433,7 +1433,13 @@ void MsgProc(uint8_t msg)
             break;
         }
         printf("Obtaining feature points is complete, ready to start matching feature points\n");
-
+        STATE_RETURN = ComputePairs(matchesOutputDir, matchesOutputDir); // if use video mode switch "CONTIGUOUS"
+        if (STATE_RETURN == EXIT_FAILURE)
+        {
+            printf("Compute Pairs error\n");
+            Global::process = PROCESSERROR;
+            break;
+        }
         STATE_RETURN = ComputeMatches(matchesOutputDir, matchesOutputDir, nearest_matching_method, distanceRatio);
         if (STATE_RETURN == EXIT_FAILURE)
         {
