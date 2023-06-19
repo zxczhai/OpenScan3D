@@ -144,7 +144,20 @@ void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
     // 检查是否成功打开了视频文件
     if (!cap.isOpened()) {
         // 如果无法打开视频文件，则显示警告对话框并清空lineEdit内容
-        QMessageBox::warning(this, "错误", "打开视频文件文件失败！");
+        QMessageBox::warning(this, "错误", "打开视频文件失败！");
+    } else {
+        // 获取文件扩展名
+        QFileInfo fileInfo(filePath);
+        QString extension = fileInfo.completeSuffix();
+
+        // 检查文件类型是否为视频
+        if (extension == "mp4" || extension == "avi" || extension == "mov") {
+            // 文件是视频文件，不执行任何操作
+        } else {
+            // 文件不是视频文件，显示警告对话框并清空lineEdit内容
+            QMessageBox::warning(this, "错误", "所选文件不是视频文件！");
+            ui->lineEdit_inputDir->clear();
+        }
         ui->StartTime->clear();
         ui->EndTime->clear();
         ui->lineEdit_inputDir->clear();
