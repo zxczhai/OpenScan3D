@@ -1707,6 +1707,7 @@ void MsgProc(uint8_t msg)
         if (!tmpScene->Load(sourceFile))
         {
             printf("no source\n");
+            free(tmpScene);
             break;
         }
         tmpScene->mesh.Save(definiteDir + ".ply");
@@ -1739,6 +1740,7 @@ void MsgProc(uint8_t msg)
         if (!tmpScene->Load(sourceFile))
         {
             printf("no source\n");
+            free(tmpScene);
             break;
         }
         tmpScene->mesh.Save(definiteDir + ".obj");
