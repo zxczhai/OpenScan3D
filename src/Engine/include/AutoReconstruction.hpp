@@ -1711,6 +1711,7 @@ void MsgProc(uint8_t msg)
         }
         tmpScene->mesh.Save(definiteDir + ".ply");
         printf("EXPORT SUCCESSFULLY\n");
+        free(tmpScene);
         break;
     }
     case CMD_EXPORTOBJ:
@@ -1742,6 +1743,7 @@ void MsgProc(uint8_t msg)
         }
         tmpScene->mesh.Save(definiteDir + ".obj");
         printf("EXPORT SUCCESSFULLY\n");
+        free(tmpScene);
         break;
     }
 
