@@ -173,10 +173,10 @@
    <widget class="QLabel" name="tips_viewer">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>346</y>
+      <x>30</x>
+      <y>340</y>
       <width>231</width>
-      <height>31</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -185,14 +185,14 @@
      </font>
     </property>
     <property name="text">
-     <string>click viewer to view the model：</string>
+     <string>select the model to view:</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboBox_exportModel">
     <property name="geometry">
      <rect>
-      <x>119</x>
-      <y>450</y>
+      <x>569</x>
+      <y>440</y>
       <width>221</width>
       <height>30</height>
      </rect>
@@ -216,10 +216,10 @@
    <widget class="QPushButton" name="pushButton_viewer">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>390</y>
-      <width>201</width>
-      <height>91</height>
+      <x>700</x>
+      <y>340</y>
+      <width>91</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -229,8 +229,8 @@
    <widget class="QPushButton" name="pushButton_export">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>450</y>
+      <x>820</x>
+      <y>440</y>
       <width>70</width>
       <height>30</height>
      </rect>
@@ -242,8 +242,8 @@
    <widget class="QLabel" name="tips_exportModel">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>350</y>
+      <x>30</x>
+      <y>400</y>
       <width>331</width>
       <height>31</height>
      </rect>
@@ -260,8 +260,8 @@
    <widget class="QLineEdit" name="lineEdit_exportPath">
     <property name="geometry">
      <rect>
-      <x>119</x>
-      <y>400</y>
+      <x>129</x>
+      <y>440</y>
       <width>221</width>
       <height>30</height>
      </rect>
@@ -273,8 +273,8 @@
    <widget class="QPushButton" name="pushButton_browse">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>400</y>
+      <x>380</x>
+      <y>440</y>
       <width>70</width>
       <height>30</height>
      </rect>
@@ -286,8 +286,8 @@
    <widget class="QLabel" name="label_path">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>400</y>
+      <x>30</x>
+      <y>440</y>
       <width>81</width>
       <height>30</height>
      </rect>
@@ -299,8 +299,8 @@
    <widget class="QLabel" name="label_model">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>450</y>
+      <x>470</x>
+      <y>440</y>
       <width>101</width>
       <height>30</height>
      </rect>
@@ -324,10 +324,23 @@
      </font>
     </property>
     <property name="text">
-     <string>V1.0.1</string>
+     <string>V1.0.2</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_viewer">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>350</y>
+      <width>441</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

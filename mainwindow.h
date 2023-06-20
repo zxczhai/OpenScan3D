@@ -67,5 +67,6 @@ private:
     Dialog_ImportVideoFrames dlgivf;
     Dialog_AddPictures dlgap;
     QTimer* timer;
+    QProcess m_process;
 };
 #endif // MAINWINDOW_H

@@ -29,14 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->commandLinkButton_4->setStyleSheet("color: #6F6F6F;");
     ui->commandLinkButton_5->setStyleSheet("color: #6F6F6F;");
     ui->tips_exportModel->setVisible(false);
-    ui->tips_viewer->setVisible(false);
     ui->label_path->setVisible(false);
     ui->label_model->setVisible(false);
     ui->lineEdit_exportPath->setVisible(false);
     ui->comboBox_exportModel->setVisible(false);
     ui->pushButton_browse->setVisible(false);
     ui->pushButton_export->setVisible(false);
-    ui->pushButton_viewer->setVisible(false);
 
 }
 
@@ -289,14 +287,12 @@ void MainWindow::timerSlot()
         if(Global::finalVision)
         {
             ui->tips_exportModel->setVisible(true);
-            ui->tips_viewer->setVisible(true);
             ui->label_path->setVisible(true);
             ui->label_model->setVisible(true);
             ui->lineEdit_exportPath->setVisible(true);
             ui->comboBox_exportModel->setVisible(true);
             ui->pushButton_browse->setVisible(true);
             ui->pushButton_export->setVisible(true);
-            ui->pushButton_viewer->setVisible(true);
         }
     }
 
@@ -390,14 +386,12 @@ void MainWindow::on_pushButton_export_clicked()
         Global::finalVision = false;
         ui->label_path->clear();
         ui->tips_exportModel->setVisible(false);
-        ui->tips_viewer->setVisible(false);
         ui->label_path->setVisible(false);
         ui->label_model->setVisible(false);
         ui->lineEdit_exportPath->setVisible(false);
         ui->comboBox_exportModel->setVisible(false);
         ui->pushButton_browse->setVisible(false);
         ui->pushButton_export->setVisible(false);
-        ui->pushButton_viewer->setVisible(false);
     }
     else
     {
@@ -407,11 +401,26 @@ void MainWindow::on_pushButton_export_clicked()
 
 void MainWindow::on_pushButton_viewer_clicked()
 {
-    QString workingPath = QCoreApplication::applicationDirPath();
+    QString filter = tr("3D Files (*.obj *.mvs *.ply)");
 
-    QString command = "./OpenViewer " + Global::originalPath + "/scene_dense_mesh_refine_texture.mvs";
+    QString filePath = QFileDialog::getOpenFileName(this, tr("选择输入的3D文件"), QDir::homePath(), filter);
 
-    process->setWorkingDirectory(workingPath);
 
-    process->start(command); // 启动进程执行命令
+    if (!filePath.isEmpty()) {
+        ui->lineEdit_viewer->setText(filePath);
+
+        QString workingPath = QCoreApplication::applicationDirPath();
+        QString command = "./OpenViewer " + ui->lineEdit_viewer->text();
+        qDebug()<<"workingPath: "<<workingPath;
+        qDebug()<<"command: "<<command;
+        if (m_process.state() != QProcess::NotRunning) {
+            m_process.close(); // 关闭前一个命令窗口
+            m_process.waitForFinished();
+        }
+
+        m_process.setWorkingDirectory(workingPath);
+        m_process.start(command);
+    } else {
+        QMessageBox::critical(this, tr("错误"), tr("模型文件输入为空！"));
+    }
 }

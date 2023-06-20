@@ -124,7 +124,8 @@ void Dialog_ImportVideoFrames::extract_keyframes(const string& video_file, const
 
 void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
 {
-    Global::importVideoFramesInputDir = QFileDialog::getOpenFileName(this, tr("选择输入的视频文件"), QDir::homePath(), tr("All files(*.*)"));
+    QString filter = tr("Supported Video Files (*.avi *.mp4 *.mov *.mkv *.AVI *.MP4 *.MOV *.MKV)");
+    Global::importVideoFramesInputDir = QFileDialog::getOpenFileName(this, tr("选择输入的视频文件"), QDir::homePath(), filter);
     ui->lineEdit_inputDir->setText(Global::importVideoFramesInputDir);
 
     if (Global::importVideoFramesInputDir.isEmpty()) {
@@ -145,30 +146,7 @@ void Dialog_ImportVideoFrames::on_pushButton_browseInputDir_clicked()
     if (!cap.isOpened()) {
         // 如果无法打开视频文件，则显示警告对话框并清空lineEdit内容
         QMessageBox::warning(this, "错误", "打开视频文件失败！");
-        ui->StartTime->clear();
-        ui->EndTime->clear();
-        ui->lineEdit_inputDir->clear();
-        ui->lineEdit_OutputDir->clear();
-        return;
-    } else {
-        // 获取文件扩展名
-        QFileInfo fileInfo(filePath);
-        QString extension = fileInfo.completeSuffix();
-
-        // 检查文件类型是否为视频
-        if (extension.compare("mp4", Qt::CaseInsensitive) != 0 &&
-                extension.compare("avi", Qt::CaseInsensitive) != 0 &&
-                extension.compare("mov", Qt::CaseInsensitive) != 0) {
-            // 文件不是视频文件，显示警告对话框并清空lineEdit内容
-            QMessageBox::warning(this, "错误", "所选文件不是视频文件！");
-            ui->StartTime->clear();
-            ui->EndTime->clear();
-            ui->lineEdit_inputDir->clear();
-            ui->lineEdit_OutputDir->clear();
-            return;
-        }
     }
-
     // 获取视频信息
     double frameCount = cap.get(CAP_PROP_FRAME_COUNT);
     double fps = cap.get(CAP_PROP_FPS);
