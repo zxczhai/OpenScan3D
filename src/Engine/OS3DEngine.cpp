@@ -16,7 +16,7 @@ int main()
     // hide cursor
     std::cout << "\033[?25l";
     printf("\n-----------------------------------\n");
-    printf("        欢迎使用OS3DEngine         \n");
+    printf("        欢迎使用OS3DEngine V1.0.0       \n");
     printf("            程序初始化成功             \n");
     printf("        请使用OpenScan3D程序发起指令       \n");
     printf("     @Basic All Rights Reserved    \n");

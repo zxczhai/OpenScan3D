@@ -50,6 +50,7 @@ void checkGPUExist()
     if (error_id != cudaSuccess)
     {
         printf("cudaGetDeviceCount returned %d\n-> %s\n", (int)error_id, cudaGetErrorString(error_id));
+        printf("No available CUDA device(s),will use CPU Mode\n");
     }
     else if (deviceCount == 0)
     {

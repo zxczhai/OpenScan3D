@@ -43,6 +43,7 @@ endif()
 # Add executable
 add_executable(R3D ${PROJECT_SOURCES})
 
+
 find_package(Ceres QUIET HINTS ${CERES_DIR_HINTS})
 
 if(NOT Ceres_FOUND)
