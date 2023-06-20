@@ -168,6 +168,10 @@ void MainWindow::timerSlot()
     //设置图片集显示列表
     QStandardItemModel *model=new QStandardItemModel () ;
     ui->tableView->setModel(model);
+
+    // 关闭tableView的刷新
+    ui->tableView->setUpdatesEnabled(false);
+
     //设置列表行头
     int width = 190;  // 标准项的宽度（像素）
     model->setHorizontalHeaderItem(0,new QStandardItem("Images Group"));
@@ -193,6 +197,10 @@ void MainWindow::timerSlot()
     QStandardItem* item3 = new QStandardItem(Global::sensorSize);  // 创建标准项
     item3->setData(Qt::AlignCenter, Qt::TextAlignmentRole);  // 设置文本居中对齐
     model->setItem(0, 3, item3);  // 设置标准项到指定位置
+
+    // 开启tableView的刷新，并强制刷新一次
+    ui->tableView->setUpdatesEnabled(true);
+    ui->tableView->viewport()->update();
 
     if (Global::GetProcessIdFromName("R3D") != 0)
     {
