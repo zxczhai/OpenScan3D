@@ -67,7 +67,7 @@ endif()
 FIND_PACKAGE(CUDA)
 
 if(CUDA_FOUND)
-  set(CMAKE_CUDA_COMPILER "/usr/local/cuda-12.1/bin/nvcc")
+  set(CMAKE_CUDA_COMPILER "/usr/local/cuda-12.0/bin/nvcc")
   ENABLE_LANGUAGE(CUDA)
   string(REGEX MATCH "^[0-9]+" CUDA_MAJOR ${CMAKE_CUDA_COMPILER_VERSION})
   target_include_directories(R3D PRIVATE ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES} ${CUDA_INCLUDE_DIRS})

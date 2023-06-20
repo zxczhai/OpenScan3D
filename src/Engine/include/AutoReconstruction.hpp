@@ -1623,7 +1623,6 @@ void MsgProc(uint8_t msg)
         sleep(1);
         write_to_file("TMS");
 
-        write_to_file("92");
 
         printf("=============TextureMesh starting===========\n");
         char *cmd4[8];
