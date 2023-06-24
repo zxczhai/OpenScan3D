@@ -21,7 +21,7 @@ git clone --recursive git@github.com:zxczhai/OpenScan3D.git
 cd OpenScan3D
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ../
+cmake -DCMAKE_BUILD_TYPE=Release ../
 make -j8
 ```
 ### RUN
