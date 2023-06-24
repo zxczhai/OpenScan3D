@@ -35,5 +35,5 @@ cd build/bin
 ```
 ## TODO:
 - [x] 重构代码
-- [ ] 模型多种输出格式,OBJ&PLY&STL
-- [ ] 添加视频输入源
+- [x] 模型多种输出格式,OBJ&PLY&STL
+- [x] 添加视频输入源
